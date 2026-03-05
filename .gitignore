@@ -1,0 +1,43 @@
+# ─── Data (large files, not tracked) ────────────────────────────────
+data/raw/
+data/interim/
+data/processed/
+data/external/
+
+# ─── Documents (binary, not tracked) ────────────────────────────────
+docs/*.pdf
+docs/*.docx
+
+# ─── Model checkpoints ──────────────────────────────────────────────
+models/
+
+# ─── Results ────────────────────────────────────────────────────────
+results/
+
+# ─── Python ─────────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ─── Virtual environments ───────────────────────────────────────────
+env/
+venv/
+.venv/
+
+# ─── IDE ────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# ─── Jupyter ────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+
+# ─── Misc ───────────────────────────────────────────────────────────
+*.log
+wandb/
