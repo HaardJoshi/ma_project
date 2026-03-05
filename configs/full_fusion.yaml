@@ -1,0 +1,24 @@
+# ─────────────────────────────────────────────────────────────────────
+# Full multimodal fusion — all 3 blocks (F + T + G)
+# US/EDGAR subsample (where both text and graph data available)
+# ─────────────────────────────────────────────────────────────────────
+
+features:
+  financial: true
+  text: true
+  graph: true
+
+model:
+  type: "fusion"
+  fusion:
+    financial_dim: 64
+    text_dim: 64
+    graph_dim: 32
+    head_hidden: 64
+    head_dropout: 0.3
+
+training:
+  epochs: 300
+  learning_rate: 0.0005
+  weight_decay: 0.01
+  early_stopping_patience: 30

@@ -1,0 +1,15 @@
+# ─────────────────────────────────────────────────────────────────────
+# Block A + C — financial + graph/SPLC features
+# Tests the Topological Alpha hypothesis (H1)
+# ─────────────────────────────────────────────────────────────────────
+
+features:
+  financial: true
+  text: false
+  graph: true
+
+model:
+  type: "mlp"
+  mlp:
+    hidden_dims: [128, 64]
+    dropout: 0.3

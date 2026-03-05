@@ -1,0 +1,12 @@
+# ─────────────────────────────────────────────────────────────────────
+# Block A baseline — financial features only (Ridge / XGBoost / MLP)
+# Inherits from default.yaml; only overrides are listed here.
+# ─────────────────────────────────────────────────────────────────────
+
+features:
+  financial: true
+  text: false
+  graph: false
+
+model:
+  type: "ridge"       # start with ridge, then try xgboost / mlp

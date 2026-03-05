@@ -1,0 +1,64 @@
+# ─────────────────────────────────────────────────────────────────────
+# Default configuration — shared by all experiments
+# Override per-experiment via configs/financial_only.yaml etc.
+# ─────────────────────────────────────────────────────────────────────
+
+project:
+  name: "ma-synergy-prediction"
+  seed: 42
+
+# ── Data paths (relative to project root) ────────────────────────────
+data:
+  raw_dir: "data/raw"
+  interim_dir: "data/interim"
+  processed_dir: "data/processed"
+  cleaned_file: "data/interim/ma_cleaned.csv"
+  descriptions_file: "data/interim/ma_deal_descriptions.csv"
+
+# ── Preprocessing ────────────────────────────────────────────────────
+preprocessing:
+  winsorise_percentile: 0.01        # clip at 1st / 99th percentile
+  test_size: 0.15                   # hold-out test fraction
+  val_size: 0.15                    # validation fraction (of remaining)
+  target_column: "CAR"              # label column (added after event study)
+
+# ── Feature blocks (toggle on/off per experiment) ────────────────────
+features:
+  financial: true
+  text: false
+  graph: false
+
+# ── Model ────────────────────────────────────────────────────────────
+model:
+  type: "ridge"                     # ridge | xgboost | mlp | fusion
+  ridge:
+    alpha: 1.0
+  xgboost:
+    n_estimators: 300
+    max_depth: 6
+    learning_rate: 0.05
+  mlp:
+    hidden_dims: [128, 64]
+    dropout: 0.3
+    activation: "relu"
+  fusion:
+    financial_dim: 64               # projection dim for h_F
+    text_dim: 64                    # projection dim for h_T
+    graph_dim: 32                   # projection dim for h_G
+    head_hidden: 64
+    head_dropout: 0.3
+
+# ── Training ─────────────────────────────────────────────────────────
+training:
+  epochs: 200
+  batch_size: 128
+  learning_rate: 0.001
+  weight_decay: 0.01                # L2 regularisation
+  early_stopping_patience: 20
+  num_folds: 5                      # k-fold CV (0 = no CV)
+  device: "auto"                    # auto | cpu | cuda | mps
+
+# ── Output paths ─────────────────────────────────────────────────────
+output:
+  model_dir: "models"
+  results_dir: "results"

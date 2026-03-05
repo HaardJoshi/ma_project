@@ -1,0 +1,15 @@
+# ─────────────────────────────────────────────────────────────────────
+# Block A + B — financial + FinBERT text features
+# US/EDGAR subsample only (where 10-K filings are available)
+# ─────────────────────────────────────────────────────────────────────
+
+features:
+  financial: true
+  text: true
+  graph: false
+
+model:
+  type: "mlp"
+  mlp:
+    hidden_dims: [128, 64]
+    dropout: 0.3
