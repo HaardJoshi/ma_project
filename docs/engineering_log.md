@@ -61,6 +61,19 @@ Running log of issues, root causes, and fixes encountered during development.
 
 ---
 
+## Entry #7: FinBERT pipeline completed successfully
+**Date:** 2026-03-08  
+**Stage:** Block B (Text Embeddings)  
+**Result:**
+- 1,678 deals processed on Apple Silicon MPS device
+- MD&A: 1,674 valid embeddings, PCA (64 components) explains 96.5% variance
+- Risk Factors: 1,482 valid embeddings, PCA (64 components) explains 96.8% variance  
+- Output: `data/processed/text_embeddings.csv` (128 dims per deal)
+- Raw embeddings backed up to `data/processed/raw_embeddings.npz`  
+**Notes:** The "UNEXPECTED keys" warning during FinBERT loading is harmless — we load `AutoModel` (transformer only) from a model saved with a classification head. Token length warning (>512) is expected and handled by chunking.
+
+---
+
 ## Known Limitations
 
 | Issue | Impact | Potential Fix |
