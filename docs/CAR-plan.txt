@@ -1,0 +1,102 @@
+CAR DATA REQUIREMENTS + BUILD PLAN (Market-Model CAR, event window [-5, +5])
+
+1) Objective
+Compute acquirer cumulative abnormal return CAR_i(-5,+5) around the deal announcement, using the market model:
+R_it = alpha_i + beta_i * R_mt + eps_it  (estimated in pre-event window)
+AR_it = R_it - (alpha_hat_i + beta_hat_i * R_mt)
+CAR_i(-5,+5) = sum_{t=-5..+5} AR_it
+Reference event-study framework: estimation window separate from event window. [web:41][web:45]
+
+2) Required datasets (minimum viable)
+A) Deals master table (1 row per deal)
+- deal_id: unique integer/string key you assign
+- acq_security: Bloomberg security identifier for the acquirer (e.g., "MSFT US Equity")
+- announce_date: announcement date (Day 0 anchor)
+- benchmark_security: Bloomberg benchmark identifier (default "SPX Index", can be changed)
+- deal_currency (optional but recommended): e.g., USD/GBP (metadata)
+- notes / filters used (optional): status, region, etc. (metadata)
+
+B) Daily time-series table (long/tidy; MANY rows per deal)
+For every deal_id and every trading date in the combined pull window:
+- deal_id
+- security_role: {"ACQUIRER","BENCHMARK"}
+- security: repeats the Bloomberg identifier used to pull the series
+- trading_date: actual trading day date returned by Bloomberg
+- px_last: closing price (PX_LAST)
+- ret_type: {"LOG"} (or "SIMPLE" if you choose simple returns, but be consistent)
+- ret_1d: daily return computed from px_last
+- ann_date: repeat announcement date (denormalised on purpose to reduce joins later)
+- rel_day: integer day index relative to Day 0 trading date (see Day 0 convention below)
+- window_flag: {"EST","EVENT","OTHER"} based on rel_day
+
+Windows:
+- Estimation window: rel_day in [-200, -20]
+- Event window: rel_day in [-5, +5]
+You can pull one continuous range (approx. [-200, +5]) then label rows by rel_day. [web:41]
+
+3) Bloomberg fields to pull (keep it minimal)
+Time series:
+- PX_LAST (daily close) for:
+  - acq_security
+  - benchmark_security
+You will use Bloomberg historical function BDH (or an API equivalent) for time series. [web:65]
+
+(If you prefer returns directly from Bloomberg, you can, but it often creates alignment issues across securities; prices are safer, returns can be computed consistently in your pipeline.)
+
+4) Day 0 convention (important for clean automation)
+Because announcement dates can fall on non-trading days, define Day 0 as:
+- The first trading day on/after the announce_date (common choice), OR
+- The nearest trading day to announce_date
+Pick one rule and apply it consistently; store it as:
+- event_day0_date (optional column) = the trading_date you treat as Day 0
+Then:
+- rel_day = trading_date_index - event_day0_date_index (in trading-day steps)
+
+This avoids weekend/holiday gaps and makes windows exact in trading days. [web:41]
+
+5) Extraction plan (structured output; minimal later processing)
+Step 1: Export deals master
+- From Bloomberg MA screen, export at least: acquirer identifier + announcement date (and your deal_id). [web:66]
+- Standardise acq_security into full Bloomberg format ending with "Equity" where appropriate.
+
+Step 2: Pull prices in one continuous window per deal
+For each deal_id:
+- Pull acquirer PX_LAST daily from (announce_date - 200 trading days) to (announce_date + 5 trading days)
+- Pull benchmark PX_LAST daily for the same date range
+Using Bloomberg Excel or Spreadsheet Builder, BDH downloads historical data for a selected security and time frame. [web:65]
+
+Step 3: Write to the long/tidy time-series table
+- Append rows for both ACQUIRER and BENCHMARK with a consistent schema.
+- Keep trading_date as returned; do not try to “fill” missing days with calendar dates.
+
+Step 4: Compute returns and rel_day
+- Compute ret_1d from px_last (log returns recommended):
+  R_t = ln(P_t / P_{t-1}) [web:45]
+- Determine event_day0_date per deal using the chosen rule; compute rel_day in trading-day increments.
+- Set window_flag based on rel_day.
+
+Step 5: CAR calculation (done after data is in structured form)
+Per deal_id:
+- Run OLS on estimation window (rel_day -200..-20):
+  R_it = alpha_i + beta_i * R_mt + eps_it [web:45]
+- Use alpha_hat and beta_hat to compute AR_it in the event window (rel_day -5..+5), then sum:
+  CAR_i(-5,+5) = sum AR_it [web:41]
+
+Step 6: Store results in a separate results table
+- deal_id
+- alpha_hat, beta_hat
+- car_m5_p5
+- n_est_days, n_event_days (data quality)
+- benchmark_security actually used
+
+6) Quality checks (to avoid rework)
+- Validate security identifiers resolve (no "Invalid Security").
+- Ensure sufficient estimation observations (e.g., >= 120 trading days) before computing alpha/beta. [web:41]
+- Ensure acquirer and benchmark returns are aligned on identical trading_date rows in estimation and event windows.
+
+7) File outputs recommended
+- deals_master.csv (or .xlsx): deals table
+- timeseries_long.parquet (or .csv): long/tidy price+return dataset
+- car_results.csv: alpha/beta and CAR per deal
+
+END
