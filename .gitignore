@@ -1,8 +1,15 @@
-# ─── Data (large files, not tracked) ────────────────────────────────
-data/raw/
-data/interim/
-data/processed/
+# ─── Data ────────────────────────────────────────────────────────────
+# Track data files, but exclude oversized ones (GitHub 100MB limit)
+data/interim/timeseries_long_FULL.csv
+data/interim/timeseries_long.parquet
+data/interim/timeseries_chunks/
+data/raw/bbg_pull_missing.xlsx
+data/raw/ma_export_*.csv
 data/external/
+
+# ─── Binary model files (regenerable) ───────────────────────────────
+data/processed/raw_embeddings.npz
+data/processed/pca_models.pkl
 
 # ─── Documents (binary, not tracked) ────────────────────────────────
 docs/*.pdf
