@@ -5,21 +5,27 @@
     "target": "2772740Q",
     "acquirer_name": "Omnicare Inc",
     "target_name": "Theorem Clinical Research Inc",
-    "synergy_probability": 0.99,
+    "synergy_probability": 0.91,
     "car_prediction": "POSITIVE",
     "car_actual": 0.2743,
+    "acquirer_betweenness_value": 0.0,
+    "acquirer_betweenness_percentile": 30.3,
+    "acquirer_supply_chain_depth": 0,
+    "mda_cosine_similarity": 0.5,
+    "mda_similarity_percentile": 50.0,
     "semantic_scores": {
-      "mda_similarity": 0.78,
-      "risk_similarity": 0.36
+      "mda_similarity": 0.783,
+      "risk_similarity": 0.355,
+      "mda_percentile": 50.0
     },
     "shap_data": [
       {
         "feature": "Acquirer Operating Margin",
-        "value": 0.091578044
+        "value": 0.09157804
       },
       {
         "feature": "Target Net Income/Net Profit (Losses)",
-        "value": 0.080067486
+        "value": 0.08006749
       },
       {
         "feature": "Announced Total Value (mil.)",
@@ -40,30 +46,12 @@
         {
           "id": "2772740Q",
           "group": "tgt",
-          "label": "2772740Q"
-        },
-        {
-          "id": "3176",
-          "group": "sup",
-          "label": "Supplier 1"
-        },
-        {
-          "id": "GENNQ",
-          "group": "sup",
-          "label": "GENNQ"
+          "label": "Target (Theorem)"
         }
       ],
       "edges": [
         {
           "source": "2772740Q",
-          "target": "OCR"
-        },
-        {
-          "source": "3176",
-          "target": "OCR"
-        },
-        {
-          "source": "GENNQ",
           "target": "OCR"
         }
       ]
@@ -75,12 +63,18 @@
     "target": "ORNHQ",
     "acquirer_name": "CareCloud Inc",
     "target_name": "Orion HealthCorp Inc",
-    "synergy_probability": 0.99,
+    "synergy_probability": 0.91,
     "car_prediction": "POSITIVE",
     "car_actual": 0.2743,
+    "acquirer_betweenness_value": 0.0,
+    "acquirer_betweenness_percentile": 0.0,
+    "acquirer_supply_chain_depth": 0,
+    "mda_cosine_similarity": -0.1123,
+    "mda_similarity_percentile": 32.4,
     "semantic_scores": {
-      "mda_similarity": 0.79,
-      "risk_similarity": 0.1
+      "mda_similarity": 0.795,
+      "risk_similarity": 0.1,
+      "mda_percentile": 32.4
     },
     "shap_data": [
       {
@@ -111,65 +105,11 @@
           "id": "ORNHQ",
           "group": "tgt",
           "label": "ORNHQ"
-        },
-        {
-          "id": "88216Z",
-          "group": "sup",
-          "label": "88216Z"
-        },
-        {
-          "id": "GOOGL",
-          "group": "sup",
-          "label": "GOOGL"
-        },
-        {
-          "id": "0891501D",
-          "group": "sup",
-          "label": "0891501D"
-        },
-        {
-          "id": "127297MF",
-          "group": "sup",
-          "label": "127297MF"
-        },
-        {
-          "id": "2209056D",
-          "group": "sup",
-          "label": "2209056D"
-        },
-        {
-          "id": "3705747Z",
-          "group": "sup",
-          "label": "3705747Z"
         }
       ],
       "edges": [
         {
           "source": "ORNHQ",
-          "target": "CCLD"
-        },
-        {
-          "source": "88216Z",
-          "target": "CCLD"
-        },
-        {
-          "source": "GOOGL",
-          "target": "CCLD"
-        },
-        {
-          "source": "0891501D",
-          "target": "CCLD"
-        },
-        {
-          "source": "127297MF",
-          "target": "CCLD"
-        },
-        {
-          "source": "2209056D",
-          "target": "CCLD"
-        },
-        {
-          "source": "3705747Z",
           "target": "CCLD"
         }
       ]
@@ -181,12 +121,18 @@
     "target": "AFLX",
     "acquirer_name": "Innovex Inc/MN",
     "target_name": "Adflex Solutions Inc",
-    "synergy_probability": 0.99,
+    "synergy_probability": 0.91,
     "car_prediction": "POSITIVE",
     "car_actual": 0.2743,
+    "acquirer_betweenness_value": 0.0,
+    "acquirer_betweenness_percentile": 30.3,
+    "acquirer_supply_chain_depth": 0,
+    "mda_cosine_similarity": 0.5,
+    "mda_similarity_percentile": 50.0,
     "semantic_scores": {
-      "mda_similarity": 0.78,
-      "risk_similarity": 0.36
+      "mda_similarity": 0.783,
+      "risk_similarity": 0.355,
+      "mda_percentile": 50.0
     },
     "shap_data": [
       {
@@ -217,65 +163,11 @@
           "id": "AFLX",
           "group": "tgt",
           "label": "AFLX"
-        },
-        {
-          "id": "CNP",
-          "group": "sup",
-          "label": "CNP"
-        },
-        {
-          "id": "ETR",
-          "group": "sup",
-          "label": "ETR"
-        },
-        {
-          "id": "FTS",
-          "group": "sup",
-          "label": "FTS"
-        },
-        {
-          "id": "OGE",
-          "group": "sup",
-          "label": "OGE"
-        },
-        {
-          "id": "SRE",
-          "group": "sup",
-          "label": "SRE"
-        },
-        {
-          "id": "1232Z",
-          "group": "sup",
-          "label": "1232Z"
         }
       ],
       "edges": [
         {
           "source": "AFLX",
-          "target": "INVX"
-        },
-        {
-          "source": "CNP",
-          "target": "INVX"
-        },
-        {
-          "source": "ETR",
-          "target": "INVX"
-        },
-        {
-          "source": "FTS",
-          "target": "INVX"
-        },
-        {
-          "source": "OGE",
-          "target": "INVX"
-        },
-        {
-          "source": "SRE",
-          "target": "INVX"
-        },
-        {
-          "source": "1232Z",
           "target": "INVX"
         }
       ]
@@ -287,12 +179,18 @@
     "target": "TPTX",
     "acquirer_name": "Bristol-Myers Squibb Co",
     "target_name": "Turning Point Therapeutics Inc",
-    "synergy_probability": 0.99,
+    "synergy_probability": 0.91,
     "car_prediction": "POSITIVE",
     "car_actual": 0.2743,
+    "acquirer_betweenness_value": 0.000198,
+    "acquirer_betweenness_percentile": 74.5,
+    "acquirer_supply_chain_depth": 0,
+    "mda_cosine_similarity": 0.6509,
+    "mda_similarity_percentile": 87.9,
     "semantic_scores": {
-      "mda_similarity": 0.95,
-      "risk_similarity": 0.2
+      "mda_similarity": 0.947,
+      "risk_similarity": 0.203,
+      "mda_percentile": 87.9
     },
     "shap_data": [
       {
@@ -304,7 +202,7 @@
         "value": -0.13988058
       },
       {
-        "feature": "MD&A Logistic Component 30",
+        "feature": "MD&A Semantic Component 30",
         "value": 0.13922808
       },
       {
@@ -323,65 +221,11 @@
           "id": "TPTX",
           "group": "tgt",
           "label": "TPTX"
-        },
-        {
-          "id": "PFE",
-          "group": "sup",
-          "label": "PFE"
-        },
-        {
-          "id": "4528",
-          "group": "sup",
-          "label": "Supplier 2"
-        },
-        {
-          "id": "688506",
-          "group": "sup",
-          "label": "Supplier 3"
-        },
-        {
-          "id": "MRK",
-          "group": "sup",
-          "label": "MRK"
-        },
-        {
-          "id": "JNJ",
-          "group": "sup",
-          "label": "JNJ"
-        },
-        {
-          "id": "MCK",
-          "group": "sup",
-          "label": "MCK"
         }
       ],
       "edges": [
         {
           "source": "TPTX",
-          "target": "BMY"
-        },
-        {
-          "source": "PFE",
-          "target": "BMY"
-        },
-        {
-          "source": "4528",
-          "target": "BMY"
-        },
-        {
-          "source": "688506",
-          "target": "BMY"
-        },
-        {
-          "source": "MRK",
-          "target": "BMY"
-        },
-        {
-          "source": "JNJ",
-          "target": "BMY"
-        },
-        {
-          "source": "MCK",
           "target": "BMY"
         }
       ]
@@ -393,16 +237,22 @@
     "target": "BLC",
     "acquirer_name": "TEGNA Inc",
     "target_name": "Belo Corp",
-    "synergy_probability": 0.99,
+    "synergy_probability": 0.91,
     "car_prediction": "POSITIVE",
     "car_actual": 0.2743,
+    "acquirer_betweenness_value": 0.000199,
+    "acquirer_betweenness_percentile": 74.7,
+    "acquirer_supply_chain_depth": 0,
+    "mda_cosine_similarity": 0.135,
+    "mda_similarity_percentile": 46.1,
     "semantic_scores": {
-      "mda_similarity": 0.85,
-      "risk_similarity": 0.42
+      "mda_similarity": 0.853,
+      "risk_similarity": 0.424,
+      "mda_percentile": 46.1
     },
     "shap_data": [
       {
-        "feature": "MD&A Logistic Component 27",
+        "feature": "MD&A Semantic Component 27",
         "value": 0.22981237
       },
       {
@@ -414,7 +264,7 @@
         "value": 0.15148863
       },
       {
-        "feature": "MD&A Logistic Component 5",
+        "feature": "MD&A Semantic Component 5",
         "value": -0.1453876
       }
     ],
@@ -429,65 +279,11 @@
           "id": "BLC",
           "group": "tgt",
           "label": "BLC"
-        },
-        {
-          "id": "0159586D",
-          "group": "sup",
-          "label": "0159586D"
-        },
-        {
-          "id": "1035176Z",
-          "group": "sup",
-          "label": "1035176Z"
-        },
-        {
-          "id": "1121455D",
-          "group": "sup",
-          "label": "1121455D"
-        },
-        {
-          "id": "18301Z",
-          "group": "sup",
-          "label": "18301Z"
-        },
-        {
-          "id": "2557098D",
-          "group": "sup",
-          "label": "2557098D"
-        },
-        {
-          "id": "210062Z",
-          "group": "sup",
-          "label": "210062Z"
         }
       ],
       "edges": [
         {
           "source": "BLC",
-          "target": "TGNA"
-        },
-        {
-          "source": "0159586D",
-          "target": "TGNA"
-        },
-        {
-          "source": "1035176Z",
-          "target": "TGNA"
-        },
-        {
-          "source": "1121455D",
-          "target": "TGNA"
-        },
-        {
-          "source": "18301Z",
-          "target": "TGNA"
-        },
-        {
-          "source": "2557098D",
-          "target": "TGNA"
-        },
-        {
-          "source": "210062Z",
           "target": "TGNA"
         }
       ]
@@ -499,12 +295,18 @@
     "target": "ISNR",
     "acquirer_name": "Texas Instruments Inc",
     "target_name": "Integrated Sensor Solutions Inc",
-    "synergy_probability": 0.01,
+    "synergy_probability": 0.09,
     "car_prediction": "NEGATIVE",
     "car_actual": -0.3022,
+    "acquirer_betweenness_value": 0.000236,
+    "acquirer_betweenness_percentile": 78.2,
+    "acquirer_supply_chain_depth": 0,
+    "mda_cosine_similarity": 0.5,
+    "mda_similarity_percentile": 50.0,
     "semantic_scores": {
-      "mda_similarity": 0.78,
-      "risk_similarity": 0.36
+      "mda_similarity": 0.783,
+      "risk_similarity": 0.355,
+      "mda_percentile": 50.0
     },
     "shap_data": [
       {
@@ -521,7 +323,7 @@
       },
       {
         "feature": "Supply-Chain Topology 53",
-        "value": 0.113622814
+        "value": 0.11362281
       }
     ],
     "graph_data": {
@@ -535,65 +337,11 @@
           "id": "ISNR",
           "group": "tgt",
           "label": "ISNR"
-        },
-        {
-          "id": "2330",
-          "group": "sup",
-          "label": "Supplier 1"
-        },
-        {
-          "id": "8035",
-          "group": "sup",
-          "label": "Supplier 2"
-        },
-        {
-          "id": "KLAC",
-          "group": "sup",
-          "label": "KLAC"
-        },
-        {
-          "id": "600584",
-          "group": "sup",
-          "label": "Supplier 4"
-        },
-        {
-          "id": "3711",
-          "group": "sup",
-          "label": "Supplier 5"
-        },
-        {
-          "id": "VOW",
-          "group": "sup",
-          "label": "VOW"
         }
       ],
       "edges": [
         {
           "source": "ISNR",
-          "target": "TXN"
-        },
-        {
-          "source": "2330",
-          "target": "TXN"
-        },
-        {
-          "source": "8035",
-          "target": "TXN"
-        },
-        {
-          "source": "KLAC",
-          "target": "TXN"
-        },
-        {
-          "source": "600584",
-          "target": "TXN"
-        },
-        {
-          "source": "3711",
-          "target": "TXN"
-        },
-        {
-          "source": "VOW",
           "target": "TXN"
         }
       ]
@@ -605,17 +353,23 @@
     "target": "0356428Q",
     "acquirer_name": "Sykes Enterprises Inc",
     "target_name": "ICT Group Inc",
-    "synergy_probability": 0.01,
+    "synergy_probability": 0.09,
     "car_prediction": "NEGATIVE",
     "car_actual": -0.3022,
+    "acquirer_betweenness_value": 0.0,
+    "acquirer_betweenness_percentile": 30.3,
+    "acquirer_supply_chain_depth": 0,
+    "mda_cosine_similarity": 0.5,
+    "mda_similarity_percentile": 50.0,
     "semantic_scores": {
-      "mda_similarity": 0.78,
-      "risk_similarity": 0.36
+      "mda_similarity": 0.783,
+      "risk_similarity": 0.355,
+      "mda_percentile": 50.0
     },
     "shap_data": [
       {
         "feature": "Target Asset Growth",
-        "value": 0.124323815
+        "value": 0.12432382
       },
       {
         "feature": "Acquirer Total Assets",
@@ -623,7 +377,7 @@
       },
       {
         "feature": "Supply-Chain Topology 53",
-        "value": 0.083821885
+        "value": 0.08382188
       },
       {
         "feature": "Acquirer Total Debt to Total Assets",
@@ -640,21 +394,12 @@
         {
           "id": "0356428Q",
           "group": "tgt",
-          "label": "0356428Q"
-        },
-        {
-          "id": "1718696D",
-          "group": "sup",
-          "label": "1718696D"
+          "label": "Target (ICT)"
         }
       ],
       "edges": [
         {
           "source": "0356428Q",
-          "target": "SYKE"
-        },
-        {
-          "source": "1718696D",
           "target": "SYKE"
         }
       ]
@@ -666,12 +411,18 @@
     "target": "PSTB",
     "acquirer_name": "SOUTHSTATE BANK CORP",
     "target_name": "Park Sterling Corp",
-    "synergy_probability": 0.01,
+    "synergy_probability": 0.09,
     "car_prediction": "NEGATIVE",
     "car_actual": -0.3022,
+    "acquirer_betweenness_value": 6.5e-05,
+    "acquirer_betweenness_percentile": 67.3,
+    "acquirer_supply_chain_depth": 0,
+    "mda_cosine_similarity": -0.4964,
+    "mda_similarity_percentile": 13.5,
     "semantic_scores": {
-      "mda_similarity": 0.79,
-      "risk_similarity": 0.2
+      "mda_similarity": 0.786,
+      "risk_similarity": 0.2,
+      "mda_percentile": 13.5
     },
     "shap_data": [
       {
@@ -683,7 +434,7 @@
         "value": -0.10759838
       },
       {
-        "feature": "MD&A Logistic Component 56",
+        "feature": "MD&A Semantic Component 56",
         "value": -0.10513703
       },
       {
@@ -702,47 +453,11 @@
           "id": "PSTB",
           "group": "tgt",
           "label": "PSTB"
-        },
-        {
-          "id": "BLND",
-          "group": "sup",
-          "label": "BLND"
-        },
-        {
-          "id": "MUST",
-          "group": "sup",
-          "label": "MUST"
-        },
-        {
-          "id": "RPR-U",
-          "group": "sup",
-          "label": "RPR-U"
-        },
-        {
-          "id": "VYX",
-          "group": "sup",
-          "label": "VYX"
         }
       ],
       "edges": [
         {
           "source": "PSTB",
-          "target": "SSB"
-        },
-        {
-          "source": "BLND",
-          "target": "SSB"
-        },
-        {
-          "source": "MUST",
-          "target": "SSB"
-        },
-        {
-          "source": "RPR-U",
-          "target": "SSB"
-        },
-        {
-          "source": "VYX",
           "target": "SSB"
         }
       ]
@@ -754,12 +469,18 @@
     "target": "MVL",
     "acquirer_name": "Walt Disney Co/The",
     "target_name": "Marvel Entertainment LLC",
-    "synergy_probability": 0.01,
+    "synergy_probability": 0.09,
     "car_prediction": "NEGATIVE",
     "car_actual": -0.3022,
+    "acquirer_betweenness_value": 0.000309,
+    "acquirer_betweenness_percentile": 81.6,
+    "acquirer_supply_chain_depth": 0,
+    "mda_cosine_similarity": 0.5,
+    "mda_similarity_percentile": 50.0,
     "semantic_scores": {
-      "mda_similarity": 0.78,
-      "risk_similarity": 0.36
+      "mda_similarity": 0.783,
+      "risk_similarity": 0.355,
+      "mda_percentile": 50.0
     },
     "shap_data": [
       {
@@ -776,7 +497,7 @@
       },
       {
         "feature": "Supply-Chain Topology 62",
-        "value": 0.092999265
+        "value": 0.09299926
       }
     ],
     "graph_data": {
@@ -790,65 +511,11 @@
           "id": "MVL",
           "group": "tgt",
           "label": "MVL"
-        },
-        {
-          "id": "GTN",
-          "group": "sup",
-          "label": "GTN"
-        },
-        {
-          "id": "MSFT",
-          "group": "sup",
-          "label": "MSFT"
-        },
-        {
-          "id": "GLOB",
-          "group": "sup",
-          "label": "GLOB"
-        },
-        {
-          "id": "ROKU",
-          "group": "sup",
-          "label": "ROKU"
-        },
-        {
-          "id": "PPG",
-          "group": "sup",
-          "label": "PPG"
-        },
-        {
-          "id": "AD",
-          "group": "sup",
-          "label": "AD"
         }
       ],
       "edges": [
         {
           "source": "MVL",
-          "target": "DIS"
-        },
-        {
-          "source": "GTN",
-          "target": "DIS"
-        },
-        {
-          "source": "MSFT",
-          "target": "DIS"
-        },
-        {
-          "source": "GLOB",
-          "target": "DIS"
-        },
-        {
-          "source": "ROKU",
-          "target": "DIS"
-        },
-        {
-          "source": "PPG",
-          "target": "DIS"
-        },
-        {
-          "source": "AD",
           "target": "DIS"
         }
       ]
@@ -860,12 +527,18 @@
     "target": "45950Q",
     "acquirer_name": "Paramount Global",
     "target_name": "Infinity Broadcasting Corp",
-    "synergy_probability": 0.01,
+    "synergy_probability": 0.09,
     "car_prediction": "NEGATIVE",
     "car_actual": -0.3022,
+    "acquirer_betweenness_value": 0.000742,
+    "acquirer_betweenness_percentile": 90.8,
+    "acquirer_supply_chain_depth": 0,
+    "mda_cosine_similarity": 0.5,
+    "mda_similarity_percentile": 50.0,
     "semantic_scores": {
-      "mda_similarity": 0.78,
-      "risk_similarity": 0.36
+      "mda_similarity": 0.783,
+      "risk_similarity": 0.355,
+      "mda_percentile": 50.0
     },
     "shap_data": [
       {
@@ -895,66 +568,12 @@
         {
           "id": "45950Q",
           "group": "tgt",
-          "label": "45950Q"
-        },
-        {
-          "id": "GTN",
-          "group": "sup",
-          "label": "GTN"
-        },
-        {
-          "id": "ROKU",
-          "group": "sup",
-          "label": "ROKU"
-        },
-        {
-          "id": "DLB",
-          "group": "sup",
-          "label": "DLB"
-        },
-        {
-          "id": "GAM",
-          "group": "sup",
-          "label": "GAM"
-        },
-        {
-          "id": "PGRE",
-          "group": "sup",
-          "label": "PGRE"
-        },
-        {
-          "id": "002293",
-          "group": "sup",
-          "label": "Supplier 6"
+          "label": "Target (Infinity)"
         }
       ],
       "edges": [
         {
           "source": "45950Q",
-          "target": "PARA"
-        },
-        {
-          "source": "GTN",
-          "target": "PARA"
-        },
-        {
-          "source": "ROKU",
-          "target": "PARA"
-        },
-        {
-          "source": "DLB",
-          "target": "PARA"
-        },
-        {
-          "source": "GAM",
-          "target": "PARA"
-        },
-        {
-          "source": "PGRE",
-          "target": "PARA"
-        },
-        {
-          "source": "002293",
           "target": "PARA"
         }
       ]
