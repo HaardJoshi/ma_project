@@ -12,64 +12,18 @@ with open(DATA_PATH, 'r') as f:
     deals = json.load(f)
 
 
+from utils import setup_page
+
 # ==========================================
 # 1. The Aesthetic Engine (CSS Injection)
 # ==========================================
-st.set_page_config(
-    layout="wide", 
-    page_title="M&A Deal Intelligence", 
-    initial_sidebar_state="expanded"
-)
-
-st.markdown(
-    """<style>
-    .block-container { padding-top: 0.5rem; padding-bottom: 0rem; padding-left: 1.5rem; padding-right: 1.5rem; } 
-    header {visibility: hidden;} 
-    footer {visibility: hidden;} 
-    div[data-testid="stMetricValue"] { font-family: "Courier New", Courier, monospace; color: #00FFAA; }
-    
-    /* Expanded State */
-    section[data-testid="stSidebar"][aria-expanded="true"] { 
-        width: 275px !important; min-width: 200px !important; 
-    }
-    
-    /* Collapsed State: Reduced to 75px and 20% opacity background */
-    section[data-testid="stSidebar"][aria-expanded="false"] {
-        transform: translateX(0px) !important;
-        width: 75px !important;
-        min-width: 75px !important;
-        background-color: rgba(30, 34, 43, 0.2) !important;
-        border-right: none !important;
-    }
-    
-    /* Toned-down sidebar and toggle buttons perpetually */
-    section[data-testid="stSidebar"] button, button[data-testid="collapsedControl"] {
-        background-color: transparent !important;
-        border: 1px solid rgba(0, 255, 170, 0.3) !important;
-        border-radius: 6px !important;
-        transition: all 0.2s ease-in-out !important;
-        color: rgba(0, 255, 170, 0.8) !important;
-    }
-    
-    section[data-testid="stSidebar"] button:hover, button[data-testid="collapsedControl"]:hover {
-        background-color: rgba(0, 255, 170, 0.1) !important;
-        border: 1px solid rgba(0, 255, 170, 0.7) !important;
-        color: #00FFAA !important;
-    }
-    
-    /* Hide the form components while collapsed to prevent bleed-through */
-    section[data-testid="stSidebar"][aria-expanded="false"] [data-testid="stSidebarUserContent"] {
-        opacity: 0 !important;
-        pointer-events: none !important;
-    }
-    </style>""", 
-    unsafe_allow_html=True
-)
+setup_page(title="Deal Terminal")
 
 # ==========================================
 # 2. The Control Deck (State Logic)
 # ==========================================
 st.sidebar.title("Control Deck")
+st.sidebar.markdown("""<div style='font-family:monospace; font-size:10px; color:#555; border:1px solid #333; padding:8px; border-radius:4px; margin-bottom:16px;'>4,999 DEALS &nbsp;·&nbsp; 28 YRS &nbsp;·&nbsp; 249 FEATS<br/>AUC 0.566 &nbsp;·&nbsp; p=0.038 &nbsp;·&nbsp; n=2,864</div>""", unsafe_allow_html=True)
 st.sidebar.markdown("---")
 
 deal_options = [d["deal_id"] for d in deals]
@@ -143,24 +97,29 @@ with top_col1:
 
 with top_col2:
     st.markdown("### Network Alpha")
-    st.caption("Measures supply-chain distance embedding variance.")
+    st.caption("Betweenness centrality within the global supply-chain graph.")
+    bet_pctile  = current_deal.get("acquirer_betweenness_percentile", 0.0)
+    sc_depth    = current_deal.get("acquirer_supply_chain_depth", 0)
+    bet_color   = "#00FFAA" if bet_pctile >= 50 else "#FFB300"
     st.markdown(f"""
         <div style="background-color: rgba(30,34,43,0.3); border: 1px solid rgba(255,255,255,0.1); padding: 20px; border-radius: 8px; text-align: center; height: 250px; display: flex; flex-direction: column; justify-content: center;">
-            <p style="color: #888; font-family: monospace; font-size: 14px; margin: 0;">Supply-Chain Distance</p>
-            <h2 style="color: #3399FF; font-family: monospace; font-size: 42px; margin: 10px 0;">Alpha Network</h2>
-            <p style="color: #bbb; font-size: 12px; margin: 0;">Ego-network expansion populated</p>
+            <p style="color: #888; font-family: monospace; font-size: 13px; margin: 0;">Betweenness Centrality Rank</p>
+            <h2 style="color: {bet_color}; font-family: monospace; font-size: 42px; margin: 8px 0;">{bet_pctile:.0f}<span style="font-size:22px;">th %ile</span></h2>
+            <p style="color: #bbb; font-size: 12px; margin: 0;">Supply-Chain Depth: <strong style="color:#FAFAFA;">{sc_depth}</strong> direct SPLC links</p>
         </div>
     """, unsafe_allow_html=True)
 
 with top_col3:
     st.markdown("### Semantic Match")
-    st.caption("MD&A cosine similarity from FinBERT extraction.")
-    mda_sim = current_deal.get("semantic_scores", {}).get("mda_similarity", 0) * 100
+    st.caption("MD&A centroid cosine similarity vs. market-mean embedding.")
+    mda_pctile  = current_deal.get("semantic_scores", {}).get("mda_percentile", 50.0)
+    mda_cos     = current_deal.get("mda_cosine_similarity", 0.5)
+    sem_color   = "#00FFAA" if mda_pctile >= 50 else "#3399FF"
     st.markdown(f"""
         <div style="background-color: rgba(30,34,43,0.3); border: 1px solid rgba(255,255,255,0.1); padding: 20px; border-radius: 8px; text-align: center; height: 250px; display: flex; flex-direction: column; justify-content: center;">
-            <p style="color: #888; font-family: monospace; font-size: 14px; margin: 0;">MD&A Cosine Similarity</p>
-            <h2 style="color: #00FFAA; font-family: monospace; font-size: 42px; margin: 10px 0;">{mda_sim:.1f}%</h2>
-            <p style="color: #bbb; font-size: 12px; margin: 0;">FinBERT textual extraction complete</p>
+            <p style="color: #888; font-family: monospace; font-size: 13px; margin: 0;">MD&A Centroid Cosine Similarity</p>
+            <h2 style="color: {sem_color}; font-family: monospace; font-size: 42px; margin: 8px 0;">{mda_pctile:.0f}<span style="font-size:22px;">th %ile</span></h2>
+            <p style="color: #bbb; font-size: 12px; margin: 0;">Raw cosine: <strong style="color:#FAFAFA;">{mda_cos:.4f}</strong> vs market centroid</p>
         </div>
     """, unsafe_allow_html=True)
 
