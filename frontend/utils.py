@@ -74,3 +74,29 @@ def setup_page(title="M&A Deal Intelligence"):
         initial_sidebar_state="expanded"
     )
     enforce_bloomberg_css()
+
+def load_betweenness_data():
+    """Reads betweenness_cache.json, sorts, computes true percentiles, and returns the top 12 nodes for D3."""
+    path = os.path.join(os.path.dirname(__file__), '..', 'betweenness_cache.json')
+    if os.path.exists(path):
+        import json
+        import numpy as np
+        from scipy import stats
+        with open(path, 'r') as f:
+            data = json.load(f)
+        
+        vals = np.array([float(x) for x in data.values()])
+        non_zero_vals = vals[vals > 0]
+        
+        nodes = []
+        for k, v in data.items():
+            val = float(v)
+            if val > 0:
+                pct = stats.percentileofscore(non_zero_vals, val, kind='strict')
+            else:
+                pct = 0.0
+            nodes.append({'id': str(k), 'val': val, 'percentile': round(pct, 1)})
+            
+        sorted_nodes = sorted(nodes, key=lambda x: x['val'], reverse=True)
+        return sorted_nodes[:12]
+    return []

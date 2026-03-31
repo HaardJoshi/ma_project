@@ -65,7 +65,8 @@ def build_betweenness_cache(subset):
     # Map every deal_id → acquirer betweenness value
     cache = {}
     for deal_id_str, acq_tkr in deal_to_acq_tkr.items():
-        deal_id  = int(deal_id_str)
+        # meta deal_id_str is 1-indexed (1..4999), df row index is 0-indexed (0..4998)
+        deal_id  = int(deal_id_str) - 1
         node_id  = ticker_to_id.get(acq_tkr)
         val      = betweenness.get(node_id, 0.0) if node_id is not None else 0.0
         cache[deal_id] = val
@@ -317,7 +318,9 @@ def generate_payloads():
         bet_pctile = bet_pctile_map.get(idx, 0.0)
 
         # ── SPLC normalised depth ─────────────────────────────────────────────
-        sc_depth = get_splc_depth(splc_normed, acq_tkr)
+        acq_tkr_full = (str(row["Acquirer Ticker"]).replace(" Equity", "").strip() 
+                        if pd.notna(row.get("Acquirer Ticker")) else "ACQ")
+        sc_depth = get_splc_depth(splc_normed, acq_tkr_full)
 
         # ── MD&A centroid similarity (percentile-ranked) ──────────────────────
         mda_info    = mda_pctile_by_idx.get(idx, (None, None))
