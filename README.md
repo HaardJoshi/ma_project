@@ -16,11 +16,11 @@ make clean-data    # clean → data/interim/ma_cleaned.csv
 make preprocess    # winsorise, z-score, split → data/processed/
 
 # 3. Train
-python train.py --config configs/financial_only.yaml   # Block A baseline
-python train.py --config configs/full_fusion.yaml      # Full multimodal
+python scripts/training/train.py --config configs/financial_only.yaml   # Block A baseline
+python scripts/training/train.py --config configs/full_fusion.yaml      # Full multimodal
 
 # 4. Evaluate
-python evaluate.py --config configs/financial_only.yaml
+python scripts/training/evaluate.py --config configs/financial_only.yaml
 ```
 
 ## Project Structure
@@ -34,17 +34,25 @@ python evaluate.py --config configs/financial_only.yaml
 │   ├── models/                 Prediction models (baselines, MLP, fusion)
 │   ├── training/               Training loop, CV, checkpointing
 │   └── evaluation/             Metrics, results export
-├── scripts/                    CLI entry points for data pipeline
-├── train.py                    Training entry point
-├── evaluate.py                 Evaluation entry point
+├── scripts/                    CLI entry points & pipeline scripts
+│   ├── data/                   Data ingestion, cleaning, merging, CAR
+│   ├── features/               Bloomberg, SPLC, EDGAR, text extraction
+│   ├── graphs/                 Graph construction & GNN training
+│   ├── training/               Model training, tuning, entry points
+│   └── evaluation/             Hypothesis tests & figure generation
+├── frontend/                   Streamlit dashboard application
+│   ├── 1_Deal_Terminal.py      Main deal diagnostic page
+│   └── pages/                  Additional dashboard pages
 ├── data/                       Datasets (git-ignored)
 │   ├── raw/                    Original LSEG CSV exports
 │   ├── interim/                Combined + cleaned CSVs
-│   └── processed/              Final feature matrices (train/val/test)
+│   └── processed/              Final feature matrices + JSON caches
 ├── models/                     Saved checkpoints (git-ignored)
-├── results/                    Evaluation CSVs (git-ignored)
+├── results/                    Evaluation CSVs & hypothesis outputs
 ├── docs/                       Dissertation & reference documents
-└── notebooks/                  Exploratory analysis
+├── notebooks/                  Exploratory analysis
+├── lib/                        Vendored JS libraries (vis.js, etc.)
+└── diagram_examples/           Reference architecture diagrams
 ```
 
 ## Architecture
@@ -77,7 +85,7 @@ pip install -r requirements.txt
 
 # Upload data to data/interim/ (or run make combine && make clean-data)
 # Then:
-python train.py --config configs/full_fusion.yaml
+python scripts/training/train.py --config configs/full_fusion.yaml
 ```
 
 The config auto-detects CUDA / MPS / CPU — no code changes needed.

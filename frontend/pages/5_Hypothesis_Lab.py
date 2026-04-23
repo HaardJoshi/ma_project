@@ -35,8 +35,8 @@ from utils import setup_page, load_macro_stats
 setup_page(title="Hypothesis Lab")
 
 ROOT    = os.path.join(os.path.dirname(__file__), "..", "..")
-H1_PATH = os.path.join(ROOT, "h1_sector_results.json")
-BC_PATH = os.path.join(ROOT, "betweenness_cache.json")
+H1_PATH = os.path.join(ROOT, "results", "h1_sector_results.json")
+BC_PATH = os.path.join(ROOT, "data", "processed", "betweenness_cache.json")
 DS_PATH = os.path.join(ROOT, "data", "processed", "final_multimodal_dataset.csv")
 
 macro = load_macro_stats()

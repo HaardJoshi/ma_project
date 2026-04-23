@@ -7,7 +7,7 @@ from pyvis.network import Network
 import streamlit.components.v1 as components
 
 # Load Neural Weights & Payloads
-DATA_PATH = os.path.join(os.path.dirname(__file__), '..', 'payloads.json')
+DATA_PATH = os.path.join(os.path.dirname(__file__), '..', 'data', 'processed', 'payloads.json')
 with open(DATA_PATH, 'r') as f:
     deals = json.load(f)
 

@@ -4,7 +4,7 @@ import os
 
 def load_macro_stats():
     """Loads the precomputed macro statistics json."""
-    path = os.path.join(os.path.dirname(__file__), '..', 'macro_stats.json')
+    path = os.path.join(os.path.dirname(__file__), '..', 'data', 'processed', 'macro_stats.json')
     if os.path.exists(path):
         with open(path, 'r') as f:
             return json.load(f)
@@ -77,7 +77,7 @@ def setup_page(title="M&A Deal Intelligence"):
 
 def load_betweenness_data():
     """Reads betweenness_cache.json, sorts, computes true percentiles, and returns the top 12 nodes for D3."""
-    path = os.path.join(os.path.dirname(__file__), '..', 'betweenness_cache.json')
+    path = os.path.join(os.path.dirname(__file__), '..', 'data', 'processed', 'betweenness_cache.json')
     if os.path.exists(path):
         import json
         import numpy as np
