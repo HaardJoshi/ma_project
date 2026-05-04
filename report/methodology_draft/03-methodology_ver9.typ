@@ -8,6 +8,16 @@
 #let tbl-caption(body) = text(style: "italic", size: 9pt, body)
 #let code-inline(body) = raw(body, lang: none)
 
+#show ref: it => {
+  let el = it.element
+  if el != none and el.func() == heading {
+    let target = str(it.target)
+    let supplement = if target.starts-with("ch-") { "Chapter" } else { "Section" }
+    return [#supplement #numbering(el.numbering, ..counter(heading).at(el.location()))]
+  }
+  it
+}
+
 = Methodology <ch-methodology>
 #label("ch-litreview")
 
@@ -104,9 +114,9 @@ discrimination.
     [The full tri-modal fusion (Financial + Text + Graph) significantly
      outperforms all single-modality baselines on held-out CAR prediction.
      Success criterion: (a) Regressor Pipeline --- statistically significant MAE
-     and $R^2$ improvement, $p < 0.05$, Cohen's $d > 0.2$; (b) Classifier
-     Pipeline --- AUC-ROC improvement as secondary confirmatory evidence.
-     H3 is confirmed if and only if criterion (a) is met.],
+      and $R^2$ improvement, $p < 0.05$, Cohen's $d > 0.2$ @cohen1988; (b) Classifier
+      Pipeline --- AUC-ROC improvement as secondary confirmatory evidence.
+      H3 is confirmed if and only if criterion (a) is met.],
   ),
   caption: [Research Hypotheses],
 ) <tbl-hypotheses>
@@ -223,7 +233,7 @@ post-dating the validation or test periods.
         *Embargo:* An 11-trading-day gap is enforced at each temporal boundary.
         Any deal announced within 11 days of a split boundary is excluded from
         both adjacent partitions, preventing CAR event-window overlap
-        (cf. López de Prado, 2018).
+        (cf. @lopezdeprado2018).
       ]
     ]
   ),
@@ -235,7 +245,7 @@ whose announcement dates differ by fewer than 11 trading days share overlapping
 market-return sequences in their CAR calculations.  If one such deal falls in
 the training set and the other in validation, the model can implicitly learn
 return correlations that exist only because of calendar proximity --- the
-*Overlapping Outcomes* problem formalised by López de Prado.The 11-day embargo eliminates this cross-contamination by construction.
+*Overlapping Outcomes* problem formalised by @lopezdeprado2018. The 11-day embargo eliminates this cross-contamination by construction.
 
 === Missing Data Strategy
 
@@ -411,7 +421,7 @@ using PyTorch Geometric's #code-inline("HeteroData") object
 
 ==== HeteroGraphSAGE Model
 
-A 2-layer *Heterogeneous GraphSAGE* model is trained via self-supervised link
+A 2-layer *Heterogeneous GraphSAGE* model @hamilton2017 is trained via self-supervised link
 prediction on the supply-chain graph, as implemented in
 #code-inline("scripts/graphs/train_hetero_graph.py"):
 
@@ -484,7 +494,7 @@ Four baselines are trained on Block A features only:
     [Naïve Mean],        [M0], [Lower bound; predicts training-set mean CAR for all deals.],
     [Ridge Regression],  [M1], [Linear baseline; controlled regularisation.],
     [ElasticNet],        [M2], [Feature selection; identifies redundant financial ratios.],
-    [XGBoost],           [M3], [Non-linear financial-only ceiling; tests H1/H2/H3 incremental gain.],
+    [XGBoost @chen2016],           [M3], [Non-linear financial-only ceiling; tests H1/H2/H3 incremental gain.],
     [Financial + Text],  [M4], [Ablation: removes graph stream; tests H2 in isolation.],
     [Financial + Graph], [M5], [Ablation: removes text stream; tests H1 in isolation.],
     [Full Fusion (F+T+G)],[M6], [Primary model; tests H3.],
@@ -563,11 +573,11 @@ objectives.
         columns: (1fr, 0.05fr, 1fr),
         gutter: 6pt,
         box(stroke: 0.4pt, inset: 6pt, radius: 3pt, width: 100%, fill: luma(245))[
-          #align(center)[*Regressor Pipeline (H3)*\ #raw("train_models.py")\ MLP + XGBRegressor + Linear activation\ $hat(y)_i in RR$ (CAR magnitude)\ Loss: MSE]
+          #align(center)[*Regressor Pipeline (H3)*\ #raw("train_models.py")\ MLP + XGBRegressor @chen2016 + Linear activation\ $hat(y)_i in RR$ (CAR magnitude)\ Loss: MSE]
         ],
         align(center + horizon)[],
         box(stroke: 0.4pt, inset: 6pt, radius: 3pt, width: 100%, fill: luma(245))[
-          #align(center)[*Classifier Pipeline (H1, H2)*\ #raw("train_classifier.py")\ MLP + XGBClassifier + Sigmoid activation\ $hat(p)_i in [0,1]$ (CAR direction)\ Loss: BCE]
+          #align(center)[*Classifier Pipeline (H1, H2)*\ #raw("train_classifier.py")\ MLP + XGBClassifier @chen2016 + Sigmoid activation\ $hat(p)_i in [0,1]$ (CAR direction)\ Loss: BCE]
         ],
       )
 
@@ -859,7 +869,7 @@ significance testing:
   condition alone is sufficient.
 
 - *H3 (Topological Arbitrage):* M6 (#code-inline("full_fusion.yaml")) is compared
-  against all single-modality baselines.  Effect size (Cohen's $d$ on hold-out
+  against all single-modality baselines.  Effect size (Cohen's $d$ @cohen1988 on hold-out
   error distributions) and $R^2$ improvement are reported alongside $p$-values.
 
 All tests use a significance threshold of $alpha = 0.05$ with *Bonferroni
