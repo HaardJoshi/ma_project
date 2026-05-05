@@ -4,7 +4,16 @@
 //  M&A Synergy Prediction | Hard Joshi | UEL
 // ============================================================
 
-
+#show ref: it => {
+  let el = it.element
+  if el != none and el.func() == heading {
+    let target = str(it.target)
+    let supplement = if target.starts-with("ch-") { "Chapter" } else { "Section" }
+    let numbering_style = if el.numbering != none { el.numbering } else { "1." }
+    return [#supplement #numbering(numbering_style, ..counter(heading).at(el.location()))]
+  }
+  it
+}
 
 = Conclusion <ch-conclusion>
 
@@ -32,7 +41,7 @@ This dissertation makes three primary contributions to the intersection of data 
 
 == Future Opportunities <sec-conclusion-future>
 
-The limitations identified in @ch-evaluation dictate the immediate path forward for subsequent research. The architecture developed here is foundational but not exhaustive, leaving three distinct avenues for expansion.
+The limitations identified in Chapter 5 dictate the immediate path forward for subsequent research. The architecture developed here is foundational but not exhaustive, leaving three distinct avenues for expansion.
 
 First, the textual pipeline — currently reliant on late-fusion PCA compression — should be upgraded to a cross-attention transformer architecture. Allowing the model to dynamically attend to the interaction between the acquirer's strategy and the target's risk factors at the token level, rather than the document level, will likely recover the semantic signal currently lost to dimensionality reduction.
 

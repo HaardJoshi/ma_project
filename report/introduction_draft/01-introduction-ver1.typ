@@ -1,10 +1,19 @@
 // ============================================================
-//  01-introduction.typ
+//  01-introduction.typ  (v1 — Complete)
 //  Chapter 1: Introduction
 //  M&A Synergy Prediction | Hard Joshi | UEL
 // ============================================================
 
-
+#show ref: it => {
+  let el = it.element
+  if el != none and el.func() == heading {
+    let target = str(it.target)
+    let supplement = if target.starts-with("ch-") { "Chapter" } else { "Section" }
+    let numbering_style = if el.numbering != none { el.numbering } else { "1." }
+    return [#supplement #numbering(numbering_style, ..counter(heading).at(el.location()))]
+  }
+  it
+}
 
 = Introduction <ch-introduction>
 
@@ -24,11 +33,11 @@ This dissertation proposes and empirically tests a multimodal late-fusion archit
 
 - *Block C — Heterogeneous Graph Topology:* Node embeddings derived from a two-hop HeteroGraphSAGE model trained on Bloomberg SPLC supply-chain relationship data, encoding each firm's structural position within the industrial network it actually inhabits.
 
-The three blocks are fused via late concatenation and evaluated across a dual-pipeline framework: a classifier pipeline that predicts the *direction* of acquirer Cumulative Abnormal Return (CAR) at announcement, and a regression pipeline that attempts to predict CAR *magnitude*. As @ch-findings demonstrates, these two pipelines resolve differently — and that difference is itself a substantive finding. To ensure absolute methodological rigour, the pipeline enforces strict temporal splitting and an 11-day event-window embargo to explicitly prevent target leakage and market microstructure contamination.
+The three blocks are fused via late concatenation and evaluated across a dual-pipeline framework: a classifier pipeline that predicts the *direction* of acquirer Cumulative Abnormal Return (CAR) at announcement, and a regression pipeline that attempts to predict CAR *magnitude*. As Chapter 4 demonstrates, these two pipelines resolve differently — and that difference is itself a substantive finding. To ensure absolute methodological rigour, the pipeline enforces strict temporal splitting and an 11-day event-window embargo to explicitly prevent target leakage and market microstructure contamination.
 
 == Research Hypotheses <sec-intro-hypotheses>
 
-The study tests three formal hypotheses derived from the four knowledge streams surveyed in @ch-litreview. Each hypothesis corresponds to one of the three modality blocks and is designed to be falsifiable within the available dataset.
+The study tests three formal hypotheses derived from the four knowledge streams surveyed in Chapter 2. Each hypothesis corresponds to one of the three modality blocks and is designed to be falsifiable within the available dataset.
 
 *H1 — The Topological Alpha Hypothesis:* The inclusion of heterogeneous supply-chain graph topology will yield a statistically significant improvement in directional deal discrimination (AUC-ROC) over a financial-only baseline, proving that topological data yields orthogonal predictive alpha.
 
@@ -44,4 +53,4 @@ The contribution is not only architectural. By reporting the M2 reversal — the
 
 == Structure of the Dissertation <sec-intro-structure>
 
-The dissertation proceeds as follows. @ch-litreview builds a sustained critical argument across four interconnected knowledge streams, demonstrating that each wave of prior scholarship produced an asymptotic ceiling and identifying precisely the structural information each paradigm discarded. @ch-methodology details the full research design, data pipeline, feature construction, and hypothesis-testing protocol. @ch-findings reports the empirical findings across both pipelines, including the negative results that establish the boundary conditions of the architecture. @ch-evaluation evaluates both the research product and the research process honestly, contextualising performance against the literature and identifying what should be done differently in future work. @ch-conclusion synthesises the findings and places the contribution in the context of the broader financial machine learning research agenda.
+The dissertation proceeds as follows. Chapter 2 builds a sustained critical argument across four interconnected knowledge streams, demonstrating that each wave of prior scholarship produced an asymptotic ceiling and identifying precisely the structural information each paradigm discarded. Chapter 3 details the full research design, data pipeline, feature construction, and hypothesis-testing protocol. Chapter 4 reports the empirical findings across both pipelines, including the negative results that establish the boundary conditions of the architecture. Chapter 5 evaluates both the research product and the research process honestly, contextualising performance against the literature and identifying what should be done differently in future work. Chapter 6 synthesises the findings and places the contribution in the context of the broader financial machine learning research agenda.

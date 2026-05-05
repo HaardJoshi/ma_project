@@ -1,505 +1,931 @@
-#let AR = "AR"
-#let CAR = "CAR"
+// ============================================================
+//  03-methodology.typ
+// Chapter 3: Methodology
+//  M&A Synergy Prediction | Hard Joshi | UEL
+// ============================================================
 
-= Methodology
+#let tbl-caption(body) = text(style: "italic", size: 9pt, body)
+#let code-inline(body) = raw(body, lang: none)
+
+
+
+
+= Methodology <ch-methodology>
+
 
 == Introduction
 
-This chapter details the research design, architectural implementation, and evaluation proto-
-cols employed to construct the proposed Heterogeneous Graph Neural Network (HGNN). The
-methodology is structured to operationalize the theoretical findings of Chapter 2, translating
-the need for ”multimodal fusion” into a rigorous engineering specification.
-It begins by defining the Research Framework, justifying the selection of a Quantitative Methodology and an Experimental Prototyping SDLC to address the non-deterministic nature of deep learning. Next, it outlines the Tools and Technologies, specifying the computational stack (PyTorch, Hugging Face) required for high-dimensional tensor processing. The core of the methodology is presented in the Implementation Architecture and Data Ingestion, which define the ”Dual-Stream” system architecture and the strict ”pre-merger windowing” strategy used to prevent data leakage. Finally, it details the Evaluation Protocol, establishing the hierarchy of baselines (Logistic Regression to XGBoost) used to validate the system’s performance, and the lastly it addresses the technical limitations and ethical considerations inherent in automated financial modeling.
+This chapter details the research design, architectural implementation, and
+evaluation protocols employed to construct the proposed tri-modal fusion model
+for M&A synergy prediction.  The methodology is structured to operationalise
+the theoretical findings from @ch-litreview, translating the need for
+"multimodal fusion" into a rigorous engineering specification.
 
-== System Architecture and Mathematical Formulation
+The chapter proceeds as follows. @sec-philosophy establishes the research
+philosophy and epistemological stance. @sec-hypotheses formalises the three
+hierarchical hypotheses.  @sec-data describes all data sources and collection
+pipelines.  @sec-preprocessing covers cleaning, normalisation, and temporal
+splitting.  @sec-features defines the three feature blocks (Financial,
+Textual, Graph).  @sec-models specifies the baseline and fusion model
+architectures.  @sec-car derives the CAR target variable.
+@sec-htesting details the hypothesis-testing protocol, and
+@sec-ethics addresses limitations and ethical considerations.
 
-The core objective of this study is to construct a predictive framework that transcends the limitations of tabular M&A models by treating each merger not as an isolated transaction, but as a topological event within a complex industrial ecosystem @3.1Newman_2003. To achieve this, the study proposes a dual-stream Heterogeneous Graph Neural Network (HGNN) that operationalises the hypothesis that post-merger synergy $S$ is a latent variable conditioned on three distinct but complementary modalities @3.1Baltrušaitis-Ahuja: firms' financial capacity $F$, the semantic intent of their disclosures $T$, and their structural position within the network $G$. Synergy is observed through Cumulative Abnormal Return (CAR) around the announcement, following the standard event-study market-model framework. This architecture ensures that the prediction is based on a temporally aligned, multimodal state space, recovering the signal lost by traditional monomodal models—directly addressing the "Topological Blindness" and "Wrong Target" critiques identified in the literature review.
+== Research Philosophy and Design <sec-philosophy>
 
-=== Problem Formulation
-We formulate the synergy prediction task as a supervised regression problem. Let $cal(D) = {(G_(t-Delta)^((i)), T_(t-Delta)^((i)), F_(t-Delta)^((i)), y_i)}_(i=1)^(N)$ denote the sample of $N$ completed M&A deals, where each deal $d_i$ corresponds to an acquirer-target pair announced at time $t$. To strictly prevent look-ahead bias @3.1COHEN_FRAZZINI_2008, all input features are frozen at the most recent fiscal reporting period $t-Delta$ prior to the event, preventing any post-announcement information from leaking into the model.
+#figure(
+  image("../../docs/figures/fig1_system_architecture.jpg", width: 90%),
+  caption: [System architecture pipeline: Multimodal feature extraction, fusion, and evaluation.],
+) <fig-system-architecture>
 
-The predictive task is to learn a parametric function $f_theta$ such that:
+This study adopts a *post-positivist* epistemological stance, treating M&A
+synergy as a latent, probabilistic construct approximated through market
+reactions and structured inter-firm relationships.  While acknowledging that
+markets are not perfectly efficient, the research operates within the
+semi-strong form of the Efficient Market Hypothesis @fama1991, wherein
+publicly available information --- financial fundamentals, regulatory filings,
+and network topology --- constitutes a viable predictor signal.  The
+overarching research design is *quantitative and deductive*: three _a priori_
+hypotheses (H1, H2, H3) are specified before analysis and tested through
+controlled ablation experiments.
 
-$ hat(y)_i = f_theta (G_(t-Delta)^((i)), T_(t-Delta)^((i)), F_(t-Delta)^((i))) $
+The study employs a *cross-sectional observational design*.  Because M&A deals
+are historical and non-repeatable, no experimental manipulation is possible;
+causal inference is instead approximated through systematic covariate control,
+ablation modelling, and statistical hypothesis testing, following standard
+practice in empirical corporate finance @mackinlay1997.
 
-where $hat(y)_i$ is the model's estimate of the deal's synergy.
+An *Experimental Prototyping SDLC* governs the engineering programme.
+Non-deterministic model outputs and stochastic training dynamics demand
+reproducible seeding, versioned artefacts, and isolated ablation configurations
+rather than a traditional waterfall build process.  Each experimental variant
+is fully specified in a YAML configuration (e.g., #code-inline("full_fusion.yaml"))
+that pins hyperparameters, random seeds, feature subsets, and evaluation splits.
 
-The target variable $y_i in RR$ is the *Cumulative Abnormal Return (CAR)* over a symmetric event window $[-5, +5]$ days. Following standard event study methodology @3.1Mackinlay1997EventSI, CAR is computed using the market model estimated over a pre-event estimation window:
+== Research Hypotheses <sec-hypotheses>
+
+Three hierarchical hypotheses structure the empirical programme.  Together they
+form a logical escalation: H1 tests whether the graph stream improves
+directional discrimination (classification) above financials; H2 tests whether
+pairwise textual similarity carries directionally opposing signal depending on
+filing section; H3 tests whether graph centrality compresses the variance of
+announcement returns via Levene's test across centrality quantile groups.
+
+Predicting both the sign and the magnitude of CAR serves two distinct
+analytical purposes.  Predicting the *magnitude* (via regression) is
+notoriously difficult due to competing bids, information asymmetry, and macro
+shocks, but it is necessary to test structural variance compression (H3).
+Predicting the *sign* (via classification) is highly tractable and
+systematically links to practical deal advisory: whether the deal is a net
+positive or a net negative (H1, H2).  The architecture therefore formulates CAR
+as a *dual target*: a continuous variable for variance analysis, and a
+thresholded binary label ($1$ if $"CAR" > 0$, $0$ otherwise) for directional
+discrimination.
+
+#figure(
+  table(
+    columns: (2.5cm, 3cm, 9cm),
+    align: (center, left, left),
+    inset: 7pt,
+    stroke: 0.5pt,
+    table.header(
+      [*ID*], [*Name*], [*Formal Statement*],
+    ),
+    [H1],
+    [Topological Alpha],
+    [Supply-chain network centrality metrics derived from Bloomberg SPLC carry
+     statistically significant predictive signal for acquirer CAR direction,
+     incremental to financial fundamentals alone (statistically significant
+     AUC-ROC improvement on held-out test set, $p < 0.05$ by paired
+     $t$-test across cross-validation folds).],
+
+    [H2],
+    [Semantic Divergence],
+    [The cosine distance between acquirer and target FinBERT embeddings of their
+     respective 10-K MD&A sections is a significant predictor of post-acquisition
+     CAR ($p < 0.05$, Pearson/Spearman correlation; confirmed by ablation).],
+
+    [H3],
+    [Topological Arbitrage],
+    [Acquirer nodes with high betweenness centrality in the heterogeneous supply-chain graph will exhibit statistically compressed variance in $|"CAR"|$ outcomes relative to peripheral nodes. Success criterion: Levene's test for equality of variances across centrality quantile groups yields $p < 0.05$, confirming the Information Transparency Dampening mechanism.],
+  ),
+  caption: [Research Hypotheses],
+) <tbl-hypotheses>
+
+== Data Sources and Collection <sec-data>
+
+=== M&A Deal Universe
+
+The primary dataset is sourced from the *London Stock Exchange Group (LSEG)
+Refinitiv* database, which provides deal-level financial attributes for
+completed M&A transactions.  Five raw CSV exports are merged via
+#code-inline("scripts/data/build_combined_dataset.py") into
+#code-inline("data/interim/ma_combined.csv").
+
+The deal universe is restricted to:
+
+- Completed acquisitions of publicly listed US targets by publicly listed US
+  acquirers.
+- Transactions announced between 2000 and 2023.
+- Deal values exceeding USD 50 million (sufficient market microstructure data
+  for reliable CAR estimation).
+
+These filters follow established practice @betton2008 and ensure a minimum of
+120 trading days in the estimation window.
+
+=== Equity Return Data
+
+Daily equity returns for acquirer firms and the S&P 500 benchmark are retrieved
+via *yfinance* (Bloomberg ticker conversion handled by
+#code-inline("pull_car_data.py")).  Returns are aligned to deal announcement
+dates and stored in a long-format time series
+(#code-inline("timeseries_long.csv")) with a #code-inline("rel_day") field
+denoting trading-day distance from announcement (Day 0 = first trading day on
+or after the announcement date, forward-fill rule).  Failed ticker lookups are
+retried with fuzzy-matching heuristics.
+
+=== Textual Data (SEC EDGAR)
+
+10-K annual filings for acquirer firms are retrieved from the *SEC EDGAR
+full-text search API*, targeting the MD&A (Item 7,
+#code-inline("item_7_mda.txt")) and Risk Factors (Item 1A,
+#code-inline("item_1a_risk.txt")) sections for the fiscal year immediately
+preceding each announcement.  Extraction is handled by
+#code-inline("src/features/edgar.py"), with download provenance logged in
+#code-inline("data/external/edgar/download_log.csv").
+
+=== Supply-Chain Network Data
+
+Inter-firm supply-chain relationships are sourced from *Bloomberg SPLC*
+(Supply Chain Analysis), which maps disclosed customer--supplier relationships
+for publicly listed firms.  The SPLC data is merged with the deal universe via
+#code-inline("scripts/data/merge_splc_data.py"), matching on Bloomberg ticker
+symbols.  This forms the edge set for the heterogeneous graph constructed in
+@sec-block-c.
+
+== Data Preprocessing <sec-preprocessing>
+
+=== Cleaning and Quality Control
+
+Raw LSEG exports undergo systematic cleaning in
+#code-inline("scripts/data/data_cleaning.py"): date parsing and
+standardisation; deduplication of records sharing the same
+acquirer--target--announcement-date triplet; removal of records with missing
+acquirer ticker or announcement date; and currency normalisation to USD using
+period-end exchange rates.
+
+=== Feature Engineering and Normalisation
+
+Financial features comprise 56 ratio-level variables spanning acquirer and
+target leverage, liquidity, profitability, and deal structure characteristics.
+The preprocessing pipeline applies:
+
++ *Winsorisation* at the 1st and 99th percentile to bound outlier influence.
++ *Z-score standardisation* (zero mean, unit variance) computed on
+  training-set statistics _only_, then applied to validation and test sets.
++ *Stratified temporal splitting* (70 / 15 / 15) by announcement year to
+  prevent temporal leakage.
+
+=== Temporal Splitting and Event-Window Embargo <sec-embargo>
+
+Deals are sorted chronologically and partitioned into training (2000--2016),
+validation (2017--2019), and test (2020--2023) sets based on announcement year.
+This strict temporal ordering ensures the model never trains on information
+post-dating the validation or test periods.
+
+#figure(
+  box(
+    width: 100%,
+    stroke: 0.5pt,
+    inset: 12pt,
+    radius: 4pt,
+    [
+      #set align(center)
+      #text(weight: "bold")[Temporal Dataset Partition]
+
+      #v(6pt)
+
+      #table(
+        columns: (3.5cm, 3cm, 3cm, 4cm),
+        align: center,
+        inset: 6pt,
+        stroke: 0.4pt,
+        table.header(
+          [*Partition*], [*Years*], [*Split*], [*Role*],
+        ),
+        [Training],   [2000--2016], [70%], [Model fitting],
+        [Validation], [2017--2019], [15%], [Hyperparameter tuning + early stopping],
+        [Test],       [2020--2023], [15%], [Final held-out evaluation],
+      )
+
+      #v(8pt)
+
+      #text(size: 9pt)[
+        *Embargo:* An 11-trading-day gap is enforced at each temporal boundary.
+        Any deal announced within 11 days of a split boundary is excluded from
+        both adjacent partitions, preventing CAR event-window overlap
+        (cf. @lopezdeprado2018).
+      ]
+    ]
+  ),
+  caption: [Temporal splits and embargo design],
+) <fig-temporal-split>
+
+Concretely, because the event window spans $[-5, +5]$ trading days, two deals
+whose announcement dates differ by fewer than 11 trading days share overlapping
+market-return sequences in their CAR calculations.  If one such deal falls in
+the training set and the other in validation, the model can implicitly learn
+return correlations that exist only because of calendar proximity --- the
+*Overlapping Outcomes* problem formalised by @lopezdeprado2018. The 11-day embargo eliminates this cross-contamination by construction.
+
+=== Missing Data Strategy
+
+Features with $> 40%$ missing values are excluded.  For remaining missing
+values, median imputation is applied to continuous features and mode imputation
+to categorical indicators.  All imputation statistics are fitted on the
+training set only.
+
+== Feature Extraction <sec-features>
+
+The three feature blocks are summarised in @tbl-featureblocks.
+
+#figure(
+  table(
+    columns: (1.5cm, 3cm, 4.5cm, 5.5cm),
+    align: (center, left, left, left),
+    inset: 7pt,
+    stroke: 0.5pt,
+    table.header(
+      [*Block*], [*Modality*], [*Source*], [*Construction (Fusion Pipeline)*],
+    ),
+    [A],
+    [Financial],
+    [LSEG Refinitiv],
+    [56-column ratio matrix → Winsorise → z-score → #code-inline("ProjectionHead")
+     ($RR^56 arrow.r RR^64$, linear + ReLU)],
+
+    [B],
+    [Textual\ (FinBERT)],
+    [SEC EDGAR 10-K\ (Item 7 + Item 1A)],
+    [FinBERT tokenisation (512-token chunks, stride = 256) →
+     #code-inline("[CLS]") from penultimate layer → mean-pool across chunks →
+     $RR^768$ per section →
+     PCA compression (fit on train only): $RR^768 arrow.r RR^64$ per section →
+     concatenate MD&A + RF vectors → $RR^128$ total.
+     #linebreak()
+     #text(style: "italic", size: 8.5pt)[Note: pairwise cosine similarity between
+     acquirer and target section embeddings is computed separately as a scalar
+     predictor for the H2 OLS test; it is not an input to the fusion model.]],
+
+    [C],
+    [Graph\ (HeteroGraphSAGE)],
+    [Bloomberg SPLC],
+    [HeteroConv (2-layer SAGEConv, separate per edge type) on
+     #code-inline("(company, supplies, company)") and
+     #code-inline("(company, buys_from, company)") edges →
+     64-dim node embedding per firm.
+     #linebreak()
+     #text(style: "italic", size: 8.5pt)[Deals without SPLC coverage receive a
+     zero vector; the graph stream is masked via
+     #code-inline("has_graph = False") in the fusion model.]],
+  ),
+  caption: [Feature block definitions and fusion-pipeline construction steps.],
+) <tbl-featureblocks>
+
+=== Block A --- Financial Features <sec-block-a>
+
+The financial feature vector $bold(h)_F in RR^(d_F)$ is constructed directly
+from the standardised preprocessing output ($d_F = 56$).  For baseline models
+(Ridge Regression, ElasticNet, XGBoost), $bold(h)_F$ is used directly.  For
+the MLP and fusion models, it passes through a
+#code-inline("ProjectionHead") --- a linear layer followed by ReLU --- that
+maps $bold(h)_F$ to a lower-dimensional embedding
+$hat(bold(h))_F in RR^64$ before concatenation.
+
+=== Block B --- Textual Features (FinBERT) <sec-block-b>
+
+#figure(
+  image("../../docs/figures/fig2_nlp_pipeline.jpg", width: 90%),
+  caption: [Section-aware FinBERT NLP pipeline extracting MD&A and Risk Factors semantic vectors.],
+) <fig-nlp-pipeline>
+
+Each acquirer firm's MD&A (Item 7) and Risk Factors (Item 1A) text is processed
+through *FinBERT* (#code-inline("ProsusAI/finbert")) @araci2019, a
+BERT-base architecture fine-tuned on financial communications corpora.  The
+exact pipeline, as implemented in #code-inline("src/features/text.py"), is:
+
++ *Chunking.* The raw section text is tokenised (no truncation) and split into
+  overlapping 512-token windows with a stride of 256 tokens, reserving
+  positions 0 and 511 for the #code-inline("[CLS]") and #code-inline("[SEP]")
+  tokens respectively.
++ *Extraction.* For each chunk, the #code-inline("[CLS]") token representation
+  is taken from the *penultimate transformer layer*
+  (#code-inline("hidden_states[-2]")), yielding a 768-dimensional vector.
++ *Pooling.* Chunk-level vectors are *mean-pooled* across all chunks to produce
+  a single $bold(h)_T in RR^768$ per section.
++ *PCA compression.* Each section's embedding matrix is independently
+  PCA-compressed:
+
+$ bold(h)_T^("section") in RR^768 space arrow.r^("PCA, fit on train only") space bold(p)^("section") in RR^64 $
+
+  Separate PCA models are fitted for MD&A and Risk Factors, serialised to
+  #code-inline("data/processed/pca_models.pkl") for reproducible
+  inference.  This compression reduces the $1536$-dimensional raw concatenation
+  to $128$ dimensions while retaining maximum explained variance.
+
++ *Concatenation.* The two 64-dimensional section vectors are concatenated into
+  the final textual embedding:
+
+$ bold(h)_T = [bold(p)^"MDA" parallel bold(p)^"RF"] in RR^128 $
+
+FinBERT's $approx 110$M parameters are *frozen* throughout all downstream
+training to prevent overfitting given the limited M&A sample size; only the
+downstream projection heads are trained.
+
+==== Cosine Similarity (H2 Test Only)
+
+For the H2 semantic-divergence hypothesis, a pairwise cosine similarity score
+is computed *separately* between the acquirer and target's section embeddings,
+_after_ PCA compression:
+
+$"SemanticDiv"_i = 1 - (p_"acq"^"MDA" dot p_"tgt"^"MDA") / (||p_"acq"^"MDA"|| dot ||p_"tgt"^"MDA"||)$
+
+This scalar divergence score is used *exclusively* as the independent variable
+in the H2 OLS regression.  It is *not* an input to the fusion model.  The
+distinction is critical: cosine distance is a _relationship-level_ scalar
+characterising strategic fit between two firms, while the fusion model requires
+_firm-level_ vectors to learn independent acquirer representations.
+
+=== Block C --- Graph Features (HeteroGraphSAGE) <sec-block-c>
+
+#figure(
+  image("../../docs/figures/fig3_heterographsage.jpg", width: 90%),
+  caption: [HeteroGraphSAGE embedding process for supply-chain topological representation.],
+) <fig-heterographsage>
+
+The inter-firm supply-chain network is constructed as a heterogeneous graph
+$cal(G) = (cal(V), cal(E), cal(T)_v, cal(T)_e)$ from Bloomberg SPLC data,
+using PyTorch Geometric's #code-inline("HeteroData") object
+(#code-inline("scripts/graphs/build_hetero_graph.py")).
+
+==== Graph Structure
+
+#figure(
+  image("../../docs/figures/fig4_supply_chain_graph.jpg", width: 90%),
+  caption: [Supply-chain graph construction showing inter-firm dependencies and topological topology.],
+) <fig-supply-chain-graph>
+
+- *Node type.* A single node type #code-inline("company") represents each
+  publicly listed firm present in the SPLC dataset.  Node features are
+  initialised with degree centrality, betweenness centrality, and the
+  standardised financial feature vector.
+
+- *Edge types.* Two directed relationship types are encoded:
+
+  #table(
+    columns: (4cm, 4cm, 6cm),
+    align: (center, center, left),
+    inset: 6pt,
+    stroke: 0.4pt,
+    table.header(
+      [*Edge Type*], [*Direction*], [*Semantics*],
+    ),
+    [#code-inline("supplies")],
+    [supplier $arrow$ customer],
+    [Firm A discloses Firm B as a customer in SPLC; directional dependency.],
+    [#code-inline("buys_from")],
+    [customer $arrow$ supplier],
+    [Inverse of #code-inline("supplies"); encodes upstream procurement risk.],
+  )
+
+  All edges represent *currently active, disclosed supply-chain relationships*
+  sourced from SPLC.  No M&A-derived edges (e.g., historical acquisition links)
+  are included in the adjacency matrix.  This design choice eliminates any
+  possibility of structural target leakage: the model has no graph path
+  connecting an acquirer to its deal target, because no such edge class
+  exists.
+
+  #block(
+    fill: luma(240),
+    inset: 10pt,
+    radius: 4pt,
+    width: 100%,
+    [
+      *Leakage Note.* The absence of acquisition edges is intentional and
+      architecturally guarantees zero structural target leakage.  Supply-chain
+      relationships exist independently of M&A outcomes and persist whether or
+      not a deal completes.  The model cannot "see" the deal being predicted
+      through the graph.
+
+      Four edge types were considered in the project design phase
+      (#code-inline("supplier_of"), #code-inline("customer_of"),
+      #code-inline("competitor_of"), #code-inline("acquires")).  The
+      implemented scope uses two SPLC-sourced types.  Competitor and historical
+      acquisition edges are a natural extension discussed in @sec-ethics.
+    ]
+  )
+
+==== HeteroGraphSAGE Model
+
+A 2-layer *Heterogeneous GraphSAGE* model @hamilton2017 is trained via self-supervised link
+prediction on the supply-chain graph, as implemented in
+#code-inline("scripts/graphs/train_hetero_graph.py"):
+
+#figure(
+  box(
+    width: 100%,
+    stroke: 0.5pt,
+    inset: 10pt,
+    radius: 4pt,
+    [
+      #set align(center)
+      #text(weight: "bold")[HeteroGraphSAGE Architecture]
+      #v(4pt)
+      #table(
+        columns: (3cm, 5cm, 6cm),
+        align: (center, center, left),
+        inset: 6pt,
+        stroke: 0.4pt,
+        table.header(
+          [*Layer*], [*Operation*], [*Detail*],
+        ),
+        [Conv 1],
+        [#code-inline("HeteroConv")],
+        [Separate #code-inline("SAGEConv(in → 128)") per edge type; mean aggregation across types],
+        [Activation],
+        [ReLU + Dropout],
+        [$p = 0.3$; applied per-type after Layer 1],
+        [Conv 2],
+        [#code-inline("HeteroConv")],
+        [Separate #code-inline("SAGEConv(128 → 64)") per edge type; mean aggregation],
+        [Output],
+        [Node embedding],
+        [$bold(h)_G in RR^64$ per company node],
+      )
+      #v(6pt)
+      #text(size: 8.5pt)[
+        Training: self-supervised link prediction (binary cross-entropy),
+        negative sampling per edge type, Adam lr = 0.01, 200 epochs.
+        Final embeddings extracted via #code-inline("model.encode()") with full edge set.
+      ]
+    ]
+  ),
+  caption: [HeteroGraphSAGE architecture and training configuration.],
+) <fig-hgnn-arch>
+
+The key architectural innovation over a homogeneous GraphSAGE is that
+#code-inline("supplies") and #code-inline("buys_from") edges learn *independent
+SAGEConv weight matrices*, enabling the model to distinguish upstream procurement
+signals from downstream customer dependency signals during message passing.
+Node embeddings are extracted and stored in
+#code-inline("data/interim/hetero_graph_embeddings.csv")
+(64-dimensional, one row per company ticker), then merged into the training
+dataset via deal--ticker matching.
+
+== Model Architecture <sec-models>
+
+=== Baseline Models
+
+Four baselines are trained on Block A features only:
+
+#figure(
+  table(
+    columns: (3cm, 3cm, 8.5cm),
+    align: (center, center, left),
+    inset: 7pt,
+    stroke: 0.5pt,
+    table.header(
+      [*Model*], [*Variant ID*], [*Purpose*],
+    ),
+    [Financial Only],    [M1], [Non-linear baseline (XGBoost); tests H1/H2 incremental gain.],
+    [Financial + Text],  [M2], [Ablation: tests H2 in isolation; verifies text aggregation effect.],
+    [Full Fusion (F+T+G)],[M3], [Primary model; tests H1.],
+    [Full Fusion + Aux], [M3e], [Extended model with auxiliary engineered features.#footnote[*M3e extends M3 by appending 13 scalar auxiliary features to the concatenated embedding vector $bold(z)_i$: two deal-level derived features (relative deal size; cross-sector indicator), six graph-theoretic centrality scalars for acquirer and target nodes (betweenness centrality, degree centrality, PageRank), three pairwise textual similarity scalars (MD&A cosine similarity, Risk Factor cosine similarity, cross-section divergence), one acquirer-to-target asset size ratio, and the payment method indicator. These scalars are computed prior to the ProjectionHead and appended directly to $bold(z)_i in RR^(261)$. M3e does not improve AUC beyond M3 (0.5585 vs 0.5655), confirming that scalar centrality and similarity features add classification noise rather than signal when graph neighbourhood embeddings are already present.*]],
+  ),
+  caption: [Model variants for ablation experiments.],
+) <tbl-models>
+
+=== Fusion Model Architecture <sec-fusion>
+
+#figure(
+  image("../../docs/figures/fig5_multimodal_fusion.jpg", width: 90%),
+  caption: [Multimodal late-fusion architecture combining financial, textual, and graph embeddings.],
+) <fig-multimodal-fusion>
+
+The primary model is the *late-fusion tri-modal architecture* implemented in
+#code-inline("src/models/fusion.py").  Each active stream passes through its
+own #code-inline("ProjectionHead") (linear + ReLU), and the resulting embeddings
+are concatenated:
+
+$ bold(z)_i = [bold(h)_F parallel bold(h)_T parallel bold(h)_G] in
+  RR^(d_F' + d_T' + d_G') $
+
+where $d_F' = 64$, $d_T' = 64$, $d_G' = 32$ by default.  To rigorously
+evaluate both the magnitude of synergy and the practical investment decision,
+the architecture implements a *Dual-Evaluation Framework*.  The concatenated
+feature vector $bold(z)_i$ serves as the input to two parallel, independent
+training pipelines:
+
+- *Regressor Pipeline (H3):* Includes a two-layer MLP with a *linear* output
+  activation (and XGBRegressor), optimised via Mean Squared Error (MSE) to
+  predict continuous CAR.  This tests structural variance explanations.
+
+- *Classifier Pipeline (H1, H2):* Includes a two-layer MLP with a *sigmoid*
+  output activation (and XGBClassifier), optimised via Binary Cross-Entropy
+  (BCE) to predict the binary direction of CAR ($1$ if $"CAR" > 0$, $0$
+  otherwise).  This tests practical deal advisory discrimination.
+
+Both pipelines share the same upstream concatenated representation $bold(z)_i$,
+meaning the feature streams are extracted once and evaluated across both
+objectives.
+
+#figure(
+  box(
+    width: 100%,
+    stroke: 0.5pt,
+    inset: 12pt,
+    radius: 4pt,
+    [
+      #set align(center)
+      #text(weight: "bold")[Tri-Modal Fusion Architecture]
+      #v(8pt)
+
+      // Stream labels
+      #grid(
+        columns: (1fr, 1fr, 1fr),
+        gutter: 8pt,
+        box(stroke: 0.5pt, inset: 8pt, radius: 3pt, width: 100%)[
+          #align(center)[*Stream A*\ Financial\ $bold(h)_F in RR^56$]
+          #v(3pt)
+          #align(center)[↓ ProjectionHead]
+          #align(center)[$hat(bold(h))_F in RR^64$]
+        ],
+        box(stroke: 0.5pt, inset: 8pt, radius: 3pt, width: 100%)[
+          #align(center)[*Stream B*\ Textual\ $bold(h)_T in RR^128$]
+          #v(3pt)
+          #align(center)[↓ ProjectionHead]
+          #align(center)[$hat(bold(h))_T in RR^64$]
+        ],
+        box(stroke: 0.5pt, inset: 8pt, radius: 3pt, width: 100%)[
+          #align(center)[*Stream C*\ Graph\ $bold(h)_G in RR^64$]
+          #v(3pt)
+          #align(center)[↓ ProjectionHead]
+          #align(center)[$hat(bold(h))_G in RR^32$]
+        ],
+      )
+
+      #v(6pt)
+      #align(center)[↓ Concatenate → $bold(z)_i in RR^160$]
+      #v(6pt)
+      #grid(
+        columns: (1fr, 0.05fr, 1fr),
+        gutter: 6pt,
+        box(stroke: 0.4pt, inset: 6pt, radius: 3pt, width: 100%, fill: luma(245))[
+          #align(center)[*Regressor Pipeline (H3)*\ #raw("train_models.py")\ MLP + XGBRegressor @chen2016 + Linear activation\ $hat(y)_i in RR$ (CAR magnitude)\ Loss: MSE]
+        ],
+        align(center + horizon)[],
+        box(stroke: 0.4pt, inset: 6pt, radius: 3pt, width: 100%, fill: luma(245))[
+          #align(center)[*Classifier Pipeline (H1, H2)*\ #raw("train_classifier.py")\ MLP + XGBClassifier @chen2016 + Sigmoid activation\ $hat(p)_i in [0,1]$ (CAR direction)\ Loss: BCE]
+        ],
+      )
+
+      #v(8pt)
+      #text(size: 8.5pt)[
+        Streams with missing data (#code-inline("has_graph=False")) contribute
+        a zero vector.  The modular design enables controlled ablation by
+        disabling any stream subset.
+      ]
+    ]
+  ),
+  caption: [Tri-modal late-fusion architecture (src/models/fusion.py).],
+) <fig-fusion-arch>
+
+=== Training Configuration
+
+All PyTorch models are trained with:
+
+- *Optimiser:* AdamW with cosine annealing learning-rate schedule with warm
+  restarts.
+- *Loss:* Two objectives trained in parallel: MSE for the Regressor Pipeline
+  (continuous CAR); Binary Cross-Entropy for the Classifier Pipeline (binary CAR
+  direction).  Huber loss sensitivity analysis is reported alongside MSE.
+- *Early stopping:* Validation MAE with patience of 15 epochs.
+- *Batch size:* 64.
+- *Reproducibility:* Fixed random seed via #code-inline("set_seed()") in
+  #code-inline("src/training/trainer.py").
+- *Device:* CUDA / Apple MPS / CPU auto-selected via
+  #code-inline("src/config.py").
+
+== Target Variable: Cumulative Abnormal Return <sec-car>
+
+The target variable $y_i$ for each deal is the *Cumulative Abnormal Return
+(CAR)* over the symmetric event window $[-5, +5]$ trading days relative to
+announcement date, computed via the standard market model @brown1985
+@mackinlay1997.  This section describes the full two-stage pipeline:
+Stage 1 derives *actual* CAR values from raw market data using OLS; Stage 2
+trains the fusion model to *predict* CAR from pre-announcement features and
+evaluates predicted CAR against actual CAR on held-out deals.
+
+#figure(
+  box(
+    width: 100%,
+    stroke: 0.5pt,
+    inset: 12pt,
+    radius: 4pt,
+    [
+      #set align(center)
+      #text(weight: "bold", size: 10pt)[Two-Stage CAR Pipeline]
+      #v(10pt)
+      #grid(
+        columns: (1fr, 0.08fr, 1fr),
+        gutter: 0pt,
+        // Stage 1 box
+        box(
+          stroke: 0.6pt,
+          inset: 10pt,
+          radius: 4pt,
+          width: 100%,
+          fill: luma(248),
+          [
+            #align(center)[#text(weight: "bold")[Stage 1 — OLS Event Study]\ #text(size: 8pt)[(#raw("compute_car.py"))]]
+            #v(6pt)
+            #set text(size: 8.5pt)
+            #set align(left)
+            1. Download acquirer + S&P 500 daily prices (yfinance)\
+            2. Compute log returns: $R_t = ln(P_t\/P_(t-1))$\
+            3. Estimation window $[-200, -20]$: fit OLS\
+            $quad R_(i t) = hat(alpha)_i + hat(beta)_i R_(m t)$\
+            4. Event window $[-5, +5]$: compute AR\
+            $quad A R_(i t) = R_(i t) - (hat(alpha)_i + hat(beta)_i R_(m t))$\
+            5. Sum residuals:\
+            $quad "CAR"_i = sum_(t=-5)^(+5) A R_(i t)$\
+            6. Merge into #raw("final_car_dataset.csv")
+          ]
+        ),
+        // Arrow column
+        align(center + horizon)[
+          #text(size: 20pt)[→]
+          #v(4pt)
+          #text(size: 7pt)[#raw("car_m5_p5")]
+        ],
+        // Stage 2 box
+        box(
+          stroke: 0.6pt,
+          inset: 10pt,
+          radius: 4pt,
+          width: 100%,
+          fill: luma(248),
+          [
+            #align(center)[#text(weight: "bold")[Stage 2 — Supervised Prediction]\ #text(size: 8pt)[(#raw("training_utils.py"))]]
+            #v(6pt)
+            #set text(size: 8.5pt)
+            #set align(left)
+            Input features (pre-announcement only):\
+            $quad bold(z)_i = [bold(h)_F parallel bold(h)_T parallel bold(h)_G]$\
+            \
+            Fusion model predicts:\
+            $quad hat(y)_i = f_theta (bold(z)_i)$\
+            \
+            Evaluated against actual CAR:\
+            $quad y_i = "CAR"_i = $ #raw("car_m5_p5") column\
+            \
+            Losses (training):\\\
+            $quad cal(L)_"MSE" = 1/N sum_i (y_i - hat(y)_i)^2 + lambda ||theta||_2^2$ (Regressor)\\\
+            $quad cal(L)_"BCE" = -1/N sum_i [y_{"bin",i} log hat(p)_i + (1-y_{"bin",i}) log(1-hat(p)_i)] + lambda ||theta||_2^2$ (Classifier)\\\
+            \\\
+            Held-out metrics:\\\
+            $quad$ MAE, RMSE, $R^2$ (regression); AUC-ROC, F1 (classification)
+          ]
+        ),
+      )
+      #v(8pt)
+      #text(size: 8pt, style: "italic")[
+        Stage 1 outputs are fixed market-derived labels independent of any model.
+        Stage 2 uses pre-announcement features only — no post-deal information enters $bold(z)_i$.
+      ]
+    ]
+  ),
+  caption: [The two-stage CAR pipeline: Stage 1 computes actual CAR via OLS event study; Stage 2 trains and evaluates the fusion model against those labels.],
+) <fig-car-pipeline>
+
+=== Stage 1: OLS Market Model <sec-ols>
+
+The market model is estimated over the *estimation window* $[-200, -20]$
+trading days (180-day window, minimum 120 valid observations) using OLS
+as implemented in #code-inline("scripts/data/compute_car.py") via
+#code-inline("scipy.stats.linregress"):
 
 $ R_(i t) = alpha_i + beta_i R_(m t) + epsilon_(i t) $
 
-where $R_(i t)$ is the return of firm $i$ at time $t$ and $R_(m t)$ is the market return. Abnormal returns ($AR$) are then calculated as the residual:
+where:
+- $R_(i t) = ln(P_(i t) \/ P_(i,t-1))$ is the acquirer log return on trading day $t$,
+- $R_(m t)$ is the S&P 500 (SPX) log return on the same day,
+- $hat(alpha)_i$ is the estimated intercept (abnormal return in absence of market movement),
+- $hat(beta)_i$ is the estimated systematic risk loading (market beta).
 
-$ AR_(i t) = R_(i t) - (hat(alpha)_i + hat(beta)_i R_(m t)) $
+The OLS estimators are:
 
-Finally, CAR is obtained by aggregating these residuals over the event window $cal(T)$:
+$ hat(beta)_i = ("Cov"(R_i, R_m)) / ("Var"(R_m)) $
 
-$ CAR_i = sum_(t in cal(T)) AR_(i t) $
+$ hat(alpha)_i = overline(R)_i - hat(beta)_i overline(R)_m $
 
-In this framework, synergy $S$ is treated as a latent construct for which $CAR_i$ serves as an observable proxy.
+A gap window $[-19, -6]$ between estimation and event windows is excluded from
+both calculations, preventing estimation-period price dynamics from contaminating
+the event-window benchmark.
 
-The model is trained as a supervised regression system by minimizing the Mean Squared Error (MSE) with L2 regularization:
+#figure(
+  box(
+    width: 100%,
+    stroke: 0.5pt,
+    inset: 10pt,
+    radius: 4pt,
+    [
+      #set align(center)
+      #text(weight: "bold")[Event Study Timeline (Trading Days)]
+      #v(8pt)
+      #table(
+        columns: (3.5cm, 2.8cm, 3.2cm, 1.6cm, 3.2cm),
+        align: center,
+        inset: 6pt,
+        stroke: 0.4pt,
+        table.header(
+          [*Estimation Window*], [*Gap (excl.)*], [*Day 0*], [*⟵*], [*Event Window*],
+        ),
+        [$[-200, -20]$\ OLS: fit $hat(alpha)_i, hat(beta)_i$],
+        [$[-19, -6]$\ excluded],
+        [*Announcement*\ (Day 0)],
+        [],
+        [$[-5, +5]$\ sum $A R_(i t)$ → $"CAR"_i$],
+      )
+    ]
+  ),
+  caption: [Event study timeline. The gap prevents estimation-period contamination of the CAR window.],
+) <fig-event-timeline>
 
-$ cal(L)(theta) = 1/N sum_(i=1)^(N) (y_i - hat(y)_i)^2 + lambda ||theta||_2^2 $
+=== Abnormal Returns and CAR <sec-ar-car>
 
-While stock returns are known to exhibit heavy-tailed distributions, MSE remains the primary objective for comparability with prior financial prediction work. However, robust alternatives such as the Huber loss are considered in sensitivity analyses to mitigate the effect of extreme return outliers.
+With $hat(alpha)_i$ and $hat(beta)_i$ estimated on the estimation window,
+*abnormal returns* in the event window $cal(T) = {-5, ..., +5}$ are the
+residuals between actual and model-predicted returns:
 
-=== Dual-Stream HGNN Architecture
-The function $f_theta$ is implemented as a dual-stream neural network designed to fuse topological, semantic, and financial information (Figure 3.1).
+$ A R_(i t) = R_(i t) - (hat(alpha)_i + hat(beta)_i R_(m t)) $
 
-+ *Stream A: The Topological Encoder (GraphSAGE).* This stream processes the pre-merger ecosystem snapshot $G_(t-Delta)$, which encodes firms as nodes with heterogeneous edges (e.g., supplier-customer, competitors). It utilizes a Heterogeneous GraphSAGE operator to sample and aggregate neighbor features @3.1HamiltonYL17. This inductive approach allows the model to generate structural embeddings ($h_"struct"$) for unseen firms in evolving financial graphs, capturing network centrality and supply chain dependency risks.
+$A R_(i t)$ represents the return attributable to deal-specific information
+(announcement effect) after stripping out normal market co-movement.
+*CAR is the cumulative sum of these residuals* over the full event window:
 
-+ *Stream B: The Semantic Encoder (FinBERT).* This stream processes the unstructured textual disclosures $T_(t-Delta)$ (specifically 10-K filings). It employs *FinBERT* (Araci, 2019), a BERT-based model pre-trained on large financial corpora, to extract "semantic embeddings" ($h_"text"$). For each relevant section, the `[CLS]` token representation from the penultimate layer is taken as the document-level embedding. Crucially, FinBERT's approximately 110M parameters are *frozen* during training to prevent overfitting, given the limited sample size of M&A deals.
+$ "CAR"_i = sum_(t=-5)^(+5) A R_(i t) $
 
-+ *The Fusion Module.* A financial-feature embedding $h_"fin"$ is obtained by passing the standardized raw financial ratios $F_(t-Delta)$ through a shallow linear projection layer. The three distinct embeddings are then concatenated into a single high-dimensional vector $Z = [h_"struct" || h_"text" || h_"fin"]$. This vector is passed through a Multi-Layer Perceptron (MLP) with non-linear activation functions (ReLU) and Dropout layers to project the multimodal signal onto the scalar output $hat(y)$ (CAR).
+This produces a single scalar per deal stored as column
+#code-inline("car_m5_p5") in #code-inline("data/processed/final_car_dataset.csv").
+A positive CAR indicates the market rewarded the acquisition announcement;
+a negative CAR indicates value destruction.
 
-$ R_{i t} = alpha_i + beta_i R_{m t} + epsilon_{i t} $
+=== Stage 2: Model Prediction vs. Actual CAR <sec-prediction-vs-actual>
 
+The column #code-inline("car_m5_p5") (set as #code-inline("TARGET_COL") in
+#code-inline("scripts/training/training_utils.py")) is the sole prediction
+target for all model variants.  The fusion architecture minimises two distinct objective functions depending on
+the evaluation pipeline:
 
----
+*1. Continuous Target (Regression Pipeline --- H3):*
+For variance analysis, the Regressor Pipeline minimises Mean Squared Error against
+the raw continuous CAR ($y_i = "CAR"_i in RR$):
 
-Part II: Methodology Chapter
-3. Methodology
-3.1 Research Philosophy and Design
-This study adopts a post-positivist epistemological stance, treating M&A synergy as a latent, probabilistic construct that can be approximated through empirical measurement of market reactions and structured firm relationships. While acknowledging that financial markets are not perfectly efficient, the research operates within the semi-strong form of the Efficient Market Hypothesis (Fama, 1970), wherein publicly available information — including financial fundamentals, regulatory filings, and inter-firm network topology — is treated as a viable predictor signal. The overarching research design is quantitative and deductive: three a priori hypotheses (H1: Topological Alpha, H2: Semantic Divergence, H3: Topological Arbitrage) are specified before analysis and tested through controlled ablation experiments.
+$ cal(L)_"MSE"(theta) = 1/N sum_(i=1)^N (y_i - hat(y)_i)^2 + lambda ||theta||_2^2 $
 
-The study employs a cross-sectional observational design. Since M&A deals are historical and non-repeatable, no experimental manipulation is possible; instead, causal inference is approximated through systematic covariate control, ablation modelling, and statistical hypothesis testing over a large deal sample. This design choice reflects standard practice in empirical corporate finance (MacKinlay, 1997).
+*2. Binary Target (Classification Pipeline --- H1, H2):*
+For directional discrimination, the Classifier Pipeline minimises Binary
+Cross-Entropy against the thresholded label
+$y_{"bin",i} = bb(1)["CAR"_i > 0] in {0, 1}$:
 
-3.2 Research Hypotheses
-Three hierarchical hypotheses structure the empirical programme:
+$ cal(L)_"BCE" (theta) = -1/N sum_(i=1)^N [y_{"bin",i} log hat(p)_i +
+  (1 - y_{"bin",i}) log(1 - hat(p)_i)] + lambda ||theta||_2^2 $
 
-H1 (Topological Alpha Hypothesis): Supply-chain and competitor network centrality metrics derived from SPLC data carry statistically significant predictive signal for acquirer CAR, incremental to financial fundamentals alone.
+where $hat(p)_i = sigma(f_theta(bold(z)_i))$ is the sigmoid-activated synergy
+probability.  All evaluation metrics are then computed by comparing predictions
+against $y_i$ (regression) or $y_{"bin",i}$ (classification) on the held-out
+test set:
 
-H2 (Semantic Divergence Hypothesis): The cosine distance between acquirer and target FinBERT embeddings of their respective 10-K MD&A sections is a significant predictor of post-acquisition CAR, capturing strategic fit information not encoded in accounting ratios.
+#figure(
+  table(
+    columns: (3.5cm, 6cm, 5cm),
+    align: (center, left, left),
+    inset: 7pt,
+    stroke: 0.5pt,
+    table.header(
+      [*Metric*], [*Formula*], [*Interpretation*],
+    ),
+    [MAE],
+    [$frac(1,N) sum_i |y_i - hat(y)_i|$],
+    [Primary metric; interpretable in percentage-point CAR terms.],
 
-H3 (Topological Arbitrage Hypothesis): The full multimodal fusion of financial, textual, and graph features significantly outperforms all single-modality baselines on held-out CAR prediction, as measured by MAE and R².
+    [RMSE],
+    [$sqrt(frac(1,N) sum_i (y_i - hat(y)_i)^2)$],
+    [Penalises large mispredictions more than MAE.],
 
-3.3 Data Sources and Collection
-3.3.1 M&A Deal Universe
-The primary dataset is sourced from the London Stock Exchange Group (LSEG) Refinitiv database, which provides comprehensive deal-level financial attributes for completed M&A transactions. Five raw CSV exports are merged into a unified dataset via scripts/data/build_combined_dataset.py, producing data/interim/ma_combined.csv. The deal universe is restricted to: completed acquisitions of publicly listed targets by publicly listed US acquirers; transactions between 2000–2023; deal values exceeding USD 50 million (to ensure sufficient market microstructure data for CAR estimation). These filters follow established practice in the empirical M&A literature (Betton et al., 2008) and ensure a minimum of 120 trading days in the estimation window.
+    [$R^2$],
+    [$1 - (sum_(i) (y_i - hat(y)_i)^2) / (sum_(i) (y_i - overline(y))^2)$],
+    [Proportion of CAR variance explained by the model.],
 
-3.3.2 Equity Return Data
-Daily equity returns for acquirer firms and benchmark (S&P 500 index) are retrieved via the Bloomberg Terminal using custom ticker-matching logic in scripts/data/pull_car_data.py and scripts/data/merge_bbg_data.py. Returns are aligned to deal announcement dates and stored in a long-format time series (timeseries_long.csv) with a rel_day field denoting days relative to the announcement (day 0). Failed ticker lookups are retried with fuzzy-matching heuristics via scripts/data/retry_failed_tickers.py.
+    [Huber],
+    [$sum_i cal(H)_delta (y_i - hat(y)_i)$],
+    [Robust to outlier returns; sensitivity analysis only.],
 
-3.3.3 Textual Data
-10-K annual filings for acquirer and target firms are retrieved from the SEC EDGAR full-text search API, targeting the MD&A (Item 7) and Risk Factors (Item 1A) sections for the fiscal year immediately preceding the announcement. Extraction is handled by scripts/features/ text pipeline scripts. Documents are processed into FinBERT [CLS] token embeddings as described in Section 3.5.2.
+    [Dir. Accuracy],
+    [$frac(1,N) sum_i bb(1)[text("sign")(hat(y)_i) = text("sign")(y_i)]$],
+    [*Classification Pipeline.* Did the model predict the deal direction correctly?],
 
-3.3.4 Supply Chain Network Data
-Inter-firm supply chain and competitor relationships are sourced from Bloomberg SPLC (Supply Chain Analysis), which maps disclosed customer-supplier relationships and key competitors for publicly listed firms. The SPLC data is merged with the deal universe via scripts/data/merge_splc_data.py, matching on Bloomberg ticker symbols. This forms the edge set for the heterogeneous graph constructed in Section 3.5.3.
+    [AUC-ROC],
+    [$integral_0^1 "TPR"("FPR") thin d("FPR")$],
+    [*Primary classification metric.* Threshold-invariant measure of the model's
+     ability to rank value-creating deals ($"CAR">0$) above value-destroying ones.],
 
-3.4 Data Preprocessing
-3.4.1 Cleaning and Quality Control
-Raw LSEG exports undergo systematic cleaning in scripts/data/data_cleaning.py, which handles: (a) date parsing and standardisation across inconsistent LSEG date formats (resolved via scripts/data/fix_dates.py); (b) deduplication of deal records sharing the same acquirer-target-announcement-date triplet; (c) removal of records with missing acquirer ticker or announcement date; and (d) currency normalisation to USD using period-end exchange rates. Data quality is verified via scripts/data/verify_sources.py.
+    [F1-Score],
+    [$2 times frac("Precision" times "Recall", "Precision" + "Recall")$],
+    [Harmonic mean of precision and recall. Evaluates robustness under class
+     imbalance in the CAR-positive vs. CAR-negative split.],
+  ),
+  caption: [Evaluation metrics. Regression metrics (MAE, RMSE, $R^2$, Huber) apply to the Regressor Pipeline; classification metrics (Dir. Accuracy, AUC-ROC, F1) apply to the Classifier Pipeline.],
+) <tbl-metrics>
 
-3.4.2 Feature Engineering and Normalisation
-Financial features comprise 50+ ratio-level variables sourced from LSEG, spanning acquirer and target leverage, liquidity, profitability, and deal structure characteristics. The preprocessing pipeline in scripts/data/data_processing.py applies: (a) Winsorisation at the 1st and 99th percentile to bound the influence of outliers, following standard practice in accounting research; (b) z-score standardisation (zero mean, unit variance) computed on training-set statistics only and applied to validation and test sets to prevent data leakage; (c) stratified train/validation/test splitting (70/15/15) by announcement year to prevent temporal leakage.
+The critical design guarantee is that *no feature in $bold(z)_i$ is derived
+from post-announcement data*.  Financial ratios $bold(h)_F$ use the most recent
+pre-announcement fiscal year; FinBERT embeddings $bold(h)_T$ use the 10-K filed
+before announcement; graph embeddings $bold(h)_G$ use SPLC relationships that
+are structurally independent of deal outcomes.  The model therefore predicts
+market reaction from purely pre-deal information --- the economically meaningful
+and leakage-free formulation.
 
-3.4.3 Missing Data Strategy
-Features with >40% missing values are excluded. For remaining missing values, median imputation is applied for continuous features and mode imputation for categorical indicators. Imputation statistics are fitted on the training set only.
+== Hypothesis Testing <sec-htesting>
 
-3.5 Feature Extraction
-3.5.1 Block A — Financial Features
-The financial feature vector 
-h
-F
-∈
-R
-d
-F
-h 
-F
-​
- ∈R 
-d 
-F
-​
- 
-  is constructed directly from the standardised preprocessing output. For baseline models (Ridge Regression, ElasticNet, XGBoost), 
-h
-F
-h 
-F
-​
-  is used directly. For the MLP and fusion models, it passes through a ProjectionHead (linear layer + ReLU) that maps 
-h
-F
-h 
-F
-​
-  to a lower-dimensional embedding 
-h
-^
-F
-∈
-R
-64
-h
-^
-  
-F
-​
- ∈R 
-64
-  before concatenation.
+Each hypothesis is tested through model ablation combined with statistical
+significance testing:
 
-3.5.2 Block B — Textual Features (FinBERT)
-Each firm's MD&A and Risk Factors text is tokenised and passed through the pre-trained FinBERT model (Araci, 2019) — a BERT-base architecture fine-tuned on financial communications corpora. The [CLS] token embedding from the final transformer layer is used as the document representation 
-h
-T
-∈
-R
-768
-h 
-T
-​
- ∈R 
-768
- . FinBERT weights are frozen during all downstream training to prevent overfitting on the relatively small deal sample; only the downstream projection head is trained. For H2 testing, the cosine distance between acquirer and target embeddings is computed as:
+- *H1 (Topological Alpha):* Compare M3 (#code-inline("full_fusion.yaml"))
+  vs. M1 (#code-inline("financial_only.yaml")) on the *Classifier Pipeline*.
+  While this comparison formally evaluates the joint contribution of both text and graph modalities against the financial baseline, the M2 ablation isolates the text effect, confirming that any residual lift in M3 is driven by topological structure. A paired $t$-test across cross-validation folds on held-out AUC-ROC scores
+  assesses whether this full multimodal architecture yields a statistically significant
+  improvement in directional discrimination ($p < 0.05$).
 
-SemanticDiv
-i
-=
-1
-−
-h
-T
-acq
-⋅
-h
-T
-tgt
-∥
-h
-T
-acq
-∥
-⋅
-∥
-h
-T
-tgt
-∥
-SemanticDiv 
-i
-​
- =1− 
-∥h 
-T
-acq
-​
- ∥⋅∥h 
-T
-tgt
-​
- ∥
-h 
-T
-acq
-​
- ⋅h 
-T
-tgt
-​
- 
-​
- 
-This scalar divergence score is included as an additional feature for H2 ablation experiments.
+- *H2 (Semantic Divergence):* H2 is evaluated across two conditions:
+  (a) a statistically significant Pearson/Spearman correlation between
+  #code-inline("SemanticDiv_i") and $"CAR"_i$ ($p < 0.05$, primary test); and
+  (b) M2 (#code-inline("financial_text.yaml")) yields an
+  AUC-ROC improvement over M1 (#code-inline("financial_only.yaml")).
+  If (b) fails, the mechanism is further evaluated to see if conflation is the cause.
 
-3.5.3 Block C — Graph Features (GraphSAGE on HGNN)
-The inter-firm network is constructed as a heterogeneous graph 
-G
-=
-(
-V
-,
-E
-,
-T
-v
-,
-T
-e
-)
-G=(V,E,T 
-v
-​
- ,T 
-e
-​
- ), where node types 
-T
-v
-T 
-v
-​
-  include firm, sector, and country, and edge types 
-T
-e
-T 
-e
-​
-  include supplier_of, customer_of, competitor_of, and acquires. Graph construction is handled by scripts/graphs/build_hetero_graph.py using PyTorch Geometric's HeteroData object.
+- *H3 (Topological Arbitrage):* Levene's test for equality of variances is computed
+  across betweenness centrality quantile groups to evaluate structural variance
+  compression of announcement returns.
 
-Node-level features are initialised with degree centrality, betweenness centrality, and the standardised financial feature vector. GraphSAGE (Hamilton et al., 2017) is then applied with mean aggregation over two message-passing layers to produce node embeddings 
-h
-G
-∈
-R
-d
-G
-h 
-G
-​
- ∈R 
-d 
-G
-​
- 
- , which encode each firm's structural position within the ecosystem. For deals without SPLC coverage, 
-h
-G
-h 
-G
-​
-  is set to a zero vector and the graph stream is masked in the fusion model via the has_graph flag.
+All tests use a significance threshold of $alpha = 0.05$ with *Bonferroni
+correction* applied across the three hypothesis tests to control the
+family-wise error rate ($alpha_"corrected" = 0.0167$).
 
-3.6 Model Architecture
-3.6.1 Baseline Models
-Four baselines are trained on Block A features only: a naïve mean predictor (lower bound), Ridge Regression, ElasticNet (for feature selection insight), and XGBoost (to capture non-linear financial interactions). These establish the performance ceiling achievable from financial data alone and provide the comparative baseline for H1, H2, and H3.
+== Evaluation Metrics <sec-metrics>
 
-3.6.2 Fusion Model
-The primary model is a late-fusion multimodal architecture (src/models/fusion.py). Each active stream passes through its own ProjectionHead, and the resulting embeddings are concatenated:
+Evaluation metrics are partitioned by prediction head, as formalised in
+@tbl-metrics.  The *Regressor Pipeline* (H3) is evaluated on continuous CAR
+predictions using MAE (primary), RMSE, $R^2$, and Huber loss (sensitivity).
+MAE is the primary regression metric given its interpretability in
+percentage-point CAR terms and its robustness to the outlier return
+distribution.
 
-z
-i
-=
-[
-h
-F
-∥
-h
-T
-∥
-h
-G
-]
-∈
-R
-d
-F
-′
-+
-d
-T
-′
-+
-d
-G
-′
-z 
-i
-​
- =[h 
-F
-​
- ∥h 
-T
-​
- ∥h 
-G
-​
- ]∈R 
-d 
-F
-′
-​
- +d 
-T
-′
-​
- +d 
-G
-′
-​
- 
- 
-where 
-d
-F
-′
-=
-64
-d 
-F
-′
-​
- =64, 
-d
-T
-′
-=
-64
-d 
-T
-′
-​
- =64, 
-d
-G
-′
-=
-32
-d 
-G
-′
-​
- =32 by default. The concatenated vector 
-z
-i
-z 
-i
-​
-  is passed through a two-layer MLP prediction head with ReLU activation and dropout (
-p
-=
-0.3
-p=0.3) to produce the scalar CAR prediction 
-y
-^
-i
-y
-^
-​
-  
-i
-​
- . The modular design allows any subset of streams to be disabled, enabling the controlled ablation experiments needed for hypothesis testing.
+The *Classifier Pipeline* (H1, H2) is evaluated on binary CAR-direction
+predictions using AUC-ROC (primary), F1-Score, and Directional Accuracy.
+AUC-ROC is the primary classification metric because it is threshold-invariant
+and directly measures the model's ability to rank value-creating deals above
+value-destroying ones --- the economically actionable output for deal advisory.
+F1-Score is reported as a secondary metric to assess robustness under class
+imbalance in the CAR-positive vs. CAR-negative split.
 
-3.6.3 Training Configuration
-All PyTorch models are trained with: AdamW optimiser, learning rate scheduled via cosine annealing with warm restarts; MSE loss as the primary objective; early stopping on validation MAE with a patience of 15 epochs; batch size of 64; and a fixed random seed (set via set_seed() in src/training/trainer.py) for reproducibility. Device selection (CUDA / Apple MPS / CPU) is handled automatically via src/config.py.
+== Ethical Considerations and Limitations <sec-ethics>
 
-3.7 Target Variable: Cumulative Abnormal Return
-The target variable 
-y
-i
-y 
-i
-​
-  for each deal is the Cumulative Abnormal Return over the event window [-5, +5] trading days relative to announcement date, computed via the market model (Brown & Warner, 1985). Formally:
+All data used is commercially licensed (LSEG, Bloomberg) and contains no
+personally identifiable information.  The study does not involve human
+participants.
 
-CAR
-i
-=
-∑
-t
-=
-−
-5
-+
-5
-A
-R
-i
-,
-t
-where
-A
-R
-i
-,
-t
-=
-R
-i
-,
-t
-−
-(
-α
-^
-i
-+
-β
-^
-i
-R
-m
-,
-t
-)
-CAR 
-i
-​
- = 
-t=−5
-∑
-+5
-​
- AR 
-i,t
-​
- whereAR 
-i,t
-​
- =R 
-i,t
-​
- −( 
-α
-^
-  
-i
-​
- + 
-β
-^
-​
-  
-i
-​
- R 
-m,t
-​
- )
-The OLS parameters 
-α
-^
-i
-,
-β
-^
-i
-α
-^
-  
-i
-​
- , 
-β
-^
-​
-  
-i
-​
-  are estimated over a 120–240 trading day window ending 10 days before announcement ([-250, -10]), requiring a minimum of 120 valid observations to be included in the sample. This follows MacKinlay (1997) and is implemented in scripts/data/compute_car.py.
+Key methodological limitations include:
 
-3.8 Hypothesis Testing
-Each hypothesis is tested through model ablation combined with statistical significance testing:
++ *SPLC Disclosure Bias.* The supply-chain network captures only disclosed
+  relationships, potentially biasing graph features toward larger firms with
+  more extensive reporting obligations.  Smaller firms may have sparser
+  neighbourhoods that understate their true network centrality.
 
-H1: Compare financial_graph.yaml vs. financial_only.yaml. A paired Diebold-Mariano test on hold-out prediction errors assesses whether the graph stream yields statistically significant MAE improvement.
++ *Frozen FinBERT Embeddings.* Frozen weights may not fully capture M&A-specific
+  language not present in FinBERT's training corpus.  Fine-tuning on a
+  domain-specific financial corpus represents a natural extension.
 
-H2: A Pearson/Spearman correlation test between SemanticDiv_i and CAR is first run. Then financial_text.yaml vs. financial_only.yaml ablation is evaluated using the same DM test.
++ *Market-Model Beta Stationarity.* The OLS market model assumes beta is
+  stationary over the estimation window, which may be violated for firms
+  undergoing strategic repositioning pre-deal.
 
-H3: full_fusion.yaml is compared against all single-modality baselines. Effect size (Cohen's d on hold-out error distributions) and R² improvement are reported alongside p-values.
++ *US-Listed Sample.* The sample is restricted to US-listed firms, limiting
+  generalisability to cross-border or private-equity transactions.
 
-All tests use a significance threshold of 
-α
-=
-0.05
-α=0.05 with Bonferroni correction applied across the three hypothesis tests to control the family-wise error rate.
-
-3.9 Evaluation Metrics
-Primary metrics are Mean Absolute Error (MAE), Root Mean Squared Error (RMSE), and R² (coefficient of determination), all computed on the held-out test set. MAE is the primary metric given its interpretability in percentage-point CAR terms. Secondary evaluation includes a directional accuracy metric (proportion of deals where the predicted CAR sign matches the actual sign), which has practical relevance for deal advisory applications.
-
-3.10 Ethical Considerations and Limitations
-All data used is commercially licensed (LSEG, Bloomberg) and contains no personally identifiable information. The study does not involve human participants. Key methodological limitations include: (a) the SPLC network captures only disclosed relationships, potentially biasing graph features toward larger firms with more reporting obligations; (b) frozen FinBERT embeddings may not fully capture M&A-specific language not present in the FinBERT training corpus; (c) the OLS market model assumes stationarity of beta over the estimation window, which may be violated for firms undergoing strategic repositioning pre-deal; (d) the sample is restricted to US listed firms, limiting generalisability to cross-border or private-equity transactions.
++ *Edge Type Scope.* The implemented graph uses two SPLC-derived edge types
+  (#code-inline("supplies"), #code-inline("buys_from")).  Historical acquisition
+  edges and competitor-of edges were considered in the design but not implemented
+  within the project's data budget.  Their inclusion, using survivorship-bias-corrected
+  datasets, is a natural direction for future work.

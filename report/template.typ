@@ -17,7 +17,7 @@
     margin: (left: 2.5cm, right: 2.5cm, top: 2.5cm, bottom: 2.5cm),
     numbering: none,
   )
-  set text(font: "Linux Libertine", lang: "en", size: 12pt)
+  set text(font: "Times New Roman", lang: "en", size: 12pt)
   
   // 2. The Title Page [cite: 1]
   align(center)[
@@ -145,6 +145,18 @@
 
   // Paragraph styling
   set par(justify: true, leading: 0.8em)
+
+  // Cross-reference formatting: render @ch-X as "Chapter N" and @sec-X as "Section N.N"
+  show ref: it => {
+    let el = it.element
+    if el != none and el.func() == heading {
+      let target = str(it.target)
+      let supplement = if target.starts-with("ch-") { "Chapter" } else { "Section" }
+      let numbering_style = if el.numbering != none { el.numbering } else { "1." }
+      return [#supplement #numbering(numbering_style, ..counter(heading).at(el.location()))]
+    }
+    it
+  }
   
   body
 }

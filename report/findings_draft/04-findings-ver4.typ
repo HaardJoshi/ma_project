@@ -107,7 +107,7 @@ The relevant inferential test follows the methodology chapter: significance is a
 
 === H2 — Semantic Divergence (Supported) <sec-h2>
 
-H2 asked whether semantically distinct filing sections encode opposite economic effects. The OLS evidence supports that claim. On the semantic-divergence sample of $n = 1{,}140$ deals, the estimated coefficients are:
+H2 asked whether semantically distinct filing sections encode opposite economic effects. The OLS evidence supports that claim. On the semantic-divergence sample of n = 1,140 deals, the estimated coefficients are:
 
 $
   beta_("MDA") = +0.0044 quad beta_("RF") = -0.0080 quad R^2 = 0.0015
@@ -117,9 +117,9 @@ The signs are exactly as predicted. Greater MD&A similarity is associated with s
 
 The low $R^2$ should be interpreted carefully rather than defensively. In event-study settings, a single semantic factor is not expected to explain a large proportion of return variance because announcement-period returns are jointly shaped by multiple concurrent forces @mackinlay1997. The relevant test here is not whether text alone explains most of CAR, but whether the *direction* of the semantic effects matches theory. It does. Combined with the M2 reversal, the result supports the deeper claim that semantic aggregation obscures economically distinct textual mechanisms. *Verdict: H2 is supported.*
 
-=== H3 — Information Transparency Dampening (Supported) <sec-h3>
+=== H3 — Topological Arbitrage: Information Transparency Dampening (Supported) <sec-h3>
 
-H3 asked whether graph prominence compresses the variance of announcement outcomes. This is the strongest formally tested result in the chapter. On $n = 2{,}864$ graph-matched deals, Levene's test across betweenness-centrality quantiles yields:
+H3 asked whether graph prominence compresses the variance of announcement outcomes. This is the strongest formally tested result in the chapter. On n = 2,864 graph-matched deals, Levene's test across betweenness-centrality quantiles yields:
 
 $
   F_("Levene") = 7.0745 quad p = 0.0079
