@@ -226,6 +226,22 @@ Standard baselines — logistic regression on financial ratios, XGBoost on finan
     [Loughran & McDonald (2011)], [Bag-of-Words (BoW)], [Compositional blindness; deal occurrence target], [Contextual FinBERT embeddings; section-specific similarity (H2)],
     [Hajek et al. (2024)], [FinBERT sentiment], [Single-document; no pairwise delta; acquisition likelihood target], [Pairwise acquirer-target cosine distance; H2 conditional directionality],
     [Zhao et al. (2020); Han et al. (2023)], [BERT / RoBERTa → XGBoost], [Conflates strategic and risk disclosures; predicts occurrence not outcome], [Section-specific semantic splitting; binary CAR classification (H2)],
+  ),
+  caption: [Methodological Evolution Matrix (Part I): Evolution of M&A prediction research through three paradigms.],
+)
+
+#pagebreak()
+
+#figure(
+  table(
+    columns: (1.5fr, 1.5fr, 2fr, 2fr),
+    align: (left, left, left, left),
+    stroke: (x, y) => if y == 0 { (bottom: 1pt + black, top: 1pt + black) } else { none },
+    inset: 8pt,
+
+    table.header(
+      [*Literature Stream*], [*Legacy Method*], [*Structural Failure (The Ceiling)*], [*Implemented Architecture (The Exit)*],
+    ),
 
     // STREAM IV: TOPOLOGY AND MULTIMODAL FUSION
     table.cell(colspan: 4, fill: luma(240))[*Stream IV: Topology and Multimodal Fusion*],
@@ -233,7 +249,7 @@ Standard baselines — logistic regression on financial ratios, XGBoost on finan
     [Venuti (2021)], [Homogeneous GraphSAGE], [Collapses edge semantics (suppliers = competitors); deal likelihood target], [Heterogeneous edge types; full multimodal fusion],
     [Baltrušaitis et al. (2019); Xu et al. (2021)], [Multimodal fusion frameworks], [Not applied to M&A synergy; no graph modality], [Block A+B+C late fusion with SHAP decomposition],
   ),
-  caption: [Methodological Evolution Matrix: structural failures of prior work and architectural responses.],
+  caption: [Methodological Evolution Matrix (Part II): The transition to topological and multimodal fusion.],
 ) <tbl-gap>
 
 The HeteroGraphSAGE fusion architecture resolves each limitation simultaneously: GraphSAGE's inductive neighbourhood aggregation recovers the topological signal that tabular models cannot access; FinBERT's contextual embeddings on section-split 10-K filings recover the semantic signal that BoW and scalar NLP cannot represent; late fusion via concatenation preserves modality-specific representations while enabling cross-modal learning in the joint prediction head; and heterogeneous edge-type encoding preserves the semantic distinctions between relationship types that homogeneous graph models discard.

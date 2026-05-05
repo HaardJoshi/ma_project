@@ -47,10 +47,12 @@
 
 
 // --- REFERENCES ---
+#set heading(numbering: none)
 #bibliography("works.bib", style: "harvard-cite-them-right")
 
 // --- APPENDICES ---
 #show: appendix
+#set heading(numbering: none)
 
 = Initial Project Proposal // Content for Appendix A 
 [The initial project proposal is attached as a separate document.]

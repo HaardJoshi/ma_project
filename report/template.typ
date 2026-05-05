@@ -135,12 +135,21 @@
   
   // Custom rule to force "Chapter X: Title" formatting
   show heading.where(level: 1): it => {
-    pagebreak(weak: true)
-    v(1em)
-    text(size: 16pt, weight: "bold")[
-      Chapter #counter(heading).display(): #it.body
-    ]
-    v(1em)
+    if it.numbering == none {
+      pagebreak(weak: true)
+      v(1em)
+      text(size: 16pt, weight: "bold")[
+        #it.body
+      ]
+      v(1em)
+    } else {
+      pagebreak(weak: true)
+      v(1em)
+      text(size: 16pt, weight: "bold")[
+        Chapter #counter(heading).display(): #it.body
+      ]
+      v(1em)
+    }
   }
 
   // Paragraph styling

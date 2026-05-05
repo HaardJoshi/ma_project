@@ -11,6 +11,8 @@
 
 
 = Methodology <ch-methodology>
+#show figure: set block(spacing: 1.5em)
+#set figure(gap: 1em)
 
 
 == Introduction
@@ -249,6 +251,7 @@ training set only.
 
 The three feature blocks are summarised in @tbl-featureblocks.
 
+#pagebreak(weak: true)
 #figure(
   table(
     columns: (1.5cm, 3cm, 4.5cm, 5.5cm),
