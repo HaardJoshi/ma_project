@@ -118,8 +118,7 @@ discrimination.
 
 === M&A Deal Universe
 
-The primary dataset is sourced from the *London Stock Exchange Group (LSEG)
-Refinitiv* database, which provides deal-level financial attributes for
+The primary dataset is sourced from *Yahoo Finance*, which provides deal-level financial attributes for completed M&A transactions.
 completed M&A transactions.  Five raw CSV exports are merged via
 #code-inline("scripts/data/build_combined_dataset.py") into
 #code-inline("data/interim/ma_combined.csv").
@@ -169,7 +168,7 @@ symbols.  This forms the edge set for the heterogeneous graph constructed in
 
 === Cleaning and Quality Control
 
-Raw LSEG exports undergo systematic cleaning in
+Raw Yahoo Finance exports undergo systematic cleaning in
 #code-inline("scripts/data/data_cleaning.py"): date parsing and
 standardisation; deduplication of records sharing the same
 acquirer--target--announcement-date triplet; removal of records with missing
@@ -263,7 +262,7 @@ The three feature blocks are summarised in @tbl-featureblocks.
     ),
     [A],
     [Financial],
-    [LSEG Refinitiv],
+    [Yahoo Finance],
     [56-column ratio matrix → Winsorise → z-score → #code-inline("ProjectionHead")
      ($RR^56 arrow.r RR^64$, linear + ReLU)],
 
@@ -903,11 +902,13 @@ value-destroying ones --- the economically actionable output for deal advisory.
 F1-Score is reported as a secondary metric to assess robustness under class
 imbalance in the CAR-positive vs. CAR-negative split.
 
-== Ethical Considerations and Limitations <sec-ethics>
+== Ethical, Legal, and Social Considerations <sec-ethics>
 
-All data used is commercially licensed (LSEG, Bloomberg) and contains no
-personally identifiable information.  The study does not involve human
-participants.
+While all data utilised in this study is sourced from public and institutional APIs (Yahoo Finance, Bloomberg) and contains no personally identifiable human-subject information, the deployment of machine learning in M&A strategy carries substantial socio-economic and ethical implications.
+
+From a socio-economic perspective, models that successfully predict and therefore facilitate value-creating M&A transactions can accelerate corporate consolidation. Because the "synergies" realised in post-merger integration are frequently achieved through workforce redundancies and the elimination of overlapping operational departments, hyper-efficient AI-driven M&A targeting inherently risks accelerating job displacement. Furthermore, the concentration of capital enabled by algorithmically precise consolidation raises anti-trust and market-diversity concerns. 
+
+Legally and professionally, the deployment of complex multimodal architectures (particularly Graph Neural Networks) in financial advisory introduces severe "black box" risks. Capital allocation decisions driven by opaque algorithmic processes violate the fiduciary duty of explicability required in corporate finance. This project explicitly mitigates this ethical and professional hazard by rejecting an end-to-end black box design in favour of a late-fusion architecture paired with SHAP decomposition (@lundberg2017). This ensures that every prediction is mathematically traceable back to its topological or semantic source, preserving the human advisor's ability to audit and justify the capital decision.
 
 Key methodological limitations include:
 

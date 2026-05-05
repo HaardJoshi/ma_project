@@ -18,7 +18,7 @@ The answer proposed here is that existing models fail not because of insufficien
 
 This dissertation proposes and empirically tests a multimodal late-fusion architecture designed to break through the tabular ceiling by encoding three complementary information modalities simultaneously:
 
-- *Block A — Financial Fundamentals:* 56 ratio-level features drawn from LSEG Refinitiv, covering acquirer and target leverage, liquidity, profitability, and deal structure. This is the baseline information available to every prior quantitative model.
+- *Block A — Financial Fundamentals:* 56 ratio-level features drawn from Yahoo Finance, covering acquirer and target leverage, liquidity, profitability, and deal structure. This is the baseline information available to every prior quantitative model.
 
 - *Block B — Section-Aware Textual Semantics:* FinBERT-encoded embeddings from the Management Discussion & Analysis (MD&A) and Risk Factors sections of pre-announcement 10-K filings, processed separately so that their opposing economic signals are not cancelled by aggregation.
 

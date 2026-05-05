@@ -23,7 +23,7 @@ carries predictive signal that is irreducible from the others.
 A tri-modal late-fusion model (HeteroGraphSAGE) is built and evaluated on a
 universe of completed US domestic M&A transactions announced between 2000 and
 2023, comprising approximately 3,000 deals with full multimodal coverage,
-sourced from LSEG Refinitiv, SEC EDGAR, and Bloomberg SPLC. Three feature
+sourced from Yahoo Finance, SEC EDGAR, and Bloomberg SPLC. Three feature
 blocks are fused via late concatenation: 56 financial ratio features (Block A),
 section-conditioned FinBERT embeddings of Management Discussion & Analysis and
 Risk Factor disclosures extracted separately from pre-announcement 10-K filings

@@ -1,0 +1,1065 @@
+ 
+ 
+Course Handbook 2025/26– On Campus 
+p. 1 
+CN6000: Mental Wealth (Final Year Project) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+Course Handbook 2025/26– On Campus 
+p. 2 
+Enter Course Name Here 
+Table of Contents 
+ENTER COURSE NAME HERE ...................................................................... 1 
+Accessibility notice ....................................................................................... 3 
+Welcome and Introduction............................................................................ 3 
+Welcome .................................................................................................................................................... 3 
+Introduction to the Course ......................................................................................................................... 4 
+Key Staff, Contact Details and Staff Roles .................................................................................................. 4 
+Course Operation and Student Registration .............................................................................................. 5 
+Course Management .................................................................................................................................. 6 
+Key Dates.................................................................................................................................................... 6 
+Conduct .......................................................................................................... 7 
+Academic Misconduct and Plagiarism ........................................................................................................ 7 
+Non-academic Misconduct ......................................................................................................................... 7 
+Track my Future ............................................................................................. 8 
+Referencing ........................................................ Error! Bookmark not defined. 
+Research Integrity ............................................. Error! Bookmark not defined. 
+Teaching, Learning and Assessment .......................................................... 9 
+Library and Resources ................................................................................ 10 
+Academic Tutoring ...................................................................................... 10 
+Problems Completing an Assessment ...................................................... 11 
+Student Feedback Mechanisms ................................................................. 11 
+Placement Arrangements ........................................................................... 12 
+Engagement and Attendance ..................................................................... 12 
+Support for Students ................................................................................... 12 
+Academic Advisors ................................................................................................................................... 13 
+Students’ Union ........................................................................................................................................ 13 
+Student Hubs ............................................................................................................................................ 13 
+Complaints and Appeals ............................................................................. 14 
+Health and Safety ........................................................................................ 14 
+Campus Maps .............................................................................................. 15 
+Key Links...................................................................................................... 16 
+ 
+ 
+ 
+
+ 
+ 
+Course Handbook 2025/26– On Campus 
+p. 3 
+ 
+ 
+https://youtu.be/CCGIm5E80ZM 
+Accessibility notice 
+If you require this document in an Alternative Format please contact Link 
+qae@uel.ac.uk.  
+ 
+There are also a range of free tools in built on devices to help you access this 
+document and other readings. You can find more information on the Ability net My 
+Computer My Way website and the Assistive Technology and Ease of Access 
+Intranet page.  
+ 
+ 
+Welcome and Introduction 
+ 
+Welcome 
+ 
+Dear students, 
+Welcome to our Computing module at the University of East London. Over the coming 
+year you’ll build practical skills in problem-solving, and professional practice, while 
+connecting theory to real-world applications. This is your final year, you should be very 
+proud of your achievements to reaching this far. 
+Teaching combines weekly lectures, regular supervisory meetings, and guided 
+independent study. To get the most from the module, attend regularly, participate in 
+activities, and keep up with weekly readings on Moodle. Assessments will focus on 
+applying concepts to realistic tasks; full details and marking criteria are on the module 
+site. 
+Please take a moment today to: (1) read the Module Guide, (2) check the schedule 
+and deadlines, and (3) and make sure you do not miss your lectures. 
+We are committed to an inclusive, supportive learning environment. If you need 
+adjustments or study support, reach out early—confidentially—to me or UEL services. 
+I’m looking forward to working with you. Questions are always welcome in the lecture 
+but anything else, please put these to your supervisor.  
+ 
+ 
+ 
+
+ 
+ 
+Course Handbook 2025/26– On Campus 
+p. 4 
+Introduction to the Course 
+ 
+This guide provides a detailed overview of final year undergraduate computing 
+projects within the School of Architecture, Computing and Engineering (ACE). All final 
+year project students on computing based programmes within ACE should read this 
+study guide and follow the guidelines contained herein. 
+ 
+The final year project is the single most important element of your degree programme, 
+requiring you to solve a significant problem within the area of computing. The project 
+will allow you to apply a range of skills that you have acquired over the course of your 
+degree programme and enable you to demonstrate your competence as a computing 
+professional. 
+ 
+The project is intended as an opportunity for you to demonstrate your problem solving 
+skills 
+and 
+it 
+must 
+therefore 
+include 
+a 
+substantial 
+amount 
+of 
+computing/scientific/engineering content. Your project should involve elements such 
+as software or application development, mathematical modelling, empirical 
+investigation or other scientific or engineering methodologies related to the area of 
+computing. 
+ 
+The content of projects will vary from one student to another although projects will 
+typically include an analysis of a software and/or hardware related problem followed 
+by the design, implementation, testing, validation and evaluation of a solution to the 
+analysed problem. 
+ 
+This study guide will also highlight the key deadlines and milestones that you must 
+meet during your final year project. 
+ 
+Dr Fadi Safieddine 
+ 
+Module Leaders 
+ 
+ 
+Key Staff, Contact Details and Staff Roles 
+ 
+The Key Staff and Contact Details are correct at point of publication. You will 
+be notified of any changes. 
+ 
+MODULE LEADER 
+ 
+Name:  Dr Fadi Safieddine  
+Email: fadi@uel.ac.uk 
+Tel: Via MS Teams 
+Room Number: EB.1.104 
+ 
+Office hours: Tuesdays 9:00- 11:00 Face to face or via MS Teams 
+List of supervisors will be made available on the Moodle page.  
+
+ 
+ 
+Course Handbook 2025/26– On Campus 
+p. 5 
+ 
+ 
+ 
+Course Operation and Student Registration 
+ 
+The teaching of this module will be delivered by a series of lectures. However, 
+the bulk of your learning will take place independently as you undertake the 
+various tasks associated with your project. Throughout this process of 
+independent learning, you will be supported by your project supervisor, an 
+academic member of staff. 
+Lecture sessions will take place during term 1 (with a few lectures in term 2) 
+and will provide you with the knowledge required to deliver a successful final 
+year project. These sessions will last for a maximum of 2 hours per week. 
+The first step of the project is for you to choose a supervisor who will support 
+you during the duration of the project (see Section 7). You are encouraged to 
+find a supervisor who offers a project proposal or whose expertise matches 
+your interests. Please note that staff have finite capacity and therefore the 
+module leader cannot guarantee that you will be allocated your choice of 
+supervisor. The allocation of supervisors is a first-come-first-served process 
+and so the sooner you contact a particular member of staff, the more likely you 
+are to be allocated that member of staff. 
+Extensive use of both Moodle and Microsoft Teams will be made during this 
+module. The Moodle site will contain a variety of information and resources 
+including teaching and learning materials, details of important events and 
+deadlines. Teams will be used for the purposes of communication. Staff will use 
+Teams to make announcements and to keep you abreast of important 
+developments. You should use Teams to contact staff and to post any 
+questions you have about the operation of this module. For the above reasons, 
+It is essential that you check both Moodle and Teams regularly.The majority of 
+your time on this module will be spent in private study.  You are expected to 
+use this private study time to review the lecture material, carry out the 
+suggested reading for that week, and prepare for practicals as instructed. 
+Your personal information is stored on your own UEL Direct account, and it 
+includes your name, date of birth, term-time contact address, home address 
+and email/phone contact details.  It is essential that you keep this information 
+up to date.  You can change your personal information at any time at UEL 
+Direct. If you need to change your name or date of birth you will need to show 
+original documents showing the correct name: Please visit either of the Student 
+Support Hubs with the correct documents for amendments.  
+ 
+At present, you can use UEL Direct to: 
+• Check which modules you are registered on; 
+• Update student address details; 
+• View assessment results; 
+• Module results and progression decisions.  
+ 
+
+ 
+ 
+Course Handbook 2025/26– On Campus 
+p. 6 
+ 
+Course Management 
+ 
+You can access all your Moodle and Teams sites via UEL’s TrackMyFuture portal: 
+https://trackmyfuture.uel.ac.uk 
+You can also directly access your CN7039 Moodle site by going to the following link: 
+https://moodle.uel.ac.uk/user/index.php?id=83110 
+The Moodle site will contain a variety of information and resources including teaching and 
+learning materials (links to reading, lecture slides, lab exercises, etc), a calendar of important 
+events and coursework deadlines and important news regarding the operation of this module.  
+You should check Moodle regularly! 
+As mentioned above, your lab/lecture sessions will be a rotation of on-line sessions and face-
+to-face on campus sessions. Microsoft Teams will be used to allow you to interact with these 
+sessions on-line.  
+It is strongly advised that, if you come to campus for your lab sessions, that you still bring a 
+set of headphones with you in order to communicate with and allow your tutor to take control 
+of your machine in Microsoft Teams if need be. 
+ 
+ 
+Key Dates 
+ 
+The term will start on Monday 29th September and finish Friday the 19th of 
+December. But for this block mode module, it will start on Tuesday 28th of 
+September and finish on Friday 10th of October. 
+ 
+You can see your timetable here: https://ueltt.uel.ac.uk/  
+ 
+Deadlines for this term: 
+ 
+- 
+15th of October 2025: Submit Topic and Supervisor on Moodle 
+- 
+29th of October 2025: Submit the complete proposal 
+- 
+26th of November 2025: Ethical Approval 
+- 
+10th of December 2025: Career Pathway Submission (10%) 
+- 
+Week of 26th of January 2026: Presentation of progress (10%) 
+- 
+Week of 22nd of April 2026: Showcase event  
+- 
+8th of May 2026: Submit the Dissertation (65%) 
+- 
+Week of 11th May 2026: Viva (15%) 
+ 
+ 
+ 
+Submitting the report could be done remotely.  
+ 
+ 
+ 
+
+ 
+ 
+Course Handbook 2025/26– On Campus 
+p. 7 
+Conduct 
+ 
+UEL has adopted a range of policies and procedures to help promote good 
+behaviour and to identify the standards of behaviour that are required.  These 
+include regulations and procedures, and descriptors of the responsibilities of 
+students.  The Code of Conduct covers student behaviour and responsibilities. 
+ 
+More information: 
+ 
+The Student Policies 
+Student Conduct Team 
+ 
+ 
+Academic Misconduct and Plagiarism 
+ 
+For the purposes of university’s regulations, academic misconduct is defined as 
+any type of cheating in an assessment for the purposes of achieving personal gain.  
+Please follow the links below to learn more. 
+ 
+More Information 
+• Student Handbook page on Academic Misconduct and Plagiarism 
+• Academic Integrity and Academic Misconduct Policy 
+ 
+ 
+Research Integrity 
+ 
+The University adheres to its responsibility to support and promote the highest 
+standards of rigour and integrity and embed a culture of honesty, transparency and 
+care and respect for all participants and subjects of research. The University is 
+committed to ensuring that research is conducted with integrity and good research 
+practices are upheld.  Please follow the link below to learn more. 
+ 
+More information: 
+ 
+• Research Integrity and Ethics Document page 
+ 
+ 
+Non-academic Misconduct 
+ 
+Any behavioural misconduct, whether verbal, physical or threats may be investigated 
+by the Student Conduct Team under the Non-Academic Misconduct Policy or the 
+Sexual Violence and Misconduct Policy. The Report and Support platform can be 
+used by all members of the community to report incidents or to seek internal and 
+external support. 
+ 
+ 
+
+ 
+ 
+Course Handbook 2025/26– On Campus 
+p. 8 
+Harassment and Sexual Misconduct 
+ 
+As part of the University's commitment to fostering a safe and respectful living 
+environment, all students are required to review and understand the University's 
+policies on harassment and sexual misconduct. This includes engaging with 
+mandatory training designed to help students recognise, prevent, and respond to 
+inappropriate behaviours. By 1st August 2025, the University will have a single, 
+comprehensive source of information outlining these policies, including guidance on 
+reporting incidents, accessing support services, and understanding investigation and 
+resolution processes. Further details will be located on the University's website Dignity 
+and Respect | University of East London.. 
+ 
+Freedom of Speech 
+ 
+Throughout your course, there will be opportunities to debate on different topics, some 
+of which some may be controversial and challenging. Being able to debate these 
+topics is an important part of your development both at your time here and in your 
+future. To support this, we have developed further information and guidance in our 
+UEL Freedom of Speech Statement, alongside a Code of Practice and Frequently 
+Asked Questions. 
+  
+UEL have adopted the Universities UK definitions of freedom of speech and 
+academic freedom, and for guidance these are set out below: 
+  
+Freedom of speech means everyone has the right to express lawful views and 
+opinions freely, in speech or in writing, without interference. 
+  
+Academic freedom means protecting the intellectual independence of 
+academics to question and test received views and wisdom, and to put forward 
+new ideas and controversial or unpopular opinions, without placing themselves 
+in danger of losing their jobs or privileges or reducing the likelihood of them 
+securing promotion or different roles at the university. 
+ 
+More information: 
+ 
+• The University’s Student Policies  
+• Report + Support for reporting incidents 
+• Freedom of Speech | University of East London (uel.ac.uk) 
+ 
+ 
+Track my Future 
+ 
+Track My Future (TMF) is a personalised online companion, enabling you to get the 
+most of your time at the University of East London.  It brings together essential 
+learning tools such as Moodle, your timetable, Career Zone, emails, academic 
+advisor information, assessment results, your student record, social opportunities, 
+campus maps and more... all within a single app.  
+
+ 
+ 
+Course Handbook 2025/26– On Campus 
+p. 9 
+The Track My Future app will help you:  
+• 
+Find personally relevant information in one place.  
+• 
+Know where to be and when.  
+• 
+Manage your academic schedule with a timetable, upcoming Moodle tasks, 
+and appointments all in one place.  
+• 
+Do more with more self-service.  
+• 
+Receive communications and alerts tailored to your preferences.  
+• 
+Feedback on how you are feeling, through quick surveys and polls.  
+• 
+Complete online payments and check outstanding balances.  
+For more information, including how to access our long-standing SharePoint platform 
+and newly developed mobile app, please visit:  
+Track my future  
+ 
+ 
+Teaching, Learning and Assessment 
+ 
+You must achieve an overall module mark of 40% in order to pass this module. The module 
+is entirely assessed by the coursework tasks, which is therefor worth a total of 100% of the 
+overall assessment for this module. The coursework will consist of 6 tasks (total 100 marks) 
+set during the practical labs each week that test your formal modelling, testing and 
+programming skills. 
+ 
+At the end of this module, students will be able to: 
+  
+Knowledge 
+1. Demonstrate a sound knowledge and understanding of the subject area to which their project relates 
+(IC) (CI) 
+ 
+Thinking skills 
+2. Critically reflect upon the ethical, legal, and social considerations of a chosen project topic (IC) (CI) (SEI) 
+(COI) 
+3. Evaluate both the research of others and their own project work (CI) (COI) 
+ 
+Subject-based practical skills 
+4. Analyse the problem domain to which the project relates and present that analysis in the form of a 
+literature review (IC) (CI) 
+5. Specify, design and implement a solution to a non-trivial computing problem using industry-standard 
+methodologies, tools and techniques (DP) (IC) (CC) (EE) 
+ 
+Skills for life and work (general skills) 
+6. Defend their work using both verbal and non-verbal communication channels (DP) (SEI) 
+7. Demonstrate an ability to organise, manage, and document a sizeable piece of independent academic 
+work (DP) (SEI) (PI) 
+8. Provide feedback to mentees and peers (SEI) (CC) 
+
+ 
+ 
+Course Handbook 2025/26– On Campus 
+p. 10 
+9. Produce meaningful and realistic career goals and pathways for achieving this (IC, CC, EE) 
+ 
+We strongly suggest that you try to submit all coursework by the deadline set as meeting 
+deadlines is expected in employment.  However, in our regulations, UEL has permitted 
+students to be able to submit their coursework up to 24 hours after the deadline. Coursework, 
+which is submitted late, but within 24 hours of the deadline, will be assessed but subject to a 
+fixed penalty.  
+ 
+Please note that if you submit twice, once before the deadline and once during the 24-hour 
+late period, then the second submission will be marked and the fixed penalty applied. This rule 
+only applies to coursework.  It does not apply to examinations, presentations, performances, 
+practical assessments or viva voce examinations.  If you miss these for a genuine reason, 
+then you will need to apply for extenuating circumstances, or accept that you will receive a 
+zero mark. 
+As well as this, summative assessment (i.e. assessment that counts towards your final 
+module mark), there will also be regular in-class quizzes to provide you with feedback in the 
+form of formative assessment (i.e. assessment that does not count towards your final module 
+mark). 
+ 
+More information: 
+ 
+Student Handbook page on Assessment and Feedback  
+ 
+ 
+Library and Resources 
+ 
+We have two great libraries at UEL – Docklands and Stratford – and a range of 
+services and resources that can help you make the most of your studies.  
+ 
+• The Library, Archives and Learning Services homepage includes Library 
+Search where you can find books and journal articles on your reading lists, 
+and links to databases where you can find all the latest research across all 
+subject areas. You can also find information about our Archives and 
+Disability and Dyslexia Support services. 
+• If you need support with your literature searching strategies, you can book 
+an online 1-2-1 with your Academic Services Librarian who will guide you 
+on how to make effective use of the resources we provide. 
+ 
+More information: 
+ 
+• Link to the Library and Learning Services homepage (UEL login required) 
+ 
+Referencing 
+ 
+As a student you will be taught how to write correctly referenced essays. UEL's 
+standard Harvard referencing system is from Cite Them Right. Cite them Right is 
+the standard Harvard referencing style at UEL for all Schools, however professional 
+
+ 
+ 
+Course Handbook 2025/26– On Campus 
+p. 11 
+body requirements will take precedence for instance the School of Psychology which 
+uses the APA system. 
+ 
+ 
+More information:  
+ 
+• Student Handbook page on Cite Them Right (UEL login required) 
+ 
+• Academic skills drop in (academic tutoring) (UEL login required) 
+ 
+Academic Tutoring 
+ 
+The Academic Tutors advise students on academic skills, such as writing essays 
+and reports, citing and referencing sources, presentations, working with statistics 
+and many more. They work with lecturers to embed sessions in your course to 
+support assignment success. They also provide workshops open to all students, 
+advertised during the term.   
+   
+You can get one-to-one advice from an academic tutor by booking an online 
+appointment or visiting a drop-in session on campus. You can also access online 
+sources and get feedback on your writing at your own pace using the MyFeedback 
+service. Please visit our intranet page for more information. 
+ 
+ 
+Problems Completing an Assessment 
+ 
+You may be in a position where you cannot submit your coursework or take an exam 
+due to circumstances that are:  
+• Unforeseeable - in that you could have no prior knowledge of the event 
+concerned, and  
+• Unpreventable - in that you could do nothing reasonably in your power to 
+prevent such an event, and  
+• Expected to have a serious impact on performance.  
+ 
+More information on support available to you can be found via the mitigation 
+webpages and the Students Union  
+ 
+ 
+Student Feedback Mechanisms 
+ 
+UEL values student feedback and there are lots of channels for gathering 
+feedback on your educational experience. You can get involved and have 
+your say in a number of ways.   
+ 
+More information: 
+ 
+
+ 
+ 
+Course Handbook 2025/26– On Campus 
+p. 12 
+Student Handbook page on Student Feedback Mechanisms 
+Course Committees and Representatives  
+  
+ 
+Placement Arrangements 
+ 
+Placements, internships, and work-based learning provide opportunities for you to 
+gain work experience, develop work-related skills, learn about professional sectors 
+and how your studies can be directly applied in the work environment.  Many 
+courses include placements as part of the formal course of study or, as a mandatory 
+professional requirement. If your course does not include a placement, then it’s 
+advisable to source work-experience while you study. The Career Zone team can 
+support you with applying for work experience opportunities. Login to the Career 
+Zone platform to search the Jobs Board and access a wealth of resources to help to 
+you prepare for and apply for opportunities.   
+ 
+• Career Zone Platform 
+• Policy on work-based learning and placement management  
+ 
+ 
+ 
+Engagement and Attendance 
+ 
+Evidence shows that good attendance has a positive impact on academic 
+performance. As a university, we are committed to supporting you in reaching your 
+full potential.  
+ 
+Student Engagement, Retention and Success Unit (SERT) is here to support you in 
+reaching your full potential. By monitoring attendance and engagement, we can 
+identify early signs that you may need support and work with you to address any 
+challenges that could be affecting your learning. 
+ 
+If you are experiencing challenges that impact your ability to engage with your 
+course, you can speak to a member of the team in person at either the Docklands or 
+Stratford campus, or remotely by telephone. To book an appointment or ask a 
+question, please use MyPortal or call The Hub on 0208 223 4444 to speak with our 
+Duty Advisor (available weekdays, 10am-1pm, excluding bank holidays). 
+ 
+ 
+Support for Students 
+  
+Student Services is responsible for nurturing wellness, supporting individual needs, 
+helping students in crisis and enabling positive experiences through on-campus 
+accommodation and extra-curricular activities.  Working in partnership across 
+academic schools and professional services, our teams seek to provide a network of 
+support throughout the student journey and aim to optimise student success.  
+  
+
+ 
+ 
+Course Handbook 2025/26– On Campus 
+p. 13 
+If you’re ever unsure of anything, you can get support from our Student Hub team 
+and track your queries by logging into My Portal.  Alternatively, you can call on 0208 
+223 4444 or visit them on campus.  
+  
+Full details of all our services are available on our Student Services Homepage.  
+ 
+Academic Advisors 
+ 
+To help you make the most of your studies, every student undertaking 
+undergraduate or taught masters’ courses at UEL is assigned a member of 
+academic staff as their Academic Advisor (AA). Your AA will support you to achieve 
+the degree you want.   Please follow the link below to learn more. 
+ 
+ 
+• Student Handbook page on Academic Advisors (UEL login required) 
+ 
+ 
+Students’ Union 
+ 
+East London Students' Union offers a range of services for students including a 
+range of student groups/societies, activities and events campaigns, and impartial 
+advice on complaints, academic processes and appeals.  
+ 
+More information 
+ 
+Students’ Union webpage 
+ 
+Student Hubs 
+ 
+The Student Hubs are located at each site and offer you the full range of services, 
+including helpdesk services, a dedicated telephone service and webmail facility.  
+These are delivered by fully trained Student Support staff, able to help you quickly 
+and effectively with any general questions and provide you with support and 
+guidance immediately.   
+ 
+We can advise and support you on your student journey in countless ways, 
+including:  
+• Student documentation (ie. Student status letters, bank letters & council tax 
+exemption letters)  
+• Applying for an 18+ Oyster card  
+• Internet access queries  
+• Course and module related queries (i.e. Course & module change requests)  
+• Enrolment and re-enrolment queries  
+• Obtaining your student ID card  
+• Assessment related advice (i.e. Extenuation guidance)  
+
+ 
+ 
+Course Handbook 2025/26– On Campus 
+p. 14 
+• Signposting and appointments with professional support services (e.g. 
+Student Money, Advice and Rights Team, Student Wellbeing team, Disability 
+& Dyslexia team, International Student Advice, Financial Services)  
+ 
+How to contact us:  
+ 
+By Telephone – +44 (0)20 8223 4444  
+Online Enquiries – MyPortal  
+At our Student Hub Helpdesks (Docklands, Stratford and USS campuses): Monday 
+to Friday from 09:00 – 17:00 (excluding bank holidays and public holidays)  
+  
+More information  
+ 
+How the Student Hub can support you 
+ 
+Faith and Spirituality 
+ 
+All UEL students are welcome to access the faith and reflection centre and 
+prayer spaces at both the Docklands and Stratford Campus. They are also 
+able to seek support from the Chaplaincy Manager and honorary 
+chaplains. Faith & Spirituality | University of East London. 
+ 
+ 
+More Information 
+ 
+• Student Handbook page on Student Hubs (UEL login required) 
+ 
+Complaints and Appeals 
+ 
+If you feel that our University has not delivered the standard of service which it would 
+be reasonable to expect, you may be entitled to lodge a complaint or an appeal. You 
+can find information on how to begin either of these processes in the links below. 
+ 
+More information:  
+ 
+• Student Handbook pages on Appeals and Complaints (UEL login required) 
+• Complaints Procedure 
+• Student Policy on Academic Appeals 
+ 
+ 
+Health and Safety 
+ 
+
+ 
+ 
+Course Handbook 2025/26– On Campus 
+p. 15 
+It is the policy of University of East London to ensure, so far as reasonably 
+practicable, the health, safety and wellbeing of all staff, students and others who may 
+be affected by the undertakings of the University.  
+   
+ 
+• University of East London’s Health and Safety management page. 
+ 
+ 
+Campus Maps 
+ 
+The University of East London has three main campuses. There is a free, regular 
+bus service for students and staff, between campuses. The timetable is available on 
+the intranet.  
+ 
+ 
+• Docklands Campus Map 
+• Stratford Campus Map  
+• University Square Stratford 
+ 
+
+ 
+ 
+Course Handbook 2025/26– On Campus 
+p. 16 
+Key Links 
+ 
+• Academic Appeals  
+• Academic Integrity (UEL login required) 
+• Access and Participation Plan 
+• Accreditation of Experiential Learning  
+• Assessment and Feedback Policy 
+• Bus Timetable (UEL login required) 
+• Complaints procedure (UEL login required) 
+• Wellbeing Support (UEL login required) 
+• Disability support 
+• Engagement and Attendance Policy  
+• Procedure for problems completing an assessment (UEL login required)  
+• IT Support (UEL login required) 
+• Library Archives and Learning Services (UEL login required) 
+• Manual of General Regulations 
+• Mentoring (UEL login required) 
+• Office for Institutional Equity (UEL login required) 
+• Referencing guidelines (UEL login required) 
+• Student Engagement, Retention and Success (UEL login required) 
+• Student Protection Plan 
+• Suitability Procedure 
+• Track My Future 
+ 
+ 
+ 
+
+ 
+ 
+Course Handbook 2025/26– On Campus 
+p. 17 
+APPENDICES:  
+Appendix A – Module Specification 
+ 
+ 
+Module Specification 
+Module Title:     
+ 
+Mental Wealth; Professional 
+Life 3 (Project) 
+Module Code: CN6000 
+ 
+Level: 6 
+ 
+Credit: 40 
+ 
+ECTS credit: 20 
+Module Leader:  
+ 
+Fadi Safieddine 
+ 
+Pre-requisite:    
+100 Credits at Level 5 of the student’s 
+programme 
+                                                                            
+Pre-cursor:  
+120 Credits at Level 5 of the student’s programme 
+ 
+Co-requisite:       None 
+                                                  
+Excluded combinations : None 
+Suitable for incoming study 
+abroad?  Y 
+Location of delivery:  UEL 
+Summary of module for applicants: 
+ 
+Developing professional skills are increasingly critical for successful graduate-level employment, 
+entrepreneurship and career progression in the 4th industrial revolution. 
+ 
+This module will provide students with the opportunity to apply the full range of skills, competencies 
+and experience required for successful development to, and in, a range of potential future career 
+areas. 
+ 
+Herein they will advance the areas identified at level 5 for their own personal professional 
+development (including emotional, social, physical, cultural and cognitive intelligences) through 
+taught and workshop activity.  
+ 
+Students will undertake a sizeable piece of individual academic work in an area of their own interest 
+relevant to, and demonstrating technical skills acquired in, their programme of study. Students will 
+normally need to research one or more academic topic areas and then apply their findings to the 
+construction of a computer-based system. 
+ 
+ 
+Students will consider the ethical, legal, social, and professional issues in the construction of systems 
+and the project will require appropriate research, analysis, design, implementation, quality assurance, 
+evaluation and project management. 
+ 
+ 
+Students will reflect on the success of the strategies that they employed to further develop 
+their reflective skills, self-awareness, ‘life style’ and ‘self care’ approaches and where 
+necessary improve their approaches.  
+ 
+Students will have opportunity to select an in-house microbusiness to join in the role of ‘Manager’. In 
+this position they will oversee the successful operation of the enterprise, coach and mentor students 
+new to the programme.  Working collaboratively with peers and academic staff, they will ensure the 
+effective delivery of a live project by managing people and physical resources.  In doing so they will 
+apply the skills learnt elsewhere in their studies (and from external activities) required in the 
+workplace.   
+ 
+Main topics of study: 
+ 
+The module will enable students to apply and develop a variety of skills based competencies 
+explored at level 5, including: self-awareness and regulation; mindfulness; emotional resilience; 
+motivation; ethical decision-making; active listening; self-discipline and management; attention; 
+reaction and response time; cognitive and muscle memory; managing stress; physical resilience; 
+subject knowledge;  cognitive flexibility; managing an audience; co-ordinating with others, 
+negotiation; creativity; leadership and entrepreneurship; service orientation; critical thinking; complex 
+problem solving; research synthesis and analysis.  
+ 
+
+ 
+ 
+Course Handbook 2025/26– On Campus 
+p. 18 
+Students cover the following topics by applying knowledge and understanding of them to their chosen 
+project:  
+ 
+• 
+Identification of a suitable project topic 
+• 
+Research methods 
+• 
+Literature surveys, searches and reviews 
+• 
+Plagiarism and referencing 
+• 
+Project planning, monitoring, risk assessment and control 
+• 
+Academic writing and presentation skills 
+• 
+The development, to a professional standard, of a large, non-trivial computer-based system or the 
+critical evaluation of a recent development in the field of computing 
+• 
+The documentation, to a professional standard, of a significant, problem-focused computing task 
+including the study of the application domain, a detailed analysis of the problem and a solution to 
+the problem. 
+ 
+This module will be able to demonstrate at least one of the following examples/ exposures 
+ 
+Live, applied project ☒ 
+Company/engagement visits ☒ 
+Company/industry sector endorsement/badging/sponsorship/award ☒ 
+ 
+Learning Outcomes for the module 
+ 
+• 
+Digital Proficiency - Code = (DP) 
+• 
+Industry Connections - Code = (IC) 
+• 
+Social & Emotional Intelligence - Code = (SEI) 
+• 
+Physical Intelligence - Code = (PI) 
+• 
+Cultural Intelligence - Code = (CI) 
+• 
+Community Connections & UEL Give Back- Code = (CC) 
+• 
+Cognitive Intelligence– Code = (COI)  
+• 
+Enterprise and Entrepreneurship - Code = (EE) 
+ 
+At the end of this module, students will be able to: 
+ 
+Knowledge 
+10. Demonstrate a sound knowledge and understanding of the subject area to which their 
+project relates (IC) (CI) 
+ 
+Thinking skills 
+11. Critically reflect upon the ethical, legal, and social considerations of a chosen project topic 
+(IC) (CI) (SEI) (COI) 
+12. Evaluate both the research of others and their own project work (CI) (COI) 
+ 
+Subject-based practical skills 
+13. Analyse the problem domain to which the project relates and present that analysis in the 
+form of a literature review (IC) (CI) 
+14. Specify, design and implement a solution to a non-trivial computing problem using industry-
+standard methodologies, tools and techniques (DP) (IC) (CC) (EE) 
+ 
+Skills for life and work (general skills) 
+15. Defend their work using both verbal and non-verbal communication channels (DP) (SEI) 
+16. Demonstrate an ability to organise, manage, and document a sizeable piece of independent 
+academic work (DP) (SEI) (PI) 
+17. Provide feedback to mentees and peers (SEI) (CC) 
+18. Produce meaningful and realistic career goals and pathways for achieving this (IC, CC, EE) 
+ 
+Teaching/ learning methods/strategies used to enable the achievement of learning outcomes: 
+For on campus students: 
+ 
+Lectures will used to provide an overview of the project, its requirements and organisation and an 
+introduction to research methods, literature surveys and referencing. In addition, every student will be 
+allocated a supervisor at an early stage within the module. The supervisor will support the student for 
+
+ 
+ 
+Course Handbook 2025/26– On Campus 
+p. 19 
+the duration of the project. Feedback will be provided throughout the module in the form of both 
+formative and summative work. 
+ 
+Assessment methods which enable students to 
+demonstrate the learning outcomes for the module; 
+please define as necessary: 
+ 
+i. 
+Supporting Portfolio 
+• 
+A 10 minutes’ project progress presentation 
+including project plan and link to future career 
+plans (5% of module mark)  
+• 
+A working demonstration of the project work and 
+a 15 minutes’ viva presentation  (10% of module 
+mark) 
+• 
+Career Development Pathway Assessment Task 
+– 400 words (10% of module mark) pass/fail 
+ii. 
+Main Project Report 
+• 
+A project report of 10,000 words  
+ 
+Threshold mark: a pass mark of 40% is required for each 
+component. 
+ 
+Weighting: 
+ 
+ 
+ 
+25% 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+75% 
+Learning 
+Outcomes 
+demonstrated: 
+ 
+1-9 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+1-5, 7 & 8 
+Reading and resources for the module: 
+ 
+Core  
+ 
+Dawson, C. W. (2015) Projects in Computing and Information Systems: A Student’s Guide. 3rd ed. 
+Harlow, Essex: Pearson Education. 
+ 
+Recommended 
+ 
+• Cottrell, S. (2017) Critical Thinking Skills: Effective Analysis, Argument and Reflection. 3rd ed. 
+Basingstoke: Palgrave. 
+• Denzin, N. K. and Lincoln, Y. S. (2013) The Landscape of Qualitative Research. 4th ed. London: 
+SAGE. 
+• Murray, N. and Hughes, G. (2008) Writing Up Your University Assignments and Research Projects: 
+A Practical Handbook. Maidenhead, UK: Open University Press 
+• Pears, R. and Shields, G. (2016) Cite Them Right: The Essential Referencing Guide. 10th ed. 
+Basingstoke: Palgrave 
+ 
+ 
+Live, applied project  - the core of this module is to develop a substantial practical project that must 
+be ‘problem-focussed’ ie applied to the solution of a real world problem. 
+ 
+Company/engagement visits  - employers will be invited to attend an end of project showcase  
+event and a significant number of projects are client-based ie involve the development and delivery of 
+systems and/or software for businesses and organisations. 
+ 
+Company/industry sector endorsement/badging/sponsorship/award  The British Computer 
+Society awards an annual prize to the best project as judged by the staff responsible for delivering 
+this module. 
+ 
+Indicative 
+learning and 
+teaching time 
+(10 hrs per 
+credit): 
+Activity 
+1. Student/tutor 
+interaction: 
+ 
+ 
+24 hrs 
+ 
+12 hrs 
+ 
+  
+ 
+  
+ 
+Lectures 
+ 
+Consultation with project supervisor 
+ 
+
+ 
+ 
+Course Handbook 2025/26– On Campus 
+p. 20 
+2. Student 
+learning time: 
+ 
+ 
+284 hrs 
+ 
+ 
+ 
+80 hours 
+ 
+ 
+ 
+Essential and background reading, private study, analysis, design, coding, 
+testing and system implementation, assessment preparation and delivery 
+ 
+Engaging with the in-house micro-business 
+ 
+Total hours (1 
+and 2): 
+ 
+ 
+ 
+ 
+400 hours 
+ 
+ 
+ 
+

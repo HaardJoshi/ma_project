@@ -77,7 +77,9 @@ The regression pipeline was retained because @ch-methodology defined it as neces
   caption: [Regression pipeline summary — representative continuous CAR results. Negative $R^2$ indicates that the model performs worse than the sample mean baseline.],
 ) <tbl-reg-summary>
 
-These negative $R^2$ values are not evidence that the project failed. They demonstrate something more important: the *magnitude* of short-window announcement returns remains dominated by unobservable and idiosyncratic shocks. Payment method, takeover speculation, competing bids, macro conditions, investor sentiment, and timing noise all influence realised CAR in ways that are only partially visible in pre-announcement features @fama1991 @shleifer2003.
+These negative $R^2$ values are not evidence that the project failed. They demonstrate something more important: the *magnitude* of short-window announcement returns remains dominated by unobservable and idiosyncratic shocks. Payment method, takeover speculation, competing bids, macro conditions, investor sentiment, and timing noise all influence realised CAR in ways that are only partially visible in pre-announcement features @fama1991 @shleifer2003. 
+
+Because the regression models failed to achieve positive explanatory power ($R^2 < 0$) across all configurations, detailed error metrics defined in @ch-methodology (such as MAE, RMSE, and Huber loss) are omitted from this summary. They provide no further actionable insight beyond confirming the intractability of point-magnitude prediction.
 
 The regression findings therefore justify the chapter's structure. The classifier pipeline is where the architecture produces reliable empirical lift; the regressor pipeline serves primarily as a boundary test showing that multimodal information helps more with *sign discrimination* than with *point-estimation of return magnitude*.
 
