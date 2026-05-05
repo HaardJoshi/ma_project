@@ -509,10 +509,8 @@ def generate_plot_shap_polished():
     ax_bar.set_ylim(ax_bee.get_ylim())
     
     # ── Horizontal alternating row shading for readability ───────────────────────
-    for i in range(15):
-        if i % 2 == 0:
-            ax_bee.axhspan(i - 0.5, i + 0.5, color="#f7f7f7", zorder=0, alpha=0.6)
-            ax_bar.axhspan(i - 0.5, i + 0.5, color="#f7f7f7", zorder=0, alpha=0.6)
+    # Removed alternating grey backgrounds as per user feedback
+    pass
     
     # ── Modality count annotation on bar panel ───────────────────────────────────
     n_graph = sum(1 for l in ranked_labels if get_category(l) == "Graph Embedding")

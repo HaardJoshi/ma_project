@@ -6,7 +6,7 @@
   student_id: "2512658", // 
   degree: "Data Science and Artificial Intelligence", // 
   supervisor: "Arish Siddiqui", // 
-  date: datetime(year: 2026, month: 08, day: 08), // 
+  date: datetime(year: 2026, month: 05, day: 08), // 
   
   abstract: [
    #set par(justify: true, leading: 0.65em)
