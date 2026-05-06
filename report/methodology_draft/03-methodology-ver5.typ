@@ -1,5 +1,5 @@
 // ============================================================
-// Chapter 3: Methodology  — Polished with Architecture Diagram + Tables
+// Chapter 3: Methodology  - Polished with Architecture Diagram + Tables
 // Hard Joshi | BSc Data Science & AI | University of East London
 // ============================================================
 
@@ -10,8 +10,8 @@
 == Introduction
 
 This chapter documents the complete empirical pipeline implemented in this study and
-explains the reasoning behind each design decision. Every choice — from the choice of event
-window to the selection of PCA over UMAP for dimensionality reduction — is grounded in a
+explains the reasoning behind each design decision. Every choice - from the choice of event
+window to the selection of PCA over UMAP for dimensionality reduction - is grounded in a
 concrete constraint: the data are sparse, the signal is weak, and the sample is small by the
 standards of modern machine learning. Understanding those constraints is the key to
 evaluating the pipeline's outputs fairly.
@@ -20,8 +20,8 @@ The chapter is organised as follows. @sec-philosophy positions the study philoso
 and explains why a deductive quantitative approach is the correct fit for the research
 questions. @sec-data documents the data sources, sample filters, and the event-study
 label construction that translates raw stock returns into a binary prediction target.
-@sec-features describes how each of the three information modalities — financial ratios,
-textual embeddings, and graph topology — is constructed into model-ready features.
+@sec-features describes how each of the three information modalities - financial ratios,
+textual embeddings, and graph topology - is constructed into model-ready features.
 @sec-architecture presents the full late-fusion architecture with an annotated diagram and
 explains the key design trade-offs. @sec-evaluation specifies the ablation ladder, the three
 hypothesis tests, and the evaluation metrics. @sec-limitations acknowledges the study's
@@ -34,8 +34,8 @@ considerations.
 
 The study adopts a post-positivist research philosophy @creswell2014. Post-positivism sits
 between the strict objectivism of classical positivism and the constructivist view that
-reality is entirely observer-dependent. It holds that the phenomenon of interest — here,
-post-merger synergy — exists as a real economic outcome, but that any measurement of it
+reality is entirely observer-dependent. It holds that the phenomenon of interest - here,
+post-merger synergy - exists as a real economic outcome, but that any measurement of it
 will be imperfect. Stock price reactions to deal announcements are real signals of market
 expectation, but they are contaminated by behavioural bias, information asymmetry, and the
 structural noise of financial markets @akerlof1970 @roll1986 @martynova2008. The
@@ -117,27 +117,27 @@ The binary prediction target is derived from the Cumulative Abnormal Return (CAR
 by the acquirer's stock over the eleven-day window surrounding the deal announcement. This
 process involves three steps.
 
-*Step 1 — Estimate Normal Returns.* For each acquirer $i$, a single-factor market model is
+*Step 1 - Estimate Normal Returns.* For each acquirer $i$, a single-factor market model is
 estimated over the pre-event window $[-250, -10]$ trading days relative to announcement:
 $ R_(i,t) = hat(alpha)_i + hat(beta)_i R_(m,t) + epsilon_(i,t) $
 where $R_(m,t)$ is the value-weighted CRSP market return. The estimated parameters
 $hat(alpha)_i$ and $hat(beta)_i$ represent the stock's typical return pattern in the absence of
 deal-specific news.
 
-*Step 2 — Compute Abnormal Returns.* For each day $t$ in the event window, the abnormal
+*Step 2 - Compute Abnormal Returns.* For each day $t$ in the event window, the abnormal
 return is the gap between the stock's actual return and the return predicted by the market
 model:
 $ "AR"_(i,t) = R_(i,t) - (hat(alpha)_i + hat(beta)_i R_(m,t)) $
 
-*Step 3 — Cumulate and Label.* The eleven daily abnormal returns are summed across the
+*Step 3 - Cumulate and Label.* The eleven daily abnormal returns are summed across the
 $[-5, +5]$ window:
 $ "CAR"_i = sum_(t = -5)^(+5) "AR"_(i,t) $
 The binary label is then:
 $ y_i = cases(1 "if" "CAR"_i > 0 quad "(value-creating)", 0 "otherwise" quad "(value-destroying)") $
 
 Predicting sign rather than magnitude is a deliberate choice. The magnitude of a CAR is
-shaped by dozens of simultaneous factors — competing bids, macro shocks, payment method
-surprises — that are effectively random from the perspective of pre-announcement
+shaped by dozens of simultaneous factors - competing bids, macro shocks, payment method
+surprises - that are effectively random from the perspective of pre-announcement
 observables. The sign of the market's reaction, by contrast, is more systematically linked
 to the underlying deal quality: whether the acquirer has the financial capacity, the strategic
 alignment, and the ecosystem positioning to generate value. This is precisely the
@@ -162,9 +162,9 @@ Chapter 2. @tbl-featureblocks summarises the construction logic for each block.
     table.header(
       [*Block*], [*Raw Input*], [*Construction Steps*], [*Final Representation*],
     ),
-    [*A — Financial*], [LSEG ratios: leverage, liquidity, profitability, valuation, deal premium, payment method, relative size], [Median imputation → StandardScaler (fit on train only)], [56-dimensional dense vector per deal],
-    [*B — Textual*], [EDGAR 10-K: MD&A section + Risk Factors section (acquirer and target separately)], [Section extraction → FinBERT tokenisation → CLS pooling → pairwise cosine distance → PCA compression (fit on train only)], [128-dimensional PCA vector per deal-pair (64 per section)],
-    [*C — Graph*], [Bloomberg SPLC: supplier\_of, customer\_of, competitor\_of edges + acquires edges], [HeteroData construction → type-specific GraphSAGE (2 hops) → cross-type attention pooling → node embedding extraction for acquirer and target], [64-dimensional graph embedding per firm node],
+    [*A - Financial*], [LSEG ratios: leverage, liquidity, profitability, valuation, deal premium, payment method, relative size], [Median imputation → StandardScaler (fit on train only)], [56-dimensional dense vector per deal],
+    [*B - Textual*], [EDGAR 10-K: MD&A section + Risk Factors section (acquirer and target separately)], [Section extraction → FinBERT tokenisation → CLS pooling → pairwise cosine distance → PCA compression (fit on train only)], [128-dimensional PCA vector per deal-pair (64 per section)],
+    [*C - Graph*], [Bloomberg SPLC: supplier\_of, customer\_of, competitor\_of edges + acquires edges], [HeteroData construction → type-specific GraphSAGE (2 hops) → cross-type attention pooling → node embedding extraction for acquirer and target], [64-dimensional graph embedding per firm node],
   ),
   caption: [Feature construction summary across the three modality blocks.],
 ) <tbl-featureblocks>
@@ -192,7 +192,7 @@ where management describes strategy and growth plans, and the Risk Factors secti
 the company enumerates its specific regulatory and operational hazards, encode opposite
 hypothesised signals. MD&A similarity between acquirer and target is predicted to correlate
 positively with CAR (strategic alignment); Risk Factor similarity is predicted to correlate
-negatively (shared vulnerability / risk concentration). These are *opposite signals* — one
+negatively (shared vulnerability / risk concentration). These are *opposite signals* - one
 pushes the prediction toward positive outcome, the other toward negative. A model that
 conflates these sections by embedding the entire filing as one block mixes these opposite signals into a single feature, which Chapter 4 empirically demonstrates
 destroys predictive value.
@@ -202,7 +202,7 @@ For each section and each firm, the text is tokenised and passed through frozen 
 similarity is then computed between the acquirer's and target's embeddings within each
 section, yielding two scalar similarity scores per deal. These scalars are used directly in
 the H2 OLS test. For the fusion model, the full embeddings are PCA-compressed to 64
-dimensions per section — a deliberate regularisation choice. PCA is the only dimensionality
+dimensions per section - a deliberate regularisation choice. PCA is the only dimensionality
 reduction technique that produces a deterministic, out-of-sample-transformable basis,
 making it compatible with rigorous fold-level cross-validation; non-linear alternatives such
 as UMAP produce sample-dependent transformations that cannot be applied to held-out folds
@@ -239,12 +239,12 @@ probability estimate.
     import draw: *
 
     // ── colour palette ──────────────────────────────────────────
-    let fin_col   = rgb("#5591c7")   // blue   – financial
-    let txt_col   = rgb("#fdab43")   // amber  – textual
-    let grp_col   = rgb("#00c49f")   // teal   – graph
-    let fuse_col  = rgb("#9b59b6")   // purple – fusion head
-    let lbl_col   = rgb("#e74c3c")   // red    – output label
-    let bg_col    = rgb("#f0f0f0")   // light grey – data source boxes
+    let fin_col   = rgb("#5591c7")   // blue   - financial
+    let txt_col   = rgb("#fdab43")   // amber  - textual
+    let grp_col   = rgb("#00c49f")   // teal   - graph
+    let fuse_col  = rgb("#9b59b6")   // purple - fusion head
+    let lbl_col   = rgb("#e74c3c")   // red    - output label
+    let bg_col    = rgb("#f0f0f0")   // light grey - data source boxes
 
     // ── helper: rounded rectangle with label ─────────────────────
     let box(x, y, w, h, fill: white, stroke: black, label: "", sub: "", font-size: 9pt) = {
@@ -295,7 +295,7 @@ probability estimate.
     // ROW 2: ENCODERS  (y = 5.5)
     // ─────────────────────────────────────────────────────────────
     box(-6, 5.5, 2.8, 0.8, fill: fin_col, stroke: none,
-        label: "Block A — Financial",
+        label: "Block A - Financial",
         sub: "56-d dense feature vector",
         font-size: 9pt)
 
@@ -309,7 +309,7 @@ probability estimate.
         sub: "768-d CLS → PCA 64-d")
 
     box(6, 5.5, 2.8, 0.8, fill: grp_col, stroke: none,
-        label: "Block C — HeteroGraphSAGE",
+        label: "Block C - HeteroGraphSAGE",
         sub: "2-hop agg → 64-d node emb",
         font-size: 8pt)
 
@@ -321,7 +321,7 @@ probability estimate.
 
     // bracket to join the two FinBERT boxes into Block B
     line((-2.4, 5.1), (2.4, 5.1), stroke: (paint: txt_col, thickness: 1pt, dash: "dashed"))
-    content((0, 4.85), text(size: 8pt, fill: txt_col, weight: "bold", "Block B — Textual (128-d total)"))
+    content((0, 4.85), text(size: 8pt, fill: txt_col, weight: "bold", "Block B - Textual (128-d total)"))
 
     // ─────────────────────────────────────────────────────────────
     // ROW 3: ANTI-LEAKAGE NOTE  (y = 4.3)
@@ -330,7 +330,7 @@ probability estimate.
          fill: rgb("#fff9e6"), stroke: (paint: rgb("#f0a500"), thickness: 0.8pt, dash: "dashed"),
          radius: 0.1)
     content((0, 4.28), text(size: 8pt, style: "italic",
-      "⚠  All scaling, imputation, and PCA bases are fit exclusively on training folds — never on held-out data"))
+      "⚠  All scaling, imputation, and PCA bases are fit exclusively on training folds - never on held-out data"))
 
     // ─────────────────────────────────────────────────────────────
     // ROW 4: CONCATENATION  (y = 3.2)
@@ -378,18 +378,18 @@ probability estimate.
     arr((0, 0.72), (0, 1.35), col: rgb("#7f8c8d"))
 
   }),
-  caption: [Full multimodal architecture — from raw data sources to binary CAR prediction, with anti-leakage guarantee and SHAP interpretability layer.],
+  caption: [Full multimodal architecture - from raw data sources to binary CAR prediction, with anti-leakage guarantee and SHAP interpretability layer.],
 ) <fig-architecture>
 
 === Why Late Fusion Was Chosen
 
 The architecture diagram shows that each encoder is trained independently before the
-outputs are concatenated. This decoupled approach — called *late fusion* — contrasts with
+outputs are concatenated. This decoupled approach - called *late fusion* - contrasts with
 *early fusion* (concatenate raw features from all modalities before any encoding) and *joint
 end-to-end training* (train all encoders simultaneously on the final CAR label).
 
 Joint end-to-end training was considered and rejected for a concrete reason: the number of
-complete multimodal observations (approximately 1,140–2,864 depending on modality) is
+complete multimodal observations (approximately 1,140-2,864 depending on modality) is
 far below the sample sizes typically required for stable simultaneous fine-tuning of
 transformer and GNN components @baltrusaitis2019. With a noisy binary label, a weak
 class signal, and fewer than 5,000 observations, joint training would most likely produce
@@ -399,7 +399,7 @@ stable, reusable representations even when modality coverage is incomplete.
 
 === Inductive Transfer Learning Framing
 
-FinBERT and GraphSAGE were not pre-trained to predict M&A synergy — they encode
+FinBERT and GraphSAGE were not pre-trained to predict M&A synergy - they encode
 general financial language structure and general relational structure respectively. The
 architecture treats this as an inductive transfer problem: the upstream encoders produce
 reusable semantic and topological priors; the downstream XGBoost layer performs the
@@ -412,7 +412,7 @@ decomposition of each feature's marginal contribution to individual predictions.
 architecture, SHAP serves a specific evidentiary function: it tests whether the frozen
 textual and graph embeddings contribute explanatory mass beyond the financial features.
 If graph and text components never appear among the dominant SHAP contributors, the AUC
-improvement over the financial baseline would lack economic credibility — it could reflect
+improvement over the financial baseline would lack economic credibility - it could reflect
 a statistical artefact rather than genuine multimodal signal. Conversely, their consistent
 appearance among the top contributors constitutes evidence that the transferred embeddings
 encode synergy-relevant structure. SHAP is therefore not an optional interpretability
@@ -435,9 +435,9 @@ and the specific research claim it tests.
     table.header(
       [*Model*], [*Description*], [*Features*], [*Purpose*],
     ),
-    [M1], [Financial Only], [56], [Tabular ceiling — benchmark any successor must beat],
-    [M2], [Financial + Text (unsplit)], [184], [Demonstrates cost of section conflation — the M2 Reversal test],
-    [M3], [Financial + Text (section-split) + Graph], [248], [Full multimodal model — primary headline result],
+    [M1], [Financial Only], [56], [Tabular ceiling - benchmark any successor must beat],
+    [M2], [Financial + Text (unsplit)], [184], [Demonstrates cost of section conflation - the M2 Reversal test],
+    [M3], [Financial + Text (section-split) + Graph], [248], [Full multimodal model - primary headline result],
     [M3e], [M3 + engineered interaction features], [261], [Sensitivity to hand-crafted features vs learned representations],
   ),
   caption: [Ablation ladder: model configurations and their role in the experimental design.],
@@ -461,9 +461,9 @@ applied, and the evidence threshold for support.
     table.header(
       [*Hypothesis*], [*Claim*], [*Statistical Test*], [*Evidence Threshold*],
     ),
-    [H1 — Topological Alpha], [GraphSAGE embeddings (Block C) produce a statistically significant AUC-ROC increase over the financial-only baseline, disproportionately in supply-chain-intensive sectors (SIC 20–49)], [Paired $t$-test on 5-fold CV AUC scores; sector-stratified AUC comparison], [$p < 0.05$; M3 AUC $>$ M1 AUC; SHAP graph features in top-20],
-    [H2 — Semantic Divergence], [MD&A section similarity between acquirer and target positively predicts CAR ($beta_"MDA" > 0$); Risk Factor similarity negatively predicts CAR ($beta_"RF" < 0$)], [Bivariate OLS: $"CAR"_i = beta_0 + beta_1 dot "sim"_"MDA,i" + beta_2 dot "sim"_"RF,i" + epsilon_i$], [Sign asymmetry confirmed; $beta_"MDA" > 0$ and $beta_"RF" < 0$],
-    [H3 — Topological Arbitrage], [Acquirers with high betweenness centrality exhibit compressed variance in $|"CAR"|$ relative to peripheral acquirers], [Levene's test for equality of variance across betweenness centrality quantile groups], [$p < 0.05$ on Levene's $F$; negative correlation between centrality and $|"CAR"|$],
+    [H1 - Topological Alpha], [GraphSAGE embeddings (Block C) produce a statistically significant AUC-ROC increase over the financial-only baseline, disproportionately in supply-chain-intensive sectors (SIC 20-49)], [Paired $t$-test on 5-fold CV AUC scores; sector-stratified AUC comparison], [$p < 0.05$; M3 AUC $>$ M1 AUC; SHAP graph features in top-20],
+    [H2 - Semantic Divergence], [MD&A section similarity between acquirer and target positively predicts CAR ($beta_"MDA" > 0$); Risk Factor similarity negatively predicts CAR ($beta_"RF" < 0$)], [Bivariate OLS: $"CAR"_i = beta_0 + beta_1 dot "sim"_"MDA,i" + beta_2 dot "sim"_"RF,i" + epsilon_i$], [Sign asymmetry confirmed; $beta_"MDA" > 0$ and $beta_"RF" < 0$],
+    [H3 - Topological Arbitrage], [Acquirers with high betweenness centrality exhibit compressed variance in $|"CAR"|$ relative to peripheral acquirers], [Levene's test for equality of variance across betweenness centrality quantile groups], [$p < 0.05$ on Levene's $F$; negative correlation between centrality and $|"CAR"|$],
   ),
   caption: [Hypothesis operationalisation: claims, statistical tests, and evidence thresholds.],
 ) <tbl-hypothesis-tests>
@@ -471,7 +471,7 @@ applied, and the evidence threshold for support.
 === Evaluation Metrics
 
 AUC-ROC is the primary metric because it is threshold-invariant and robust to class
-imbalance — both relevant properties given that the CAR sign split is not guaranteed to be
+imbalance - both relevant properties given that the CAR sign split is not guaranteed to be
 50/50 across all sub-samples. Accuracy and F1 are reported as secondary diagnostics.
 Continuous regression targets (predicting CAR magnitude rather than direction) are tested
 as a robustness check; as demonstrated in Chapter 4, linear regression on CAR magnitude
@@ -509,13 +509,13 @@ personal data, no individual-level human subject data, and no sensitive commerci
 information are collected or processed beyond what is publicly disclosed in regulatory filings
 and commercial financial databases. The principal ethical obligations are licensing
 compliance, accurate reporting of model performance, and honest acknowledgement of
-limitations — all of which are addressed throughout this chapter.
+limitations - all of which are addressed throughout this chapter.
 
 Reproducibility is ensured by the frozen implementation. The GitHub repository contains
 the final codebase used to generate all results reported in Chapter 4: the preprocessing
 pipeline, the event-study label constructor, the FinBERT embedding extractor, the
 HeteroGraphSAGE encoder, the late-fusion XGBoost classifier, and the SHAP attribution
-scripts. This methodology chapter describes that exact pipeline — not a simplified or
+scripts. This methodology chapter describes that exact pipeline - not a simplified or
 idealised version. Every design choice documented here corresponds to a concrete line of
 code in the repository, and every reported metric corresponds to a stored cross-validation
 result file.

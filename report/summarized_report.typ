@@ -1,11 +1,11 @@
 // ============================================================
 //  summarized_report.typ
-//  Supervisor Summary — Hard Joshi (Student ID: 2512658)
+//  Supervisor Summary - Hard Joshi (Student ID: 2512658)
 //  M&A Synergy Prediction via HeteroGraphSAGE
-//  Data Science and Artificial Intelligence — UEL CN6000
+//  Data Science and Artificial Intelligence - UEL CN6000
 // ============================================================
 
-#set document(author: "Hard Joshi", title: "Supervisor Summary — M&A Synergy Prediction")
+#set document(author: "Hard Joshi", title: "Supervisor Summary - M&A Synergy Prediction")
 #set page(
   paper: "a4",
   margin: (left: 2.5cm, right: 2.5cm, top: 2.5cm, bottom: 2.5cm),
@@ -48,12 +48,12 @@
 // ── 1. PROBLEM STATEMENT ───────────────────────────────────
 = Problem Statement
 
-M&A transactions destroy shareholder value in 70–90% of cases. Despite this, existing predictive models consistently fail to identify value-destroying deals before announcement. This study argues the failure is architectural: every prior quantitative M&A model treats firms as isolated balance-sheet vectors, blind to the supply-chain networks, competitive topologies, and section-level semantic signals that actually determine whether a deal will create or destroy value.
+M&A transactions destroy shareholder value in 70-90% of cases. Despite this, existing predictive models consistently fail to identify value-destroying deals before announcement. This study argues the failure is architectural: every prior quantitative M&A model treats firms as isolated balance-sheet vectors, blind to the supply-chain networks, competitive topologies, and section-level semantic signals that actually determine whether a deal will create or destroy value.
 
 // ── 2. RESEARCH DESIGN ─────────────────────────────────────
 = Research Design
 
-A tri-modal late-fusion architecture (*HeteroGraphSAGE*) was constructed and evaluated on ~3,000 completed US domestic M&A transactions (2000–2023), sourced from Yahoo Finance, SEC EDGAR, and Bloomberg SPLC.
+A tri-modal late-fusion architecture (*HeteroGraphSAGE*) was constructed and evaluated on ~3,000 completed US domestic M&A transactions (2000-2023), sourced from Yahoo Finance, SEC EDGAR, and Bloomberg SPLC.
 
 #v(0.3em)
 #table(
@@ -69,16 +69,16 @@ A tri-modal late-fusion architecture (*HeteroGraphSAGE*) was constructed and eva
 #v(0.3em)
 
 Three formal hypotheses were tested against Bonferroni-corrected thresholds ($alpha = 0.0167$):
-- *H1 — Topological Alpha:* Graph topology adds predictive signal beyond financial features.
-- *H2 — Semantic Divergence:* MD&A and Risk Factor sections encode economically opposing signals.
-- *H3 — Topological Arbitrage:* Network centrality compresses announcement-return variance.
+- *H1 - Topological Alpha:* Graph topology adds predictive signal beyond financial features.
+- *H2 - Semantic Divergence:* MD&A and Risk Factor sections encode economically opposing signals.
+- *H3 - Topological Arbitrage:* Network centrality compresses announcement-return variance.
 
-Evaluation used five-fold stratified cross-validation with strict temporal splits (train: 2000–2016 / val: 2017–2019 / test: 2020–2023) and an 11-day event-window embargo to prevent leakage.
+Evaluation used five-fold stratified cross-validation with strict temporal splits (train: 2000-2016 / val: 2017-2019 / test: 2020-2023) and an 11-day event-window embargo to prevent leakage.
 
 // ── 3. KEY RESULTS ─────────────────────────────────────────
 = Key Empirical Results
 
-== Classification Pipeline (AUC-ROC — Direction Prediction)
+== Classification Pipeline (AUC-ROC - Direction Prediction)
 
 #table(
   columns: (2cm, 3cm, 2cm, 2cm, 2cm),
@@ -96,7 +96,7 @@ Evaluation used five-fold stratified cross-validation with strict temporal split
 The headline finding: *M3 achieves AUC = 0.5655, a +0.0247 lift over the financial-only baseline.* Hyperparameter tuning alone did not improve any model, confirming that architectural signal choice matters more than optimiser search.
 
 #v(0.3em)
-A key negative result: M2 (Financial + naive text) *reduces* AUC by −0.0119 versus M1. This is the M2 Reversal — adding undifferentiated FinBERT text actively destroys predictive value when MD&A and Risk Factor signals are pooled without section-separation.
+A key negative result: M2 (Financial + naive text) *reduces* AUC by −0.0119 versus M1. This is the M2 Reversal - adding undifferentiated FinBERT text actively destroys predictive value when MD&A and Risk Factor signals are pooled without section-separation.
 
 == Regression Pipeline (Continuous CAR Magnitude)
 
@@ -126,7 +126,7 @@ All regression configurations produced $R^2 < 0$, meaning the model cannot expla
 
 + *Methodological:* One of the first explicit applications of heterogeneous GNNs to post-merger CAR classification, formally moving the field beyond the tabular independence assumption.
 + *Empirical:* Establishes that section-level semantic divergence between MD&A and Risk Factor disclosures is directional and economically meaningful in M&A outcome prediction. Conflating these sections is demonstrably harmful.
-+ *Practical Artefact:* The *Deal Intelligence Terminal* — a fully interactive research dashboard rendering all model outputs, ablation ladders, SHAP decompositions, and hypothesis tests dynamically — ensures complete reproducibility.
++ *Practical Artefact:* The *Deal Intelligence Terminal* - a fully interactive research dashboard rendering all model outputs, ablation ladders, SHAP decompositions, and hypothesis tests dynamically - ensures complete reproducibility.
 
 // ── 5. PRACTICAL SIGNIFICANCE ──────────────────────────────
 = Practical Significance of +0.025 AUC

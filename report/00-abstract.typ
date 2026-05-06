@@ -1,17 +1,17 @@
 // ============================================================
-//  00-abstract.typ  (v1 — Final)
-//  Abstract — 498 words
+//  00-abstract.typ  (v1 - Final)
+//  Abstract - 498 words
 //  M&A Synergy Prediction | Hard Joshi | UEL
 // ============================================================
 #set par(justify: true, leading: 0.65em)
 
 = Abstract <ch-abstract>
 
-Mergers and acquisitions destroy shareholder value in 70–90% of cases, yet
+Mergers and acquisitions destroy shareholder value in 70-90% of cases, yet
 existing predictive models consistently fail to identify value-destroying deals
 before announcement. This study argues that the root cause is architectural
 rather than computational: every prior generation of quantitative M&A model
-— from logistic regression to transformer-based NLP — treats each firm as an
+- from logistic regression to transformer-based NLP - treats each firm as an
 isolated data point, blind to the supply-chain topology, competitive network
 structure, and section-level semantic signals that collectively determine
 whether a proposed combination will create or destroy value. This dissertation
@@ -33,8 +33,8 @@ applied: a classifier pipeline that predicts binary Cumulative Abnormal Return
 (CAR) direction and a regression pipeline that predicts CAR magnitude. Both
 pipelines are evaluated under five-fold stratified cross-validation with strict
 temporal splits and an 11-day event-window embargo to prevent forward-looking
-leakage. Three formal hypotheses are tested — H1 (Topological Alpha), H2
-(Semantic Divergence), and H3 (Topological Arbitrage) — using paired t-tests,
+leakage. Three formal hypotheses are tested - H1 (Topological Alpha), H2
+(Semantic Divergence), and H3 (Topological Arbitrage) - using paired t-tests,
 OLS regression, and Levene's variance test respectively, with Bonferroni
 correction applied across all three tests.
 
@@ -52,7 +52,7 @@ confirming that structurally central acquirers experience statistically
 compressed announcement-return variance (H3). The study additionally
 establishes that adding undifferentiated FinBERT text to the financial
 baseline reduces AUC by $-0.012$, demonstrating that naive NLP actively
-destroys predictive value when filing-section semantics are conflated — a
+destroys predictive value when filing-section semantics are conflated - a
 methodological finding with direct implications for subsequent M&A NLP
 research. Continuous CAR magnitude remains intractable to regression across
 all configurations ($R^2 < 0$), precisely locating the boundary between

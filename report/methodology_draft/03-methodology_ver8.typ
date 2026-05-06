@@ -628,7 +628,7 @@ evaluates predicted CAR against actual CAR on held-out deals.
           width: 100%,
           fill: luma(248),
           [
-            #align(center)[#text(weight: "bold")[Stage 1 — OLS Event Study]\ #text(size: 8pt)[(#raw("compute_car.py"))]]
+            #align(center)[#text(weight: "bold")[Stage 1 - OLS Event Study]\ #text(size: 8pt)[(#raw("compute_car.py"))]]
             #v(6pt)
             #set text(size: 8.5pt)
             #set align(left)
@@ -657,7 +657,7 @@ evaluates predicted CAR against actual CAR on held-out deals.
           width: 100%,
           fill: luma(248),
           [
-            #align(center)[#text(weight: "bold")[Stage 2 — Supervised Prediction]\ #text(size: 8pt)[(#raw("training_utils.py"))]]
+            #align(center)[#text(weight: "bold")[Stage 2 - Supervised Prediction]\ #text(size: 8pt)[(#raw("training_utils.py"))]]
             #v(6pt)
             #set text(size: 8.5pt)
             #set align(left)
@@ -682,7 +682,7 @@ evaluates predicted CAR against actual CAR on held-out deals.
       #v(8pt)
       #text(size: 8pt, style: "italic")[
         Stage 1 outputs are fixed market-derived labels independent of any model.
-        Stage 2 uses pre-announcement features only — no post-deal information enters $bold(z)_i$.
+        Stage 2 uses pre-announcement features only - no post-deal information enters $bold(z)_i$.
       ]
     ]
   ),

@@ -1,5 +1,5 @@
 // ============================================================
-//  04-findings.typ  (v3 — Reader-First, Methodology-Aligned)
+//  04-findings.typ  (v3 - Reader-First, Methodology-Aligned)
 //  Chapter 4: Findings and Discussion
 //  M&A Synergy Prediction | Hard Joshi | UEL
 // ============================================================
@@ -22,7 +22,7 @@ This chapter reports the empirical findings of the dual-evaluation framework int
 
 The chapter therefore proceeds in a deliberately simple order. @sec-classification reports the classification ablation ladder, because this is where the clearest empirical gains appear. @sec-regression then reports the regression pipeline honestly, showing why continuous CAR magnitude remains difficult to predict. @sec-m2-reversal resolves the M2 reversal and explains why naive NLP degrades rather than improves prediction. @sec-h1, @sec-h2, and @sec-h3 test H1, H2, and H3 directly. @sec-interpretability presents interpretability evidence from SHAP, and @sec-practical-meaning translates the classifier gain into practical financial meaning before closing with limitations.
 
-All reported classification results derive from five-fold stratified cross-validation. All preprocessing steps — median imputation, scaling, and any trainable transformations — were fit on training folds only, then applied to the held-out fold, preserving the leakage controls established in Chapter 3 @mackinlay1997 @creswell2014.
+All reported classification results derive from five-fold stratified cross-validation. All preprocessing steps - median imputation, scaling, and any trainable transformations - were fit on training folds only, then applied to the held-out fold, preserving the leakage controls established in Chapter 3 @mackinlay1997 @creswell2014.
 
 == Classification Results <sec-classification>
 
@@ -45,7 +45,7 @@ The clearest empirical result of the study is that the multimodal configuration 
     [M3], [Full Fusion], [248], [*0.5655*], [*54.8%*], [*0.490*],
     [M3e], [M3 + Aux Features], [261], [0.5585], [55.1%], [0.492],
   ),
-  caption: [Classification ablation ladder — best model result per feature configuration under five-fold stratified cross-validation. Bold indicates headline AUC result.],
+  caption: [Classification ablation ladder - best model result per feature configuration under five-fold stratified cross-validation. Bold indicates headline AUC result.],
 ) <tbl-clf-ablation>
 
 The headline result is straightforward. M3 achieves AUC-ROC = *0.5655*, improving on the financial-only baseline M1 (0.5408) by *+0.0247* and on M2 (0.5289) by *+0.0366*. The practical meaning is equally straightforward: once graph topology is added to the financial and textual streams, the model becomes better at ranking value-creating deals above value-destroying deals.
@@ -78,7 +78,7 @@ The regression pipeline was retained because Chapter 3 defined it as necessary f
     [M2], [Financial + text], [-0.155], [Naive text aggregation introduces excessive semantic noise.],
     [M3], [Full Fusion], [-0.164], [Multimodal fusion improves classification sign but not point-magnitude accuracy.],
   ),
-  caption: [Regression pipeline summary — representative continuous CAR results. Negative $R^2$ indicates that the model performs worse than the sample mean baseline.],
+  caption: [Regression pipeline summary - representative continuous CAR results. Negative $R^2$ indicates that the model performs worse than the sample mean baseline.],
 ) <tbl-reg-summary>
 
 These negative $R^2$ values are not evidence that the project failed. They demonstrate something more important: the *magnitude* of short-window announcement returns remains dominated by unobservable and idiosyncratic shocks. Payment method, takeover speculation, competing bids, macro conditions, investor sentiment, and timing noise all influence realised CAR in ways that are only partially visible in pre-announcement features @fama1991 @shleifer2003.
@@ -97,7 +97,7 @@ The significance of M2 is therefore larger than its raw score suggests. It shows
 
 == Hypothesis Tests
 
-=== H1 — Topological Alpha (Supported) <sec-h1>
+=== H1 - Topological Alpha (Supported) <sec-h1>
 
 H1 asked whether graph topology adds statistically significant directional signal beyond financial variables alone. On the classification pipeline, the answer is yes. M3 improves AUC-ROC over M1 by *+0.0247*, and the gain is concentrated in supply-chain-intensive sectors where inter-firm dependency structure is economically meaningful rather than incidental.
 
@@ -105,7 +105,7 @@ The substantive interpretation is direct. Supplier overlap, procurement dependen
 
 The relevant inferential test follows the methodology chapter: significance is assessed on fold-wise AUC values using a paired $t$-test across cross-validation folds. The directional result and the observed AUC gap support the claim that topology contributes information orthogonal to financial fundamentals. *Verdict: H1 is supported.*
 
-=== H2 — Semantic Divergence (Supported) <sec-h2>
+=== H2 - Semantic Divergence (Supported) <sec-h2>
 
 H2 asked whether semantically distinct filing sections encode opposite economic effects. The OLS evidence supports that claim. On the semantic-divergence sample of n = 1,140 deals, the estimated coefficients are:
 
@@ -117,7 +117,7 @@ The signs are exactly as predicted. Greater MD&A similarity is associated with s
 
 The low $R^2$ should be interpreted carefully rather than defensively. In event-study settings, a single semantic factor is not expected to explain a large proportion of return variance because announcement-period returns are jointly shaped by multiple concurrent forces @mackinlay1997. The relevant test here is not whether text alone explains most of CAR, but whether the *direction* of the semantic effects matches theory. It does. Combined with the M2 reversal, the result supports the deeper claim that semantic aggregation obscures economically distinct textual mechanisms. *Verdict: H2 is supported.*
 
-=== H3 — Topological Arbitrage: Information Transparency Dampening (Supported) <sec-h3>
+=== H3 - Topological Arbitrage: Information Transparency Dampening (Supported) <sec-h3>
 
 H3 asked whether graph prominence compresses the variance of announcement outcomes. This is the strongest formally tested result in the chapter. On n = 2,864 graph-matched deals, Levene's test across betweenness-centrality quantiles yields:
 
@@ -147,7 +147,7 @@ A +0.0247 AUC improvement may look modest when presented as a single abstract me
 
 That matters because deal evaluation is a ranking problem, not a binary trivia quiz. An advisory team or acquisition committee does not need perfect foresight; it needs a better ordering of which opportunities deserve deeper diligence and which should be deprioritised. A persistent 2.5 percentage-point improvement in pairwise ranking, applied across a large deal pipeline, translates into systematically better attention allocation and lower probability of committing scarce time and capital to the worst opportunities @betton2008 @zhang2024.
 
-The contribution should therefore be stated carefully. The model does not “solve” M&A prediction. What it does show is that graph-aware multimodal modelling produces a repeatable edge in *triaging* candidate deals — which is the decision problem that matters operationally.
+The contribution should therefore be stated carefully. The model does not “solve” M&A prediction. What it does show is that graph-aware multimodal modelling produces a repeatable edge in *triaging* candidate deals - which is the decision problem that matters operationally.
 
 == Limitations
 

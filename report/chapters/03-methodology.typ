@@ -45,8 +45,8 @@ synergy as a latent, probabilistic construct approximated through market
 reactions and structured inter-firm relationships.  While acknowledging that
 markets are not perfectly efficient, the research operates within the
 semi-strong form of the Efficient Market Hypothesis @fama1970 @fama1991, wherein
-publicly available information --- financial fundamentals, regulatory filings,
-and network topology --- constitutes a viable predictor signal @jensen1978.  The
+publicly available information - financial fundamentals, regulatory filings,
+and network topology - constitutes a viable predictor signal @jensen1978.  The
 overarching research design is *quantitative and deductive*: three _a priori_
 hypotheses (H1, H2, H3) are specified before analysis and tested through
 controlled ablation experiments @creswell2014.
@@ -195,41 +195,8 @@ This strict temporal ordering ensures the model never trains on information
 post-dating the validation or test periods.
 
 #figure(
-  box(
-    width: 100%,
-    stroke: 0.5pt,
-    inset: 12pt,
-    radius: 4pt,
-    [
-      #set align(center)
-      #text(weight: "bold")[Temporal Dataset Partition]
-
-      #v(6pt)
-
-      #table(
-        columns: (3.5cm, 3cm, 3cm, 4cm),
-        align: center,
-        inset: 6pt,
-        stroke: 0.4pt,
-        table.header(
-          [*Partition*], [*Years*], [*Split*], [*Role*],
-        ),
-        [Training],   [2000--2016], [70%], [Model fitting],
-        [Validation], [2017--2019], [15%], [Hyperparameter tuning + early stopping],
-        [Test],       [2020--2023], [15%], [Final held-out evaluation],
-      )
-
-      #v(8pt)
-
-      #text(size: 9pt)[
-        *Embargo:* An 11-trading-day gap is enforced at each temporal boundary.
-        Any deal announced within 11 days of a split boundary is excluded from
-        both adjacent partitions, preventing CAR event-window overlap
-        (cf. @lopezdeprado2018).
-      ]
-    ]
-  ),
-  caption: [Temporal splits and embargo design],
+  image("../../docs/figures/fig_temporal_split.png", width: 95%),
+  caption: [Temporal partition design and 11-trading-day event-window embargo. Coloured blocks denote training (2000--2016, 70%), validation (2017--2019, 15%), and test (2020--2023, 15%) sets. The embargo gap at each boundary excludes any deal whose ±5-day CAR event window overlaps the partition boundary, eliminating the Overlapping Outcomes leakage mechanism formalised by @lopezdeprado2018.],
 ) <fig-temporal-split>
 
 Concretely, because the event window spans $[-5, +5]$ trading days, two deals
@@ -649,7 +616,7 @@ evaluates predicted CAR against actual CAR on held-out deals.
           width: 100%,
           fill: luma(248),
           [
-            #align(center)[#text(weight: "bold")[Stage 1 — OLS Event Study]\ #text(size: 8pt)[(#raw("compute_car.py"))]]
+            #align(center)[#text(weight: "bold")[Stage 1 - OLS Event Study]\ #text(size: 8pt)[(#raw("compute_car.py"))]]
             #v(6pt)
             #set text(size: 8.5pt)
             #set align(left)
@@ -678,7 +645,7 @@ evaluates predicted CAR against actual CAR on held-out deals.
           width: 100%,
           fill: luma(248),
           [
-            #align(center)[#text(weight: "bold")[Stage 2 — Supervised Prediction]\ #text(size: 8pt)[(#raw("training_utils.py"))]]
+            #align(center)[#text(weight: "bold")[Stage 2 - Supervised Prediction]\ #text(size: 8pt)[(#raw("training_utils.py"))]]
             #v(6pt)
             #set text(size: 8.5pt)
             #set align(left)
@@ -703,7 +670,7 @@ evaluates predicted CAR against actual CAR on held-out deals.
       #v(8pt)
       #text(size: 8pt, style: "italic")[
         Stage 1 outputs are fixed market-derived labels independent of any model.
-        Stage 2 uses pre-announcement features only — no post-deal information enters $bold(z)_i$.
+        Stage 2 uses pre-announcement features only - no post-deal information enters $bold(z)_i$.
       ]
     ]
   ),
@@ -777,6 +744,13 @@ $A R_(i t)$ represents the return attributable to deal-specific information
 *CAR is the cumulative sum of these residuals* over the full event window:
 
 $ "CAR"_i = sum_(t=-5)^(+5) A R_(i t) $
+
+#figure(
+  image("../../docs/figures/fig_car_distribution.png", width: 90%),
+  caption: [Distribution of deal-level $"CAR"_((-5,+5))$ across the full deal universe ($n approx 2,860$). The distribution is approximately symmetric with a slight negative mean, confirming the EMH-consistent noise dominance that renders continuous magnitude prediction structurally intractable (@tbl-reg-summary, $R^2 < 0$ across all configurations). The binary classification target ($"CAR" > 0$) partitions the distribution at zero --- the economically meaningful threshold.],
+) <fig-car-distribution>
+
+The near-symmetric noise distribution visible in @fig-car-distribution directly motivates the dual-pipeline evaluation design. Predicting the sign of CAR (classification) is tractable because deal fundamentals shift the mean; predicting the magnitude (regression) is intractable because the variance is dominated by unobservable announcement-day surprise --- a result confirmed empirically in @ch-findings.
 
 This produces a single scalar per deal stored as column
 #code-inline("car_m5_p5") in #code-inline("data/processed/final_car_dataset.csv").

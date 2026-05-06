@@ -8,7 +8,7 @@
 
 This appendix reproduces the ethical approval documentation submitted to and approved by the University of East London prior to the commencement of data collection. All research activities described in this dissertation were conducted under the terms of this approval.
 
-The study involves no human participants, no personally identifiable data, and no experimental interventions. All data sources — Yahoo Finance equity returns, SEC EDGAR regulatory filings, and Bloomberg SPLC supply-chain records — are either publicly available or accessed through institutional licences held by the University. The ethical approval form confirms compliance with UEL's research governance framework and the British Psychological Society's Code of Ethics and Conduct.
+The study involves no human participants, no personally identifiable data, and no experimental interventions. All data sources - Yahoo Finance equity returns, SEC EDGAR regulatory filings, and Bloomberg SPLC supply-chain records - are either publicly available or accessed through institutional licences held by the University. The ethical approval form confirms compliance with UEL's research governance framework and the British Psychological Society's Code of Ethics and Conduct.
 
 The following pages contain the complete ethical approval application as submitted.
 
