@@ -17,21 +17,7 @@
 
 == Introduction
 
-This chapter details the research design, architectural implementation, and
-evaluation protocols employed to construct the proposed tri-modal fusion model
-for M&A synergy prediction.  The methodology is structured to operationalise
-the theoretical findings from @ch-litreview, translating the need for
-"multimodal fusion" into a rigorous engineering specification.
-
-The chapter proceeds as follows. @sec-philosophy establishes the research
-philosophy and epistemological stance. @sec-hypotheses formalises the three
-hierarchical hypotheses.  @sec-data describes all data sources and collection
-pipelines.  @sec-preprocessing covers cleaning, normalisation, and temporal
-splitting.  @sec-features defines the three feature blocks (Financial,
-Textual, Graph).  @sec-models specifies the baseline and fusion model
-architectures.  @sec-car derives the CAR target variable.
-@sec-htesting details the hypothesis-testing protocol, and
-@sec-ethics addresses limitations and ethical considerations.
+The core objective of this methodology is to operationalise the theoretical requirement for multimodal fusion into a rigorous engineering specification for M&A synergy prediction. By integrating financial, textual, and topological features into a single heterogeneous framework, the study moves from treating companies as isolated data points to modelling them as networked economic actors. This design ensures that all architectural choices—from strict temporal partitioning to section-specific textual reasoning—serve the primary goal of isolating a genuine predictive edge while preventing forward-looking bias.
 
 == Research Philosophy and Design <sec-philosophy>
 
@@ -184,7 +170,7 @@ The preprocessing pipeline applies:
 + *Winsorisation* at the 1st and 99th percentile to bound outlier influence.
 + *Z-score standardisation* (zero mean, unit variance) computed on
   training-set statistics _only_, then applied to validation and test sets.
-+ *Stratified temporal splitting* (70 / 15 / 15) by announcement year to
++ *Chronological holdout split* (70 / 15 / 15) by announcement year to
   prevent temporal leakage.
 
 === Temporal Splitting and Event-Window Embargo <sec-embargo>
@@ -204,7 +190,7 @@ whose announcement dates differ by fewer than 11 trading days share overlapping
 market-return sequences in their CAR calculations.  If one such deal falls in
 the training set and the other in validation, the model can implicitly learn
 return correlations that exist only because of calendar proximity --- the
-*Overlapping Outcomes* problem formalised by @lopezdeprado2018. The 11-day embargo eliminates this cross-contamination by construction.
+*Overlapping Outcomes* problem formalised by @lopezdeprado2018. The 11-day embargo eliminates this cross-contamination by construction. A chronological holdout is the only valid evaluation design for temporal financial event data; random fold assignment would introduce macro-regime and return autocorrelation leakage that would invalidate all classification results.
 
 === Missing Data Strategy
 
@@ -341,7 +327,7 @@ using PyTorch Geometric's #code-inline("HeteroData") object
 
 #figure(
   image("../../docs/figures/fig4_supply_chain_graph.jpg", width: 90%),
-  caption: [Supply-chain graph construction showing inter-firm dependencies and topological topology.],
+  caption: [Supply-chain graph construction showing inter-firm dependencies and network topology.],
 ) <fig-supply-chain-graph>
 
 - *Node type.* A single node type #code-inline("company") represents each
@@ -478,8 +464,25 @@ Four baselines are trained on Block A features only:
 
 #figure(
   image("../../docs/figures/fig5_multimodal_fusion.jpg", width: 90%),
-  caption: [Multimodal late-fusion architecture combining financial, textual, and graph embeddings.],
+  caption: [Multimodal late-fusion architecture combining financial, textual, and graph embeddings. The 249-dimensional pre-projection vector is an intermediate representation; the classifier receives $bold(z)_i in RR^160$.],
 ) <fig-multimodal-fusion>
+
+#figure(
+  table(
+    columns: (2fr, 1.5fr, 1.5fr, 1.5fr, 2fr),
+    align: (left, center, center, center, center),
+    inset: 8pt,
+    stroke: 0.5pt,
+    fill: (x, y) => if y == 0 { luma(240) },
+    table.header(
+      [*Stage*], [*Block A (Fin)*], [*Block B (Text)*], [*Block C (Graph)*], [*Concatenated*],
+    ),
+    [Raw features], [56], [128 (64+64)], [65 (64+1)], [249],
+    [After ProjectionHead], [64], [64], [32], [$bold(z)_i = 160$],
+    [M3e (+ aux scalars)], [—], [—], [—], [261],
+  ),
+  caption: [Canonical feature dimensionality across the pipeline architecture.],
+) <tbl-dimensionality>
 
 The primary model is the *late-fusion tri-modal architecture* implemented in
 #code-inline("src/models/fusion.py").  Each active stream passes through its
@@ -524,7 +527,7 @@ objectives.
         columns: (1fr, 1fr, 1fr),
         gutter: 8pt,
         box(stroke: 0.5pt, inset: 8pt, radius: 3pt, width: 100%)[
-          #align(center)[*Stream A*\ Financial\ $bold(h)_F in RR^56$]
+          #align(center)[*Stream A*\ Financial (Yahoo)\ $bold(h)_F in RR^56$]
           #v(3pt)
           #align(center)[↓ ProjectionHead]
           #align(center)[$hat(bold(h))_F in RR^64$]
@@ -781,7 +784,7 @@ $ cal(L)_"BCE" (theta) = -1/N sum_(i=1)^N [y_{"bin",i} log hat(p)_i +
 where $hat(p)_i = sigma(f_theta(bold(z)_i))$ is the sigmoid-activated synergy
 probability.  All evaluation metrics are then computed by comparing predictions
 against $y_i$ (regression) or $y_{"bin",i}$ (classification) on the held-out
-test set using five-fold stratified cross-validation @kohavi1995:
+test set using a strict chronological holdout (train: 2000–2016, val: 2017–2019, test: 2020–2023), with purged walk-forward cross-validation used within the training window only for hyperparameter selection, and an 11-day event-window embargo applied at each boundary (López de Prado, 2018):
 
 #figure(
   table(
@@ -907,3 +910,12 @@ Key methodological limitations include:
   edges and competitor-of edges were considered in the design but not implemented
   within the project's data budget.  Their inclusion, using survivorship-bias-corrected
   datasets, is a natural direction for future work.
+
+== Summary
+
+By standardising three disparate feature blocks within a rigorous dual-pipeline
+evaluation framework, the methodology operationalises the multi-modality
+requirement identified in the literature. The following chapter reports the
+empirical results of this architecture, testing whether the theoretical
+advantages of topological and textual fusion translate into measurable
+predictive alpha.

@@ -104,7 +104,7 @@ The Hypothesis Lab allows for real-time slicing of model performance across SIC-
 
 #figure(
   image("../terminal_pics/pipeline_architecture.png", width: 100%),
-  caption: [The Pipeline Architecture interface, documenting the internal tensor flow and the 249-dimensional multimodal feature concatenation logic.],
+  caption: [The Pipeline Architecture interface, documenting the internal tensor flow and the 249-dimensional multimodal feature concatenation logic.#footnote[The 249-dimensional pre-projection vector is an intermediate representation; the classifier receives $bold(z)_i in RR^160$ after passing through the modality-specific ProjectionHeads.]],
 )
 
-The final module of the terminal provides a high-level overview of the *Multimodal Fusion* head. It visualises the transformation of 67 financial features, 32 textual PCA dimensions, and 150 GraphSAGE embeddings into the final 249-dimensional feature vector consumed by the XGBoost inference engine.
+The final module of the terminal provides a high-level overview of the *Multimodal Fusion* head. It visualises the transformation of 56 financial features, 128 textual features (64 MDA + 64 RF), and 65 graph features (64 GraphSAGE embeddings + 1 has-graph flag) into the final 160-dimensional feature vector $bold(z)_i$ consumed by the XGBoost inference engine.

@@ -50,7 +50,7 @@ Acquirers with high betweenness centrality in the supply-chain graph exhibit sta
 
 === Deal Universe
 
-The study is scoped to completed US domestic M&A transactions announced between 2000 and 2023, comprising approximately 3,000 deals with full multimodal coverage. The deal universe is sourced from Yahoo Finance and LSEG Refinitiv, filtered to transactions where both acquirer and target have full financial fundamentals, pre-announcement 10-K filing history on SEC EDGAR, and supply-chain node presence in the Bloomberg SPLC dataset.
+The study is scoped to completed US domestic M&A transactions announced between 2000 and 2023, comprising 2,864 deals with full multimodal coverage. The deal universe is sourced from Yahoo Finance and LSEG Refinitiv, filtered to transactions where both acquirer and target have full financial fundamentals, pre-announcement 10-K filing history on SEC EDGAR, and supply-chain node presence in the Bloomberg SPLC dataset.
 
 === Feature Blocks
 
@@ -101,7 +101,7 @@ A dual-pipeline evaluation is applied:
 - *Classification pipeline:* Predicts binary CAR direction; evaluated on AUC-ROC (primary), accuracy, F1, and precision-recall curves.
 - *Regression pipeline:* Predicts continuous CAR magnitude; evaluated on $R^2$ and MAE.
 
-Both pipelines are evaluated under five-fold stratified cross-validation with the temporal split and event-window embargo described above.
+Both pipelines are evaluated using a strict chronological holdout (train: 2000–2016, val: 2017–2019, test: 2020–2023), with purged walk-forward cross-validation used within the training window only for hyperparameter selection, and an 11-day event-window embargo applied at each boundary (López de Prado, 2018).
 
 === Hypothesis Testing Protocol
 

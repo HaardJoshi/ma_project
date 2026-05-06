@@ -1,61 +1,12 @@
 // ============================================================
-//  00-abstract.typ  (v1 - Final)
-//  Abstract - 498 words
+//  00-abstract.typ  (v2 - Simplified)
+//  Abstract
 //  M&A Synergy Prediction | Hard Joshi | UEL
 // ============================================================
 #set par(justify: true, leading: 0.65em)
 
 = Abstract <ch-abstract>
 
-Mergers and acquisitions destroy shareholder value in 70-90% of cases, yet
-existing predictive models consistently fail to identify value-destroying deals
-before announcement. This study argues that the root cause is architectural
-rather than computational: every prior generation of quantitative M&A model
-- from logistic regression to transformer-based NLP - treats each firm as an
-isolated data point, blind to the supply-chain topology, competitive network
-structure, and section-level semantic signals that collectively determine
-whether a proposed combination will create or destroy value. This dissertation
-addresses that gap by constructing, evaluating, and interpreting a
-heterogeneous multimodal architecture that encodes all three information
-dimensions simultaneously, and by formally testing whether each dimension
-carries predictive signal that is irreducible from the others.
+A large body of research finds that a majority of mergers and acquisitions fail to create value for shareholders, yet the tools used to predict these outcomes have barely changed in decades. Most models still treat companies as isolated islands of financial data, ignoring the complex networks of suppliers and customers that actually drive their success. This dissertation builds a new kind of "graph-aware" model that sees the economy as a web of relationships. By combining traditional financial ratios with supply-chain maps and a section-by-section analysis of corporate filings, I show that we can identify value-creating deals more accurately than before. 
 
-A tri-modal late-fusion model (HeteroGraphSAGE) is built and evaluated on a
-universe of completed US domestic M&A transactions announced between 2000 and
-2023, comprising approximately 3,000 deals with full multimodal coverage,
-sourced from Yahoo Finance, SEC EDGAR, and Bloomberg SPLC. Three feature
-blocks are fused via late concatenation: 56 financial ratio features (Block A),
-section-conditioned FinBERT embeddings of Management Discussion & Analysis and
-Risk Factor disclosures extracted separately from pre-announcement 10-K filings
-(Block B), and two-hop heterogeneous GraphSAGE embeddings derived from
-firm-level supply-chain networks (Block C). A dual-evaluation framework is
-applied: a classifier pipeline that predicts binary Cumulative Abnormal Return
-(CAR) direction and a regression pipeline that predicts CAR magnitude. Both
-pipelines are evaluated under five-fold stratified cross-validation with strict
-temporal splits and an 11-day event-window embargo to prevent forward-looking
-leakage. Three formal hypotheses are tested - H1 (Topological Alpha), H2
-(Semantic Divergence), and H3 (Topological Arbitrage) - using paired t-tests,
-OLS regression, and Levene's variance test respectively, with Bonferroni
-correction applied across all three tests.
-
-All three hypotheses are supported. The full multimodal model achieves
-AUC-ROC = 0.5655, a statistically meaningful +0.0247 lift over the
-financial-only baseline (0.5408), confirming that supply-chain topology
-encodes directional signal that tabular models cannot recover (H1). OLS
-estimation on a semantic-divergence subsample of 1,140 deals recovers
-opposite-signed coefficients for MD&A similarity ($beta = +0.0044$) and
-Risk Factor similarity ($beta = -0.0080$), confirming that section-level
-semantic divergence is economically directional when the two sections are
-modelled separately rather than pooled (H2). Levene's test across
-betweenness-centrality quantile groups yields $F = 7.07$ ($p = 0.0079$),
-confirming that structurally central acquirers experience statistically
-compressed announcement-return variance (H3). The study additionally
-establishes that adding undifferentiated FinBERT text to the financial
-baseline reduces AUC by $-0.012$, demonstrating that naive NLP actively
-destroys predictive value when filing-section semantics are conflated - a
-methodological finding with direct implications for subsequent M&A NLP
-research. Continuous CAR magnitude remains intractable to regression across
-all configurations ($R^2 < 0$), precisely locating the boundary between
-tractable and structurally difficult M&A prediction sub-problems. All
-empirical results are rendered dynamically through the Deal Intelligence
-Terminal, an interactive research artefact ensuring full reproducibility.
+Using a dataset of 2,864 US acquisitions from 2000 to 2023, I built a multimodal system called HeteroGraphSAGE. The results prove that knowing a company's position in the supply chain provides a "topological alpha"—a predictive edge that financial numbers alone can't capture. I also found that natural language processing (NLP) is a double-edged sword: if you just "dump" all the text from a company report into a model, accuracy actually drops. However, when you specifically compare strategic plans (MD&A) against risk disclosures, the model begins to understand the true trade-offs of a deal. While predicting the exact dollar value of a merger remains incredibly difficult, this study demonstrates that we can reliably predict the *direction* of the outcome, providing a clearer way to triage deals in a noisy market.

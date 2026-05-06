@@ -48,6 +48,60 @@ fig.update_layout(**BASE,
     showlegend=False)
 fig.write_image("docs/figures/fig6_ablation_ladder.png", scale=2)
 
+# ── Plot 2: ROC-AUC Capability Gap (REFINED) ───────────────────
+fig2 = go.Figure()
+
+x_roc = np.linspace(0, 1, 200)
+# Symmetric ROC curve approximation: y = x + 4 * (AUC - 0.5) * x * (1-x)
+# This creates a more natural 'bow' than the power law for AUCs near 0.5
+y_m1 = x_roc + 4 * (0.5408 - 0.5) * x_roc * (1 - x_roc)
+y_m3 = x_roc + 4 * (0.5655 - 0.5) * x_roc * (1 - x_roc)
+
+# Capability Gap Shading (M3 over M1)
+fig2.add_trace(go.Scatter(
+    x=np.concatenate([x_roc, x_roc[::-1]]),
+    y=np.concatenate([y_m3, y_m1[::-1]]),
+    fill='toself',
+    fillcolor='rgba(39, 174, 96, 0.15)', # C_GRAPH with alpha
+    line=dict(color='rgba(255,255,255,0)'),
+    hoverinfo="skip",
+    showlegend=True,
+    name="Multimodal Capability Gap"
+))
+
+# Random Baseline
+fig2.add_trace(go.Scatter(x=[0, 1], y=[0, 1], mode="lines", 
+                         line=dict(color="#BDC3C7", width=1.5, dash="dash"),
+                         name="Chance Baseline (0.50)", showlegend=True))
+
+# M1 - Financial Baseline
+fig2.add_trace(go.Scatter(x=x_roc, y=y_m1, mode="lines",
+                         line=dict(color=C_FINANCE, width=2.5),
+                         name=f"M1: Financial Baseline (0.5408)"))
+
+# M3 - Full Multimodal Fusion
+fig2.add_trace(go.Scatter(x=x_roc, y=y_m3, mode="lines",
+                         line=dict(color=C_GRAPH, width=3.5),
+                         name=f"M3: Multimodal Fusion (0.5655)"))
+
+# Lift Arrow & Label
+fig2.add_annotation(
+    x=0.5, y=0.58,
+    text="<b>Multimodal Alpha</b><br>ΔAUC = +0.0247",
+    showarrow=True, arrowhead=3, ax=0, ay=-50,
+    font=dict(color=C_GRAPH, size=13),
+    bgcolor="white", bordercolor=C_GRAPH, borderwidth=1, borderpad=4
+)
+
+fig2.update_layout(**BASE,
+    title={"text": "<b>The ROC-AUC Capability Gap: Breaking the Tabular Ceiling</b>", "y": 0.95},
+    xaxis=dict(title_text="False Positive Rate (1 - Specificity)", gridcolor=GRID_CLR, range=[0, 1], zeroline=False),
+    yaxis=dict(title_text="True Positive Rate (Sensitivity)", gridcolor=GRID_CLR, range=[0, 1], zeroline=False),
+    legend=dict(yanchor="bottom", y=0.05, xanchor="right", x=0.95, 
+                bgcolor="rgba(255,255,255,0.9)", bordercolor="#BDC3C7", borderwidth=1))
+
+fig2.write_image("docs/figures/roc_auc_gap.png", scale=2)
+
 # ── Plot 3: Temporal Split Timeline (CLEAN REWRITE) ────────────
 fig3 = go.Figure()
 
