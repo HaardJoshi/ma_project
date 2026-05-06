@@ -14,6 +14,17 @@ Every year, hundreds of companies announce mergers and acquisitions worth trilli
 
 The answer proposed here is that existing models fail not because of insufficient computational power, but because of a flawed representational assumption. Every major class of quantitative M&A predictor — from logistic regression on financial ratios to gradient-boosted trees and transformer-based NLP pipelines — treats each firm as an isolated data point. This means that no matter how sophisticated the algorithm, it operates in a feature space that is topologically flat: it sees the numbers on the balance sheet but cannot see the economic ecosystem the firm inhabits. A firm's largest customer may be on the verge of bankruptcy. Its target may share fragile single-source suppliers. The combined entity may create a bottleneck in a critical industrial network. None of these facts appear in a financial ratio vector, and none can be recovered by adding more layers to the same architecture.
 
+== Aims and Objectives <sec-intro-aims>
+
+The central aim of this study is to construct, evaluate, and interpret a heterogeneous multimodal machine learning framework for M&A synergy prediction that transcends traditional tabular limitations by integrating financial, textual, and topological data.
+
+The project was guided by the following core objectives:
+1. *Literature Synthesis:* To conduct a comprehensive review of existing econometric, NLP, and network-based M&A prediction models, identifying the structural limitations of isolated analytical streams.
+2. *Multimodal Dataset Construction:* To engineer a unified dataset combining historical M&A financial fundamentals, section-specific 10-K regulatory filings, and inter-firm supply-chain relationship graphs.
+3. *Architectural Development:* To design and train a late-fusion neural architecture capable of processing this heterogeneous feature space.
+4. *Benchmark Evaluation:* To rigorously evaluate the multimodal model's predictive performance (AUC-ROC) against a standard financial-only baseline to quantify the incremental value of non-financial signals.
+5. *Interpretability and Feature Attribution:* To utilise SHAP (SHapley Additive exPlanations) to deconstruct model predictions, identifying the precise economic drivers of synergy and interpreting the interaction between financial fundamentals and ecosystem topology.
+
 == The Proposed Solution <sec-intro-solution>
 
 This dissertation proposes and empirically tests a multimodal late-fusion architecture designed to break through the tabular ceiling by encoding three complementary information modalities simultaneously:

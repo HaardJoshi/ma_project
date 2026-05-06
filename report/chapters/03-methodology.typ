@@ -44,12 +44,12 @@ This study adopts a *post-positivist* epistemological stance, treating M&A
 synergy as a latent, probabilistic construct approximated through market
 reactions and structured inter-firm relationships.  While acknowledging that
 markets are not perfectly efficient, the research operates within the
-semi-strong form of the Efficient Market Hypothesis @fama1991, wherein
+semi-strong form of the Efficient Market Hypothesis @fama1970 @fama1991, wherein
 publicly available information --- financial fundamentals, regulatory filings,
-and network topology --- constitutes a viable predictor signal.  The
+and network topology --- constitutes a viable predictor signal @jensen1978.  The
 overarching research design is *quantitative and deductive*: three _a priori_
 hypotheses (H1, H2, H3) are specified before analysis and tested through
-controlled ablation experiments.
+controlled ablation experiments @creswell2014.
 
 The study employs a *cross-sectional observational design*.  Because M&A deals
 are historical and non-repeatable, no experimental manipulation is possible;
@@ -109,7 +109,7 @@ discrimination.
 
     [H3],
     [Topological Arbitrage],
-    [Acquirer nodes with high betweenness centrality in the heterogeneous supply-chain graph will exhibit statistically compressed variance in $|"CAR"|$ outcomes relative to peripheral nodes. Success criterion: Levene's test for equality of variances across centrality quantile groups yields $p < 0.05$, confirming the Information Transparency Dampening mechanism.],
+    [Acquirer nodes with high betweenness centrality in the heterogeneous supply-chain graph will exhibit statistically compressed variance in $|"CAR"|$ outcomes relative to peripheral nodes. Success criterion: Levene's test (@levene1960) for equality of variances across centrality quantile groups yields $p < 0.05$, confirming the Information Transparency Dampening mechanism.],
   ),
   caption: [Research Hypotheses],
 ) <tbl-hypotheses>
@@ -350,7 +350,7 @@ For the H2 semantic-divergence hypothesis, a pairwise cosine similarity score
 is computed *separately* between the acquirer and target's section embeddings,
 _after_ PCA compression:
 
-$"SemanticDiv"_i = 1 - (p_"acq"^"MDA" dot p_"tgt"^"MDA") / (||p_"acq"^"MDA"|| dot ||p_"tgt"^"MDA"||)$
+$"SemanticDiv"_i = 1 - (p_"acq"^"MDA" dot p_"tgt"^"MDA") / (||p_"acq"^"MDA"|| dot ||p_"tgt"^"MDA"||)$ @salton1983
 
 This scalar divergence score is used *exclusively* as the independent variable
 in the H2 OLS regression.  It is *not* an input to the fusion model.  The
@@ -623,7 +623,7 @@ All PyTorch models are trained with:
 The target variable $y_i$ for each deal is the *Cumulative Abnormal Return
 (CAR)* over the symmetric event window $[-5, +5]$ trading days relative to
 announcement date, computed via the standard market model @brown1985
-@mackinlay1997.  This section describes the full two-stage pipeline:
+@mackinlay1997 @fama1973.  This section describes the full two-stage pipeline:
 Stage 1 derives *actual* CAR values from raw market data using OLS; Stage 2
 trains the fusion model to *predict* CAR from pre-announcement features and
 evaluates predicted CAR against actual CAR on held-out deals.
@@ -723,7 +723,7 @@ where:
 - $R_(i t) = ln(P_(i t) \/ P_(i,t-1))$ is the acquirer log return on trading day $t$,
 - $R_(m t)$ is the S&P 500 (SPX) log return on the same day,
 - $hat(alpha)_i$ is the estimated intercept (abnormal return in absence of market movement),
-- $hat(beta)_i$ is the estimated systematic risk loading (market beta).
+- $hat(beta)_i$ is the estimated systematic risk loading (market beta) @sharpe1964.
 
 The OLS estimators are:
 
@@ -807,7 +807,7 @@ $ cal(L)_"BCE" (theta) = -1/N sum_(i=1)^N [y_{"bin",i} log hat(p)_i +
 where $hat(p)_i = sigma(f_theta(bold(z)_i))$ is the sigmoid-activated synergy
 probability.  All evaluation metrics are then computed by comparing predictions
 against $y_i$ (regression) or $y_{"bin",i}$ (classification) on the held-out
-test set:
+test set using five-fold stratified cross-validation @kohavi1995:
 
 #figure(
   table(
@@ -819,11 +819,11 @@ test set:
       [*Metric*], [*Formula*], [*Interpretation*],
     ),
     [MAE],
-    [$frac(1,N) sum_i |y_i - hat(y)_i|$],
+    [$frac(1,N) sum_i |y_i - hat(y)_i|$ @willmott2005],
     [Primary metric; interpretable in percentage-point CAR terms.],
 
     [RMSE],
-    [$sqrt(frac(1,N) sum_i (y_i - hat(y)_i)^2)$],
+    [$sqrt(frac(1,N) sum_i (y_i - hat(y)_i)^2)$ @willmott2005],
     [Penalises large mispredictions more than MAE.],
 
     [$R^2$],
@@ -831,20 +831,20 @@ test set:
     [Proportion of CAR variance explained by the model.],
 
     [Huber],
-    [$sum_i cal(H)_delta (y_i - hat(y)_i)$],
+    [$sum_i cal(H)_delta (y_i - hat(y)_i)$ @huber1964],
     [Robust to outlier returns; sensitivity analysis only.],
 
     [Dir. Accuracy],
-    [$frac(1,N) sum_i bb(1)[text("sign")(hat(y)_i) = text("sign")(y_i)]$],
+    [$frac(1,N) sum_i bb(1)[text("sign")(hat(y)_i) = text("sign")(y_i)]$ @pesaran1992 @leitch1991],
     [*Classification Pipeline.* Did the model predict the deal direction correctly?],
 
     [AUC-ROC],
-    [$integral_0^1 "TPR"("FPR") thin d("FPR")$],
+    [$integral_0^1 "TPR"("FPR") thin d("FPR")$ @hanley1982],
     [*Primary classification metric.* Threshold-invariant measure of the model's
      ability to rank value-creating deals ($"CAR">0$) above value-destroying ones.],
 
     [F1-Score],
-    [$2 times frac("Precision" times "Recall", "Precision" + "Recall")$],
+    [$2 times frac("Precision" times "Recall", "Precision" + "Recall")$ @vanrijsbergen1979],
     [Harmonic mean of precision and recall. Evaluates robustness under class
      imbalance in the CAR-positive vs. CAR-negative split.],
   ),

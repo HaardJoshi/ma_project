@@ -76,6 +76,20 @@
   outline(depth: 3, indent: 2em)
   pagebreak()
 
+  // 4.1 List of Figures
+  outline(
+    title: [List of Figures],
+    target: figure.where(kind: image),
+  )
+  pagebreak()
+
+  // 4.2 List of Tables
+  outline(
+    title: [List of Tables],
+    target: figure.where(kind: table),
+  )
+  pagebreak()
+
   // 4.1 Start numbering pages
   set page(numbering: "1")
   counter(page).update(1) 
@@ -108,15 +122,20 @@
 
       // 4. Render the header if we found a valid heading
       if target_heading != none {
+        // Detect whether this heading is inside the appendix section
+        // by checking if the numbering format uses letter-style ("A.1")
+        let is_appendix = target_heading.numbering != none and str(target_heading.numbering).contains("A")
         grid(
             columns: (1fr, 1fr),
             align(left)[
               #text(style: "italic", size: 10pt)[
-                // Check numbering to handle unnumbered sections like "Appendix" cleanly
-                #if target_heading.numbering != none [
-                  Chapter #counter(heading).at(target_heading.location()).first(): 
+                #if is_appendix [
+                  Appendix #numbering("A", counter(heading).at(target_heading.location()).first())
+                ] else if target_heading.numbering != none [
+                  Chapter #counter(heading).at(target_heading.location()).first(): #target_heading.body
+                ] else [
+                  #target_heading.body
                 ]
-                #target_heading.body
               ]
             ],
             align(right)[
@@ -175,12 +194,26 @@
   pagebreak()
   counter(heading).update(0)
   set heading(numbering: "A.1")
+  
+  // Style level 1 headings specifically for appendices
   show heading.where(level: 1): it => {
     pagebreak(weak: true)
-    text(size: 14pt, weight: "bold")[
-      Appendix #counter(heading).display("A") - #it.body
+    v(2em)
+    text(size: 16pt, weight: "bold")[
+      Appendix #numbering("A", counter(heading).get().first())
     ]
+    v(0.5em)
+    text(size: 12pt, style: "italic")[
+      #it.body
+    ]
+    v(1.5em)
+  }
+  
+  // Ensure level 2 headings have proper spacing and keep the A.1 style
+  show heading.where(level: 2): it => {
     v(1em)
+    it
+    v(0.5em)
   }
   body
 }

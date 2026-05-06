@@ -52,16 +52,13 @@
 
 // --- APPENDICES ---
 #show: appendix
-#set heading(numbering: none)
 
-= Initial Project Proposal // Content for Appendix A 
-[The initial project proposal is attached as a separate document.]
+#include "chapters/appendix-a.typ"
 
-= Final Project Proposal // Content for Appendix B 
-[The final project proposal, detailing the scope and methodology of the dissertation, is attached as a separate document.]
+#include "chapters/appendix-b.typ"
 
-= Application for Approval of Research Activities // Content for Appendix C 
-[The ethical approval form and application for research activities have been submitted to the University of East London.]
+#include "chapters/appendix-c.typ"
 
-= Client Consent Form // Content for Appendix D
-[Not applicable for this project as it relies entirely on publicly available financial datasets (SEC EDGAR, Yahoo Finance, Bloomberg SPLC) and involves no human participants.]
+#include "chapters/appendix-d.typ"
+
+#include "chapters/appendix-e.typ"

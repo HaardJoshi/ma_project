@@ -19,11 +19,11 @@ The distinction between product and process is not cosmetic. A product can succe
 
 The study set out three primary objectives, each of which maps directly to a testable hypothesis and an architectural component:
 
-+ *Objective 1:* Demonstrate that graph topology adds statistically significant directional signal to M&A synergy prediction beyond financial fundamentals. This corresponds to H1 and the Block C (HeteroGraphSAGE) component.
++ *Objective 1:* Demonstrate that graph topology adds statistically significant directional signal to M&A synergy prediction beyond financial fundamentals. This corresponds to H1 and the Block C (HeteroGraphSAGE @hamilton2017) component.
 
-+ *Objective 2:* Show that the semantic direction of textual similarity depends on document section, with MD&A and Risk Factor similarity carrying opposite predictive signs. This corresponds to H2 and the section-aware FinBERT pipeline (Block B).
++ *Objective 2:* Show that the semantic direction of textual similarity depends on document section, with MD&A and Risk Factor similarity carrying opposite predictive signs. This corresponds to H2 and the section-aware FinBERT pipeline (@araci2019) (Block B).
 
-+ *Objective 3:* Establish that network centrality compresses the variance of announcement returns, providing a structural signal about market predictability. This corresponds to H3 and the betweenness centrality analysis.
++ *Objective 3:* Establish that network centrality compresses the variance of announcement returns, providing a structural signal about market predictability @larcker2013. This corresponds to H3 and the betweenness centrality analysis.
 
 All three objectives were met. H1 was supported with an AUC gain of +0.0247 (M3 vs. M1); H2 was supported with $beta_("MDA") = +0.0044$ and $beta_("RF") = -0.0080$ in the correct directions; and H3 was supported with Levene's $F = 7.0745$ ($p = 0.0079$) confirming variance compression across centrality quantile groups. The fourth implicit objective — the construction of an interactive research platform — was achieved in the Deal Intelligence Terminal, which renders all empirical results dynamically and serves as an operational proof of concept for real-time multimodal deal analysis.
 
@@ -87,7 +87,7 @@ Several design decisions proved more valuable in practice than their theoretical
 
 An honest process evaluation also requires identifying where the process fell short of what was possible.
 
-*Hyperparameter search was counterproductive.* The effort invested in Bayesian search via Optuna yielded a critical domain-specific finding: surrogate-based optimizers systematically over-regularize in high-noise financial regimes. While it reduced AUC across every configuration, this provided a valuable methodological lesson: in noisy financial signal environments, architectural diversity (what features you include) is more valuable than optimiser sophistication (how finely you tune the same feature set). Future work should invest optimiser effort only after establishing that the feature space contains enough signal to reward fine-grained search.
+*Hyperparameter search was counterproductive.* The effort invested in Bayesian search via Optuna (@akiba2019) yielded a critical domain-specific finding: surrogate-based optimizers systematically over-regularize in high-noise financial regimes. While it reduced AUC across every configuration, this provided a valuable methodological lesson: in noisy financial signal environments, architectural diversity (what features you include) is more valuable than optimiser sophistication (how finely you tune the same feature set). Future work should invest optimiser effort only after establishing that the feature space contains enough signal to reward fine-grained search.
 
 *Graph coverage could have been deeper.* The HeteroGraphSAGE component achieves the headline AUC gain, but the graph neighbourhood depth was limited to two hops due to computational constraints. Economic theory suggests that second and third-order supplier dependencies — the suppliers of suppliers — carry meaningful risk propagation signals that two-hop neighbourhoods capture only partially. The gain demonstrated is therefore likely a lower bound on what a fully realised graph component could achieve with deeper neighbourhood sampling or a richer edge-weighting scheme.
 

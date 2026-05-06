@@ -1,6 +1,6 @@
 import json
 import streamlit as st
-from frontend.utils import load_betweenness_data, setup_page
+from utils import load_betweenness_data, setup_page
 
 setup_page("Pipeline Architecture")
 

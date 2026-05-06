@@ -13,7 +13,7 @@ This chapter reports the empirical findings of the dual-evaluation framework int
 
 The chapter therefore proceeds in a deliberately simple order. @sec-classification reports the classification ablation ladder, because this is where the clearest empirical gains appear. @sec-regression then reports the regression pipeline honestly, showing why continuous CAR magnitude remains difficult to predict. @sec-m2-reversal resolves the M2 reversal and explains why naive NLP degrades rather than improves prediction. @sec-h1, @sec-h2, and @sec-h3 test H1, H2, and H3 directly. @sec-interpretability presents interpretability evidence from SHAP, and @sec-practical-meaning translates the classifier gain into practical financial meaning before closing with limitations.
 
-All reported classification results derive from five-fold stratified cross-validation. All preprocessing steps — median imputation, scaling, and any trainable transformations — were fit on training folds only, then applied to the held-out fold, preserving the leakage controls established in @ch-methodology @mackinlay1997 @creswell2014.
+All reported classification results derive from five-fold stratified cross-validation. All preprocessing steps — median imputation, scaling, and any trainable transformations — were fit on training folds only, then applied to the held-out fold, preserving the leakage controls established in @ch-methodology @mackinlay1997 @creswell2014 @kohavi1995.
 
 == Classification Results <sec-classification>
 
@@ -77,7 +77,7 @@ The regression pipeline was retained because @ch-methodology defined it as neces
   caption: [Regression pipeline summary — representative continuous CAR results. Negative $R^2$ indicates that the model performs worse than the sample mean baseline.],
 ) <tbl-reg-summary>
 
-These negative $R^2$ values are not evidence that the project failed. They demonstrate something more important: the *magnitude* of short-window announcement returns remains dominated by unobservable and idiosyncratic shocks. Payment method, takeover speculation, competing bids, macro conditions, investor sentiment, and timing noise all influence realised CAR in ways that are only partially visible in pre-announcement features @fama1991 @shleifer2003. 
+These negative $R^2$ values are not evidence that the project failed. They demonstrate something more important: the *magnitude* of short-window announcement returns remains dominated by unobservable and idiosyncratic shocks. Payment method, takeover speculation, competing bids, macro conditions, investor sentiment, and timing noise all influence realised CAR in ways that are only partially visible in pre-announcement features @fama1970 @fama1991 @shleifer2003. 
 
 Because the regression models failed to achieve positive explanatory power ($R^2 < 0$) across all configurations, detailed error metrics defined in @ch-methodology (such as MAE, RMSE, and Huber loss) are omitted from this summary. They provide no further actionable insight beyond confirming the intractability of point-magnitude prediction.
 
