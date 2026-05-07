@@ -12,15 +12,15 @@
 
 Every year, thousands of companies announce mergers and acquisitions - deals in which one firm pays a premium to absorb another, betting that the combined entity will be worth more than the sum of its parts. Yet decades of evidence suggest that this bet fails more often than it succeeds. The central question motivating this study is simple: if this failure rate has persisted across a century of increasingly sophisticated corporate due diligence, what information are existing analytical frameworks systematically missing?
 
-This review builds a sustained argument across four interconnected knowledge streams, each representing a distinct wave of scholarship that has tried - and partially failed - to answer that question. Rather than a neutral survey, each stream is examined for what it structurally could not achieve, with each identified gap mapped directly to one of the three hypotheses tested in this dissertation.
+This review builds a sustained argument across four interconnected knowledge streams. Each represent a distinct wave of scholarship that has tried—and partially failed—to answer that question. Rather than a neutral survey, each stream is examined for what it systematically overlooks, with each identified gap mapped directly to one of the three hypotheses tested in this dissertation.
 
-+ *Stream I - The M&A Paradox and the Failure of Valuation Theory:* diagnoses why synergy prediction is genuinely difficult and establishes that the root cause is not a lack of computing power, but a structural information blindspot.
++ *Stream I - Why M&A Prediction is Genuinely Hard:* diagnoses why synergy prediction is difficult and establishes that the root cause is a structural information blindspot rather than a lack of computing power.
 
-+ *Stream II - The Tabular Paradigm:* traces the full history of quantitative M&A models - from logistic regression through gradient-boosted trees and early deep neural networks - and demonstrates that every generation inherited the same core architectural limitation, producing an asymptotic accuracy ceiling no amount of algorithmic sophistication could break through.
++ *Stream II - The Limits of the Spreadsheet Model:* traces the history of quantitative M&A models—from logistic regression through early deep neural networks—and demonstrates that every generation inherited the same core architectural limitation. This has produced an asymptotic accuracy ceiling that algorithmic sophistication alone could not break.
 
-+ *Stream III - The Semantic Turn:* examines how natural language processing entered the M&A prediction landscape and why, despite genuinely powerful tools, the field systematically pointed them at the wrong question - and even when pointed correctly, fell into a structural trap that cancelled the very richness it sought to exploit.
++ *Stream III - Decoding Corporate Narratives:* evaluates the "Textual Turn" in finance, focusing on the potential and the pitfalls of using natural language processing to extract synergy signals from regulatory filings.
 
-+ *Stream IV - The Topological Turn:* engages with supply chain finance, corporate network theory, and graph neural network research to establish that the structure of a firm's external relationships - its suppliers, customers, and competitors - carries economic information about deal value that is, by mathematical necessity, invisible to any model that treats each firm as an isolated data point.
++ *Stream IV - Companies as Networked Actors:* examines the shift from modelling firms as independent agents to modelling them as nodes in a supply-chain topology, providing the theoretical foundation for the graph-based features used in this project.
 
 The review concludes that these four streams converge on a single architectural response: a heterogeneous graph model that simultaneously fuses financial fundamentals (Block A), section-conditioned textual embeddings (Block B), and supply-chain and competition graph topology (Block C). As of 2025, no published study has directed this combined architecture at post-merger synergy outcome prediction.
 
@@ -182,7 +182,7 @@ A positive CAR indicates the market interpreted the deal as value-creating; a ne
 
 #cite(<mackinlay1997>, form: "prose") established that event window selection involves a fundamental bias-variance trade-off. Narrow windows (e.g., $[-1, +1]$ trading days) isolate the immediate announcement surprise cleanly but risk missing delayed market reactions for deals where information leaked before the formal announcement. Wider windows (e.g., $[-5, +5]$) capture more complete price discovery but introduce additional variance from unrelated news.
 
-This study uses the $[-5, +5]$ window, consistent with the empirical M&A literature @betton2008, as a practical balance that accommodates the pre-announcement information leakage documented to begin three to five days before announcement in approximately 25% of transactions. While a narrower $[-1, +1]$ specification could theoretically isolate the immediate announcement shock more cleanly, the wider window is necessary here to ensure that delayed price discovery in smaller, less liquid acquirers is fully captured.
+This study uses the $[-5, +5]$ window, consistent with the empirical M&A literature @betton2008, as a practical balance that accommodates the pre-announcement information leakage documented to begin three to five days before announcement in approximately 25% of transactions. While a n→ $[-1, +1]$ specification could theoretically isolate the immediate announcement shock more cleanly, the wider window is necessary here to ensure that delayed price discovery in smaller, less liquid acquirers is fully captured.
 
 === Why Binary Classification Rather Than Regression
 

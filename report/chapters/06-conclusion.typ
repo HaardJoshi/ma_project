@@ -8,17 +8,27 @@
 
 = Conclusion <ch-conclusion>
 
-== The Core Argument Resolved <sec-conclusion-synthesis>
+== The Core Argument Evaluated <sec-conclusion-synthesis>
 
-The enduring failure of quantitative M&A prediction is rooted in economic epistemology rather than computational limits — models have had enough power; they have lacked the right representation of the firm. For three decades, quantitative finance has treated the firm as an isolated vector of accounting ratios - a standalone entity disconnected from its ecosystem. This dissertation began with a single structural critique: that the tabular paradigm enforces an artificial independence assumption upon firms that are deeply, inextricably networked. The central thesis argued that until predictive models encode the economic reality of supply chains, competitive topologies, and strategic semantics, the accuracy ceiling on M&A prediction would remain mathematically unbroken.
+The enduring failure of quantitative M&A prediction appears rooted in economic epistemology rather than simple computational limits. For three decades, quantitative finance has frequently treated the firm as an isolated vector of accounting ratios. This dissertation began with a structural critique: that the tabular paradigm enforces an artificial independence assumption upon firms that are deeply networked. The central thesis argued that until predictive models encode the economic reality of supply chains and strategic semantics, the accuracy ceiling on M&A prediction would remain difficult to break.
 
-This study resolved that argument by building and evaluating a multimodal late-fusion architecture (HeteroGraphSAGE) designed specifically to break the tabular ceiling. By fusing conventional financial data with section-aware textual embeddings and structural graph topology, the project proved that post-acquisition cumulative abnormal return (CAR) direction is predictable not just from what firms earn, but from where they sit in the industrial network and how they articulate their strategic vulnerabilities.
+This study provides empirical support for that argument by building and evaluating a multimodal late-fusion architecture. By fusing conventional financial data with section-aware textual embeddings and structural graph topology, the project suggests that post-acquisition cumulative abnormal return (CAR) direction can be better understood by looking at both what firms earn and where they sit in the industrial network. 
 
 == Synthesis of Empirical Findings <sec-conclusion-findings>
 
-The empirical findings of this research fundamentally reshape how M&A prediction should be approached, distinguishing clearly between what adds predictive value and what destroys it. 
+The empirical findings of this research provide a starting point for rethinking how M&A prediction should be approached, making a clear distinction between what appears to add predictive value and what may destroy it. 
 
-The most prominent positive result was the validation of the Topological Alpha Hypothesis (H1). The addition of graph structural features elevated the classification AUC from the financial-only baseline of 0.5408 (M1) to 0.5655 (M3) - a non-trivial $+0.0247$ lift in a domain defined by severe market noise @betton2008. This confirms that supply chain proximity and network positioning contain irreducible economic signals that tabular representations categorically miss @cohen2008 @ahern2014. Furthermore, the Topological Arbitrage Hypothesis (H3) demonstrated that network centrality acts as a structural variance dampener ($p = 0.0079$), establishing that highly interconnected firms experience less volatile market reactions because their exposure is diversified and their integration logic is more legible to the market @larcker2013.
+The most prominent result was the evidence consistent with the Topological Alpha Hypothesis (H1). The addition of multimodal features, including graph structural embeddings, yielded a $+0.0247$ lift in AUC over the financial baseline. While the marginal effect of topology is not strictly isolated from the textual stream, the improvement suggests that the combined multimodal representation captures signals that traditional tabular models systematic overlook @cohen2008 @ahern2014. Furthermore, the Topological Arbitrage Hypothesis (H3) provided evidence that network centrality acts as a structural variance dampener ($p = 0.0079$), suggesting that highly interconnected firms experience less volatile market reactions because their exposure is diversified @larcker2013.
+
+#block(
+  fill: luma(250),
+  inset: 10pt,
+  radius: 4pt,
+  [
+    *Final Reflection: The Human Side of the Data.*
+    Looking back, the hardest part of this project wasn't the Graph Neural Network or the FinBERT fine-tuning—it was the moment when the "M2 Reversal" first appeared. Seeing my model perform worse after I had spent weeks building a complex text pipeline was a major ego hit. But that "failure" became the most interesting paragraph in the whole study. It taught me that in financial research, being honest about why a model breaks is often more valuable than chasing a higher AUC score.
+  ]
+)
 
 Equally important were the boundary conditions established by the negative findings. The Semantic Divergence Hypothesis (H2) and the subsequent "M2 Reversal" proved that applying natural language processing naively - by aggregating corporate disclosures into a single semantic blob - actively destroys predictive accuracy. Because Management Discussion & Analysis (MD&A) and Risk Factor disclosures encode opposing economic forces, they must be modelled as distinct, adversarial signals. Additionally, the uniform failure of the regression pipeline to explain continuous CAR magnitude ($R^2 < 0$) confirmed that while the *direction* of synergy is probabilistically recoverable through structural data, the precise *magnitude* of announcement returns remains structurally dominated by idiosyncratic market noise.
 

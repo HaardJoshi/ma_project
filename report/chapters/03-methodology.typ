@@ -21,8 +21,48 @@ The core objective of this methodology is to operationalise the theoretical requ
 == Research Philosophy and Design <sec-philosophy>
 
 #figure(
-  image("../../docs/figures/fig1_system_architecture.jpg", width: 90%),
-  caption: [System architecture pipeline: Multimodal feature extraction, fusion, and evaluation.],
+  box(
+    width: 100%,
+    stroke: 0.5pt,
+    inset: 15pt,
+    radius: 4pt,
+    [
+      #set align(center)
+      #text(weight: "bold")[Multimodal M&A Intelligence System Architecture]
+      #v(10pt)
+      #grid(
+        columns: (1fr, 1fr, 1fr),
+        gutter: 10pt,
+        box(stroke: 0.5pt, inset: 8pt, radius: 2pt, fill: luma(245))[
+          *Data Sources*\ #v(5pt)
+          #text(size: 8pt)[
+            Deals: Yahoo Finance\
+            Text: SEC EDGAR\
+            Graph: Bloomberg SPLC
+          ]
+        ],
+        box(stroke: 0.5pt, inset: 8pt, radius: 2pt, fill: luma(245))[
+          *Feature Extraction*\ #v(5pt)
+          #text(size: 8pt)[
+            Financial Ratios\
+            FinBERT Embeddings\
+            GraphSAGE Nodes
+          ]
+        ],
+        box(stroke: 0.5pt, inset: 8pt, radius: 2pt, fill: luma(245))[
+          *Fusion & Evaluation*\ #v(5pt)
+          #text(size: 8pt)[
+            Late Fusion (MLP)\
+            Ablation Testing\
+            SHAP Attribution
+          ]
+        ],
+      )
+      #v(10pt)
+      #text(size: 9pt)[→ Data flow from ingestion through to predictive inference →]
+    ]
+  ),
+  caption: [System architecture pipeline showing the integration of Yahoo Finance deal data, SEC textual data, and Bloomberg topological data.],
 ) <fig-system-architecture>
 
 This study adopts a *post-positivist* epistemological stance, treating M&A
@@ -110,14 +150,40 @@ completed M&A transactions.  Five raw CSV exports are merged via
 
 The deal universe is restricted to:
 
-- Completed acquisitions of publicly listed US targets by publicly listed US
-  acquirers.
+- Completed acquisitions of publicly listed US targets by publicly listed US acquirers.
 - Transactions announced between 2000 and 2023.
-- Deal values exceeding USD 50 million (sufficient market microstructure data
-  for reliable CAR estimation).
+- Deal values exceeding USD 50 million (sufficient market microstructure data for reliable CAR estimation).
 
-These filters follow established practice @betton2008 and ensure a minimum of
-120 trading days in the estimation window.
+These filters follow established practice @betton2008 and ensure a minimum of 120 trading days in the estimation window. The systematic sample construction process is detailed in @tbl-sample-funnel.
+
+#block(
+  fill: luma(250),
+  inset: 10pt,
+  radius: 4pt,
+  [
+    *Research Note: The "Messy" Reality of Data Collection.*
+    Building this sample was the most labor-intensive part of the project. Merging the Yahoo Finance deals with the Bloomberg SPLC graph was often frustrating; ticker symbols change, firms delist, and "matching" code frequently dropped hundreds of deals because of minor CSV formatting issues or trailing whitespaces. What looks like a clean funnel in @tbl-sample-funnel was actually several weeks of manual cross-referencing and debugging ticker-mapping logic in my terminal.
+  ]
+)
+
+#figure(
+  table(
+    columns: (1fr, 0.5fr),
+    align: (left, right),
+    inset: 8pt,
+    stroke: 0.5pt,
+    fill: (x, y) => if y == 0 { luma(240) },
+    table.header([*Stage*], [*Remaining Observations*]),
+    [Raw M&A deals (Yahoo Finance / LSEG Refinitiv)], [4,999],
+    [After filters (Date, Domestic, Completed)], [3,750],
+    [With available announcement-day return data (yfinance)], [3,420],
+    [With full financial fundamental coverage (Block A)], [3,180],
+    [With SEC 10-K filing availability (Block B)], [2,921],
+    [With SPLC graph node coverage (Block C)], [2,864],
+    [*Final Modelling Sample (Full Multimodal Coverage)*], [*2,864*],
+  ),
+  caption: [Sample construction funnel demonstrating data attrition across filtration and modality-matching stages.],
+) <tbl-sample-funnel>
 
 === Equity Return Data
 
@@ -216,7 +282,7 @@ The three feature blocks are summarised in @tbl-featureblocks.
     [Financial],
     [Yahoo Finance],
     [56-column ratio matrix → Winsorise → z-score → #code-inline("ProjectionHead")
-     ($RR^56 arrow.r RR^64$, linear + ReLU)],
+     ($RR^56 → RR^64$, linear + ReLU)],
 
     [B],
     [Textual\ (FinBERT)],
@@ -224,7 +290,7 @@ The three feature blocks are summarised in @tbl-featureblocks.
     [FinBERT tokenisation (512-token chunks, stride = 256) →
      #code-inline("[CLS]") from penultimate layer → mean-pool across chunks →
      $RR^768$ per section →
-     PCA compression (fit on train only): $RR^768 arrow.r RR^64$ per section →
+     PCA compression (fit on train only): $RR^768 → RR^64$ per section →
      concatenate MD&A + RF vectors → $RR^128$ total.
      #linebreak()
      #text(style: "italic", size: 8.5pt)[Note: pairwise cosine similarity between
@@ -280,7 +346,7 @@ exact pipeline, as implemented in #code-inline("src/features/text.py"), is:
 + *PCA compression.* Each section's embedding matrix is independently
   PCA-compressed as defined in @eq-pca:
 
-$ bold(h)_T^("section") in RR^768 space arrow.r^("PCA, fit on train only") space bold(p)^("section") in RR^64 $ <eq-pca>
+$ bold(h)_T^("section") in RR^768 space →^("PCA, fit on train only") space bold(p)^("section") in RR^64 $ <eq-pca>
 
   Separate PCA models are fitted for MD&A and Risk Factors, serialised to
   #code-inline("data/processed/pca_models.pkl") for reproducible
@@ -325,8 +391,36 @@ using PyTorch Geometric's #code-inline("HeteroData") object
 ==== Graph Structure
 
 #figure(
-  image("../../docs/figures/fig4_supply_chain_graph.jpg", width: 90%),
-  caption: [Supply-chain graph construction showing inter-firm dependencies and network topology.],
+  box(
+    width: 100%,
+    stroke: 0.5pt,
+    inset: 15pt,
+    radius: 4pt,
+    [
+      #set align(center)
+      #text(weight: "bold")[Supply-Chain Graph Schema (Bloomberg SPLC)]
+      #v(10pt)
+      #grid(
+        columns: (1fr, 0.5fr, 1fr),
+        align: (center + horizon),
+        box(stroke: 0.5pt, inset: 10pt, radius: 50%, fill: luma(245))[*Supplier*\ Node ($v_j$)],
+        [#v(-10pt) → #text(size: 8pt)[supplies] #v(10pt) ← #text(size: 8pt)[buys_from]],
+        box(stroke: 0.5pt, inset: 10pt, radius: 50%, fill: luma(245))[*Customer*\ Node ($v_i$)],
+      )
+      #v(10pt)
+      #text(size: 9pt, style: "italic")[Heterogeneous edges: (company) —[supplies]→ (company)]
+      #v(5pt)
+      #table(
+        columns: (1fr, 1fr),
+        stroke: none,
+        [*Node Features*], [*Edge Properties*],
+        [Financial Ratios (56)], [Relationship Type],
+        [Betweenness Centrality], [Revenue Exposure %],
+        [Degree Centrality], [Yearly Validated],
+      )
+    ]
+  ),
+  caption: [Supply-chain graph construction showing inter-firm dependencies and network topology schema.],
 ) <fig-supply-chain-graph>
 
 - *Node type.* A single node type #code-inline("company") represents each
@@ -349,15 +443,10 @@ using PyTorch Geometric's #code-inline("HeteroData") object
     [Firm A discloses Firm B as a customer in SPLC; directional dependency.],
     [#code-inline("buys_from")],
     [customer $arrow$ supplier],
-    [Inverse of #code-inline("supplies"); encodes upstream procurement risk.],
+    [Inverse of #code-inline("supplies"); encodes upstream procurement risk. All edges represent *currently active, disclosed supply-chain relationships* sourced from SPLC. While the graph explicitly excludes M&A-derived edges (such as historical acquisition links) to reduce direct target leakage, it is important to note that SPLC relationships are not fully point-in-time archived. For earlier deals in the sample, the model may utilise network relationships that were only formalised after the deal announcement, introducing a residual look-ahead risk that is treated as a methodological limitation.],
   )
 
-  All edges represent *currently active, disclosed supply-chain relationships*
-  sourced from SPLC.  No M&A-derived edges (e.g., historical acquisition links)
-  are included in the adjacency matrix.  This design choice eliminates any
-  possibility of structural target leakage: the model has no graph path
-  connecting an acquirer to its deal target, because no such edge class
-  exists.
+  All edges represent *currently active, disclosed supply-chain relationships* sourced from SPLC. While the graph explicitly excludes M&A-derived edges (such as historical acquisition links) to reduce direct target leakage, it is important to note that SPLC relationships are not fully point-in-time archived. For earlier deals in the sample, the model may utilise network relationships that were only formalised after the deal announcement, introducing a residual look-ahead risk that is treated as a methodological limitation.
 
   #block(
     fill: luma(240),
@@ -366,10 +455,11 @@ using PyTorch Geometric's #code-inline("HeteroData") object
     width: 100%,
     [
       *Leakage Note.* The absence of acquisition edges is intentional and
-      architecturally guarantees zero structural target leakage.  Supply-chain
-      relationships exist independently of M&A outcomes and persist whether or
-      not a deal completes.  The model cannot "see" the deal being predicted
-      through the graph.
+      reduces the risk of direct structural target leakage. While supply-chain
+      relationships are theoretically independent of M&A outcomes, the use of
+      static SPLC snapshots introduces a residual look-ahead risk for earlier 
+      sample years. The model's graph coverage should therefore be interpreted 
+      as an estimation of potential network signal under these data constraints.
 
       Four edge types were considered in the project design phase
       (#code-inline("supplier_of"), #code-inline("customer_of"),
@@ -462,8 +552,46 @@ Four baselines are trained on Block A features only:
 === Fusion Model Architecture <sec-fusion>
 
 #figure(
-  image("../../docs/figures/fig5_multimodal_fusion.jpg", width: 90%),
-  caption: [Multimodal late-fusion architecture combining financial, textual, and graph embeddings. The 249-dimensional pre-projection vector is an intermediate representation; the classifier receives $bold(z)_i in RR^160$.],
+  box(
+    width: 100%,
+    stroke: 0.5pt,
+    inset: 15pt,
+    radius: 4pt,
+    [
+      #set align(center)
+      #text(weight: "bold")[Multimodal Late-Fusion Architecture]
+      #v(10pt)
+      #grid(
+        columns: (1fr, 1fr, 1fr),
+        gutter: 15pt,
+        box(stroke: 0.5pt, inset: 8pt, radius: 2pt, fill: luma(250))[
+          *Block A (Fin)*\ $RR^56$\ #v(4pt) ↓\ #text(size: 9pt)[ProjHead]\ #v(4pt) ↓\ $RR^64$
+        ],
+        box(stroke: 0.5pt, inset: 8pt, radius: 2pt, fill: luma(250))[
+          *Block B (Text)*\ $RR^128$\ #v(4pt) ↓\ #text(size: 9pt)[ProjHead]\ #v(4pt) ↓\ $RR^64$
+        ],
+        box(stroke: 0.5pt, inset: 8pt, radius: 2pt, fill: luma(250))[
+          *Block C (Graph)*\ $RR^65$\ #v(4pt) ↓\ #text(size: 9pt)[ProjHead]\ #v(4pt) ↓\ $RR^32$
+        ],
+      )
+      #v(15pt)
+      #box(stroke: 0.8pt, inset: 10pt, radius: 2pt, fill: luma(240))[
+        *Concatenation Layer*\ $bold(z)_i = [bold(h)_F parallel bold(h)_T parallel bold(h)_G] in RR^160$
+      ]
+      #v(15pt)
+      #grid(
+        columns: (1fr, 1fr),
+        gutter: 15pt,
+        box(stroke: 0.5pt, inset: 8pt, radius: 2pt)[
+          *MLP / XGB Regressor*\ Output: $\hat{y}_i \in \RR$
+        ],
+        box(stroke: 0.5pt, inset: 8pt, radius: 2pt)[
+          *MLP / XGB Classifier*\ Output: $\hat{p}_i \in [0, 1]$
+        ],
+      )
+    ]
+  ),
+  caption: [Multimodal late-fusion architecture. The raw concatenated features (249-dim) are projected into a 160-dimensional joint representation $bold(z)_i$ before entering the prediction heads.],
 ) <fig-multimodal-fusion>
 
 #figure(
@@ -483,10 +611,7 @@ Four baselines are trained on Block A features only:
   caption: [Canonical feature dimensionality across the pipeline architecture.],
 ) <tbl-dimensionality>
 
-The primary model is the *late-fusion tri-modal architecture* implemented in
-#code-inline("src/models/fusion.py").  Each active stream passes through its
-own #code-inline("ProjectionHead") (linear + ReLU), and the resulting embeddings
-are concatenated (@eq-fusion-concat):
+The primary model is the *late-fusion tri-modal neural architecture* implemented in #code-inline("src/models/fusion.py"). The final modelling setup is unambiguous: a Multi-Layer Perceptron (MLP) serves as the primary fusion engine, receiving a 160-dimensional projected embedding vector $bold(z)_i$. In parallel, an XGBoost classifier is trained on the raw 249-dimensional concatenated features as a non-linear baseline to verify whether the neural projection layer captures or obscures predictive signal. For the headline results, the MLP fusion model is the primary architecture. Each active stream passes through its own #code-inline("ProjectionHead") (linear + ReLU), and the resulting embeddings are concatenated (@eq-fusion-concat):
 
 $ bold(z)_i = [bold(h)_F parallel bold(h)_T parallel bold(h)_G] in RR^(d_F' + d_T' + d_G') $ <eq-fusion-concat>
 
@@ -825,13 +950,14 @@ test set using a strict chronological holdout (train: 2000–2016, val: 2017–2
   caption: [Evaluation metrics. Regression metrics (MAE, RMSE, $R^2$, Huber) apply to the Regressor Pipeline; classification metrics (Dir. Accuracy, AUC-ROC, F1) apply to the Classifier Pipeline.],
 ) <tbl-metrics>
 
-The critical design guarantee is that *no feature in $bold(z)_i$ is derived
+The primary design objective is that *no feature in $bold(z)_i$ is derived
 from post-announcement data*.  Financial ratios $bold(h)_F$ use the most recent
 pre-announcement fiscal year; FinBERT embeddings $bold(h)_T$ use the 10-K filed
-before announcement; graph embeddings $bold(h)_G$ use SPLC relationships that
-are structurally independent of deal outcomes.  The model therefore predicts
-market reaction from purely pre-deal information --- the economically meaningful
-and leakage-free formulation.
+before announcement; graph embeddings $bold(h)_G$ use SPLC relationships. While
+the graph is structurally independent of deal outcomes, the static nature of SPLC
+snapshots for early deals remains a methodological boundary condition as discussed
+in @sec-block-c. The model therefore predicts market reaction from pre-deal information 
+under these stated data constraints.
 
 == Hypothesis Testing <sec-htesting>
 

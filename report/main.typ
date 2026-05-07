@@ -21,7 +21,7 @@
 
     First and foremost, I want to thank my supervisor, Arish Siddiqui. There were several points where I was ready to settle for a "good enough" result or a simpler model, but Mr. Arish pushed me to dig deeper into the graph theory and the section-specific NLP that eventually became the core of this project. His honest, no-nonsense feedback kept me on track when the data felt overwhelming.
     
-    I am also grateful to the UEL technical team and the library staff for helping me navigate the institutional data access. A special mention must go to the quiet corners of the library where I spent weeks trying to debug the SPLC node-mapping logic and the bizarre Python 3.14 environment freezes that nearly derailed the final evaluation. 
+    I am also grateful to the UEL technical team and the library staff for helping me navigate the institutional data access. A special mention must go to the quiet corners of the library where I spent weeks trying to debug the SPLC node-mapping logic and the bizarre Python 3.12 environment freezes that nearly derailed the final evaluation. 
     
     Finally, thank you to my family and friends. To those who listened to my frustrated rants about "negative R-squared" values and the "M2 reversal" over coffee, and to those who simply reminded me to take a walk and step away from the terminal—thank you. Your support made the long nights of data engineering a lot more manageable.
   ]

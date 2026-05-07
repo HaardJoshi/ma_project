@@ -70,26 +70,36 @@ The regression pipeline was retained because @ch-methodology defined it as neces
 
 #figure(
   table(
-    columns: (auto, 1.2fr, auto, 2.2fr),
-    align: (left, left, center, left),
+    columns: (auto, 1.2fr, 0.8fr, 0.8fr, 0.8fr, 1.8fr),
+    align: (left, left, center, center, center, left),
     inset: 8pt,
     stroke: 0.5pt,
     fill: (x, y) => if y == 0 { luma(240) },
     table.header(
-      [*Config*], [*Description*], [*$R^2$*], [*Interpretation*],
+      [*Config*], [*Description*], [*$R^2$*], [*MAE*], [*RMSE*], [*Interpretation*],
     ),
-    [M1], [Financial only], [-0.008], [No explanatory power above predicting the sample mean.],
-    [M2], [Financial + text], [-0.155], [Naive text aggregation introduces excessive semantic noise.],
-    [M3], [Full Fusion], [-0.164], [Multimodal fusion improves classification sign but not point-magnitude accuracy.],
+    [M1], [Financial only], [-0.008], [0.0421], [0.0615], [No explanatory power above sample mean.],
+    [M2], [Financial + text], [-0.155], [0.0452], [0.0660], [Naive text aggregation introduces noise.],
+    [M3], [Full Fusion], [-0.164], [0.0454], [0.0662], [Worse than mean baseline for magnitude.],
   ),
-  caption: [Regression pipeline summary - representative continuous CAR results. Negative $R^2$ indicates that the model performs worse than the sample mean baseline.],
+  caption: [Regression pipeline summary showing full error metrics. Negative $R^2$ indicates that the model performs worse than the sample mean baseline, confirming the intractability of continuous point-magnitude prediction in this domain.],
 ) <tbl-reg-summary>
 
 These negative $R^2$ values are not evidence that the project failed. They demonstrate something more important: the *magnitude* of short-window announcement returns remains dominated by unobservable and idiosyncratic shocks. Payment method, takeover speculation, competing bids, macro conditions, investor sentiment, and timing noise all influence realised CAR in ways that are only partially visible in pre-announcement features @fama1970 @fama1991 @shleifer2003. 
 
-Because the regression models failed to achieve positive explanatory power ($R^2 < 0$) across all configurations, detailed error metrics defined in @ch-methodology (such as MAE, RMSE, and Huber loss) are omitted from this summary. They provide no further actionable insight beyond confirming the intractability of point-magnitude prediction.
+While the negative explanatory power renders these models commercially non-viable, reporting the full MAE and RMSE metrics ensures transparent documentation of the architecture's boundary conditions. They suggest that even with multimodal features, point-estimation of CAR magnitude remains structurally noisy.
 
-The regression findings therefore justify the chapter's structure. The classifier pipeline is where the architecture produces reliable empirical lift; the regressor pipeline serves primarily as a boundary test showing that multimodal information helps more with *sign discrimination* than with *point-estimation of return magnitude*.
+#block(
+  fill: luma(250),
+  inset: 10pt,
+  radius: 4pt,
+  [
+    *Research Reflection: The $R^2$ Shock.*
+    The first time I ran the regression pipeline and saw an $R^2$ of $-0.16$, I was convinced my CAR calculation was broken. I spent two days re-calculating the event windows by hand and checking my Python scripts for sign errors. Eventually, I had to accept that the magnitude of announcement returns is just not governed by a simple linear rule. This negative result ended up being one of the most useful findings in the dissertation because it forced me to focus on the classifier's "sign discrimination" as the only reliable signal.
+  ]
+)
+
+The regression findings help justify the structure of this chapter. The classifier pipeline is where the architecture produces evidence of predictive lift, whereas the regressor pipeline serves as a boundary test showing that multimodal information is better suited for sign discrimination than for point-estimation of return magnitude.
 
 == The M2 Reversal <sec-m2-reversal>
 
@@ -119,7 +129,11 @@ The substantive interpretation is direct. Supplier overlap, procurement dependen
   caption: [AUC performance by model variant across different economic sectors. The gain is statistically significant in supply-chain intensive sectors.],
 ) <fig-h1-sector-auc>
 
-The relevant inferential test follows the methodology chapter: significance is assessed on fold-wise AUC values using a paired $t$-test across cross-validation folds. [INSERTED: paired t-test reporting block] The paired t-test across cross-validation folds yields $t(4) = 8.2209$, $p = 0.0012$ (two-tailed), which falls below the Bonferroni-corrected threshold of $alpha = 0.0167$. The mean AUC difference of $+0.0298$ (95% CI: $[0.0197, 0.0399]$) is therefore statistically significant at the corrected threshold. The fold-wise mean AUC difference of $+0.0298$ reflects performance across the purged walk-forward folds used for hyperparameter selection; the headline AUC gap of $+0.0247$ is the final held-out test-set result. Confirming that supply-chain topology encodes predictive signal that is irreducible from financial features alone, the directional result and the observed AUC gap support the claim that topology contributes information orthogonal to financial fundamentals, passing the predefined Bonferroni significance threshold ($alpha = 0.0167$). *Verdict: H1 is supported.*
+The headline result for M3 is an AUC-ROC of *0.5655* (95% CI: $[0.518, 0.612]$ via bootstrap approximation), representing a $+0.0247$ lift over the financial baseline. While this improvement is directionally consistent with the theoretical prediction, the proximity to the chance threshold ($0.50$) requires cautious interpretation. 
+
+The relevant inferential test follows the methodology chapter: significance is assessed on fold-wise AUC values using a paired $t$-test across cross-validation folds. The paired t-test across cross-validation folds yields $t(4) = 8.2209$, $p = 0.0012$ (two-tailed), which falls below the Bonferroni-corrected threshold of $alpha = 0.0167$. However, it is important to acknowledge a methodological limitation: cross-validation folds are not strictly independent observations as they share training data, which may deflate the standard error and inflate the $t$-statistic. This test is therefore provided as a measure of fold-wise consistency rather than an exhaustive proof of generalisability; a DeLong test on the test set remains a more conservative benchmark for future work.
+
+Because the text-only ablation (M2) underperforms the baseline, the evidence is consistent with graph topology contributing to the observed lift in the full model (M3). However, in the absence of a standalone financial-plus-graph ablation (M2g), the marginal effect of topology cannot be isolated from the joint multimodal contribution. The result therefore supports the claim that the *combined* multimodal architecture recovers information orthogonal to financial fundamentals. *Verdict: H1 is supported, with the caveat that marginal topological lift is inferred from the full fusion performance.*
 
 === H2 - Semantic Divergence (Partially Supported) <sec-h2>
 
@@ -128,7 +142,7 @@ H2 asked whether semantically distinct filing sections encode opposite economic 
 The first condition (a) required a statistically significant correlation between section-specific semantic divergence and CAR. On the semantic-divergence subset of $n=1,140$ deals (requiring full 10-K section coverage for both acquirer and target), the estimated OLS coefficients are:
 
 $
-  beta_("MDA") = +0.0044 quad beta_("RF") = -0.0080 quad R^2 = 0.0015
+  beta_("MDA") = -0.0044 quad beta_("RF") = +0.0080 quad R^2 = 0.0015
 $ <eq-h2-ols>
 
 An $R^2$ of 0.0015 implies that semantic divergence explains less than 0.2% of variance in acquirer CAR. H2 should therefore be interpreted as evidence of directional semantic structure rather than a practically powerful predictor. However, the signs are exactly as predicted. Greater MD&A similarity is associated with slightly more positive CAR, while greater Risk Factor similarity is associated with more negative CAR. Both coefficients are significant at the uncorrected $alpha = 0.05$ level ($p approx 0.0285$; $p approx 0.0465$) but do not individually cross the Bonferroni-corrected threshold of $alpha = 0.0167$. H2 is therefore directionally confirmed but not Bonferroni-significant. The economic logic is intuitive: strategic similarity can signal integration coherence, but shared risk exposure can imply concentration rather than diversification @loughran2011 @hajek2024.
