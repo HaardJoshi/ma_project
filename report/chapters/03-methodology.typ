@@ -12,7 +12,6 @@
 
 = Methodology <ch-methodology>
 #show figure: set block(spacing: 1.5em)
-#set figure(gap: 1em)
 
 
 == Introduction
@@ -782,7 +781,7 @@ $ cal(L)_"BCE" (theta) = -1/N sum_(i=1)^N [y_{"bin",i} log hat(p)_i + (1 - y_{"b
 where $hat(p)_i = sigma(f_theta(bold(z)_i))$ is the sigmoid-activated synergy
 probability.  All evaluation metrics are then computed by comparing predictions
 against $y_i$ (regression) or $y_{"bin",i}$ (classification) on the held-out
-test set using a strict chronological holdout (train: 2000–2016, val: 2017–2019, test: 2020–2023), with purged walk-forward cross-validation used within the training window only for hyperparameter selection, and an 11-day event-window embargo applied at each boundary (López de Prado, 2018):
+test set using a strict chronological holdout (train: 2000–2016, val: 2017–2019, test: 2020–2023), with purged walk-forward cross-validation used within the training window only for hyperparameter selection, and an 11-day event-window embargo applied at each boundary @lopezdeprado2018:
 
 #figure(
   table(

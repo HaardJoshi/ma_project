@@ -101,7 +101,7 @@ A dual-pipeline evaluation is applied:
 - *Classification pipeline:* Predicts binary CAR direction; evaluated on AUC-ROC (primary), accuracy, F1, and precision-recall curves.
 - *Regression pipeline:* Predicts continuous CAR magnitude; evaluated on $R^2$ and MAE.
 
-Both pipelines are evaluated using a strict chronological holdout (train: 2000–2016, val: 2017–2019, test: 2020–2023), with purged walk-forward cross-validation used within the training window only for hyperparameter selection, and an 11-day event-window embargo applied at each boundary (López de Prado, 2018).
+Both pipelines are evaluated using a strict chronological holdout (train: 2000–2016, val: 2017–2019, test: 2020–2023), with purged walk-forward cross-validation used within the training window only for hyperparameter selection, and an 11-day event-window embargo applied at each boundary @lopezdeprado2018.
 
 === Hypothesis Testing Protocol
 

@@ -186,6 +186,21 @@
     it
   }
 
+  // Academic formatting: Table captions on top, Figure captions on bottom
+  show figure.where(kind: table): it => {
+    set align(center)
+    if it.caption != none {
+      it.caption
+      v(it.gap)
+    }
+    it.body
+  }
+  
+  // Custom caption styling
+  set figure(gap: 0.8em)
+  show figure.caption: set text(size: 10pt, style: "italic")
+  show figure.caption: set align(center)
+
   set math.equation(numbering: "(1)")
   
   body
