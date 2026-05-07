@@ -129,7 +129,7 @@ The first condition (a) required a statistically significant correlation between
 
 $
   beta_("MDA") = +0.0044 quad beta_("RF") = -0.0080 quad R^2 = 0.0015
-$
+$ <eq-h2-ols>
 
 An $R^2$ of 0.0015 implies that semantic divergence explains less than 0.2% of variance in acquirer CAR. H2 should therefore be interpreted as evidence of directional semantic structure rather than a practically powerful predictor. However, the signs are exactly as predicted. Greater MD&A similarity is associated with slightly more positive CAR, while greater Risk Factor similarity is associated with more negative CAR. Both coefficients are significant at the uncorrected $alpha = 0.05$ level ($p approx 0.0285$; $p approx 0.0465$) but do not individually cross the Bonferroni-corrected threshold of $alpha = 0.0167$. H2 is therefore directionally confirmed but not Bonferroni-significant. The economic logic is intuitive: strategic similarity can signal integration coherence, but shared risk exposure can imply concentration rather than diversification @loughran2011 @hajek2024.
 
@@ -148,7 +148,7 @@ H3 asked whether graph prominence compresses the variance of announcement outcom
 
 $
   F_("Levene") = 7.0745 quad p = 0.0079
-$
+$ <eq-levene>
 
 The null of equal variance is rejected. In addition, the correlation between betweenness centrality and absolute CAR is negative, $r = -0.0701$ with $p = 0.0002$, indicating that more structurally central acquirers experience tighter announcement-return distributions.
 

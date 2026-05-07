@@ -169,7 +169,7 @@ All empirical results are operationalised through the *Deal Intelligence Termina
 
 == Ethical, Legal, and Social Considerations
 
-All datasets used are publicly available or accessed via institutional licences (Bloomberg Terminal, LSEG Refinitiv). No human participants are involved. SEC filings are public regulatory documents. Supply-chain data is aggregated and does not include proprietary commercial relationships. Model outputs are not used for live trading or commercial decision-making within the scope of this study.
+All datasets used are publicly available or accessed via institutional licences (Bloomberg Terminal). No human participants are involved. SEC filings are public regulatory documents. Supply-chain data is aggregated and does not include proprietary commercial relationships. Model outputs are not used for live trading or commercial decision-making within the scope of this study.
 
 #v(2em)
 #align(center)[

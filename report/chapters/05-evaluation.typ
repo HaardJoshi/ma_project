@@ -19,9 +19,9 @@ The distinction between product and process is not cosmetic. A product can succe
 
 The study set out three primary objectives, each of which maps directly to a testable hypothesis and an architectural component:
 
-+ *Objective 1:* Demonstrate that graph topology adds statistically significant directional signal to M&A synergy prediction beyond financial fundamentals. This corresponds to H1 and the Block C (HeteroGraphSAGE @hamilton2017) component.
++ *Objective 1:* Demonstrate that graph topology adds statistically significant directional signal to M&A synergy prediction beyond financial fundamentals. This corresponds to H1 and the Block C (HeteroGraphSAGE #cite(<hamilton2017>, form: "prose")) component.
 
-+ *Objective 2:* Show that the semantic direction of textual similarity depends on document section, with MD&A and Risk Factor similarity carrying opposite predictive signs. This corresponds to H2 and the section-aware FinBERT pipeline (@araci2019) (Block B).
++ *Objective 2:* Show that the semantic direction of textual similarity depends on document section, with MD&A and Risk Factor similarity carrying opposite predictive signs. This corresponds to H2 and the section-aware FinBERT pipeline (#cite(<araci2019>, form: "prose")) (Block B).
 
 + *Objective 3:* Establish that network centrality compresses the variance of announcement returns, providing a structural signal about market predictability @larcker2013. This corresponds to H3 and the betweenness centrality analysis.
 
@@ -29,7 +29,7 @@ All three objectives were met. H1 was supported with an AUC gain of +0.0247 (M3 
 
 === Performance Against the Literature
 
-The primary AUC benchmark in this domain is the financial-only logistic regression and gradient-boosting ceiling documented across M&A studies. @palepu1986 and @barnes1990 consistently reported pseudo-$R^2$ below 0.10 on ratio-based models. @zhang2024 achieved modest accuracy improvements over logistic baselines using random forests but remained architecturally bounded by the independence assumption. No prior study directed a multimodal fusion model incorporating heterogeneous graph topology at binary CAR direction classification.
+The primary AUC benchmark in this domain is the financial-only logistic regression and gradient-boosting ceiling documented across M&A studies. #cite(<palepu1986>, form: "prose") and #cite(<barnes1990>, form: "prose") consistently reported pseudo-$R^2$ below 0.10 on ratio-based models. #cite(<zhang2024>, form: "prose") achieved modest accuracy improvements over logistic baselines using random forests but remained architecturally bounded by the independence assumption. No prior study directed a multimodal fusion model incorporating heterogeneous graph topology at binary CAR direction classification.
 
 #figure(
   table(
@@ -51,7 +51,7 @@ The primary AUC benchmark in this domain is the financial-only logistic regressi
   caption: [Contextualised product performance. Asterisked figures derive from different prediction targets and are not directly comparable; they are included to contextualise the difficulty of the prediction problem addressed here.],
 ) <tbl-lit-comparison>
 
-The comparison in @tbl-lit-comparison requires careful interpretation. The AUC range reported by @zhang2024 (~0.56-0.58) applies to proxies for long-term deal success, not short-term announcement CAR direction, making direct comparison difficult despite the overlapping numerical values. Similarly, high accuracy figures from @elhoseny2022 and high F1 figures from @hajek2024 address different, structurally easier prediction targets - financial distress detection and deal occurrence classification - rather than the genuinely harder problem of binary CAR direction. The ceiling this study pushes against is the approximately 0.55 AUC limit on ratio-based M&A models, not the performance of architectures optimised for different financial tasks. Against that correct benchmark, the M3 gain of +0.0247 is meaningful and directionally consistent with the theoretical prediction.
+The comparison in @tbl-lit-comparison requires careful interpretation. The AUC range reported by #cite(<zhang2024>, form: "prose") (~0.56-0.58) applies to proxies for long-term deal success, not short-term announcement CAR direction, making direct comparison difficult despite the overlapping numerical values. Similarly, high accuracy figures from #cite(<elhoseny2022>, form: "prose") and high F1 figures from #cite(<hajek2024>, form: "prose") address different, structurally easier prediction targets - financial distress detection and deal occurrence classification - rather than the genuinely harder problem of binary CAR direction. The ceiling this study pushes against is the approximately 0.55 AUC limit on ratio-based M&A models, not the performance of architectures optimised for different financial tasks. Against that correct benchmark, the M3 gain of +0.0247 is meaningful and directionally consistent with the theoretical prediction.
 
 === Product Limitations
 
@@ -87,7 +87,7 @@ Several design decisions proved more valuable in practice than their theoretical
 
 An honest process evaluation also requires identifying where the process fell short of what was possible.
 
-*Hyperparameter search was counterproductive.* The effort invested in Bayesian search via Optuna (@akiba2019) yielded a critical domain-specific finding: surrogate-based optimizers systematically over-regularize in high-noise financial regimes. While it reduced AUC across every configuration, this provided a valuable methodological lesson: in noisy financial signal environments, architectural diversity (what features you include) is more valuable than optimiser sophistication (how finely you tune the same feature set). Future work should invest optimiser effort only after establishing that the feature space contains enough signal to reward fine-grained search.
+*Hyperparameter search was counterproductive.* The effort invested in Bayesian search via Optuna (#cite(<akiba2019>, form: "prose")) yielded a critical domain-specific finding: surrogate-based optimizers systematically over-regularize in high-noise financial regimes. While it reduced AUC across every configuration, this provided a valuable methodological lesson: in noisy financial signal environments, architectural diversity (what features you include) is more valuable than optimiser sophistication (how finely you tune the same feature set). Future work should invest optimiser effort only after establishing that the feature space contains enough signal to reward fine-grained search.
 
 *Graph coverage could have been deeper.* The HeteroGraphSAGE component achieves the headline AUC gain, but the graph neighbourhood depth was limited to two hops due to computational constraints. Economic theory suggests that second and third-order supplier dependencies - the suppliers of suppliers - carry meaningful risk propagation signals that two-hop neighbourhoods capture only partially. The gain demonstrated is therefore likely a lower bound on what a fully realised graph component could achieve with deeper neighbourhood sampling or a richer edge-weighting scheme.
 

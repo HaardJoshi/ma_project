@@ -182,7 +182,7 @@ post-dating the validation or test periods.
 
 #figure(
   image("../../docs/figures/fig_temporal_split.png", width: 95%),
-  caption: [Temporal partition design and 11-trading-day event-window embargo. Coloured blocks denote training (2000--2016, 70%), validation (2017--2019, 15%), and test (2020--2023, 15%) sets. The embargo gap at each boundary excludes any deal whose ±5-day CAR event window overlaps the partition boundary, eliminating the Overlapping Outcomes leakage mechanism formalised by @lopezdeprado2018.],
+  caption: [Temporal partition design and 11-trading-day event-window embargo. Coloured blocks denote training (2000--2016, 70%), validation (2017--2019, 15%), and test (2020--2023, 15%) sets. The embargo gap at each boundary excludes any deal whose ±5-day CAR event window overlaps the partition boundary, eliminating the Overlapping Outcomes leakage mechanism formalised by #cite(<lopezdeprado2018>, form: "prose").],
 ) <fig-temporal-split>
 
 Concretely, because the event window spans $[-5, +5]$ trading days, two deals
@@ -190,7 +190,7 @@ whose announcement dates differ by fewer than 11 trading days share overlapping
 market-return sequences in their CAR calculations.  If one such deal falls in
 the training set and the other in validation, the model can implicitly learn
 return correlations that exist only because of calendar proximity --- the
-*Overlapping Outcomes* problem formalised by @lopezdeprado2018. The 11-day embargo eliminates this cross-contamination by construction. A chronological holdout is the only valid evaluation design for temporal financial event data; random fold assignment would introduce macro-regime and return autocorrelation leakage that would invalidate all classification results.
+*Overlapping Outcomes* problem formalised by #cite(<lopezdeprado2018>, form: "prose"). The 11-day embargo eliminates this cross-contamination by construction. A chronological holdout is the only valid evaluation design for temporal financial event data; random fold assignment would introduce macro-regime and return autocorrelation leakage that would invalidate all classification results.
 
 === Missing Data Strategy
 
@@ -265,7 +265,7 @@ $hat(bold(h))_F in RR^64$ before concatenation.
 ) <fig-nlp-pipeline>
 
 Each acquirer firm's MD&A (Item 7) and Risk Factors (Item 1A) text is processed
-through *FinBERT* (#code-inline("ProsusAI/finbert")) @araci2019, a
+through *FinBERT* (#code-inline("ProsusAI/finbert")) #cite(<araci2019>, form: "prose"), a
 BERT-base architecture fine-tuned on financial communications corpora.  The
 exact pipeline, as implemented in #code-inline("src/features/text.py"), is:
 
@@ -279,9 +279,9 @@ exact pipeline, as implemented in #code-inline("src/features/text.py"), is:
 + *Pooling.* Chunk-level vectors are *mean-pooled* across all chunks to produce
   a single $bold(h)_T in RR^768$ per section.
 + *PCA compression.* Each section's embedding matrix is independently
-  PCA-compressed:
+  PCA-compressed as defined in @eq-pca:
 
-$ bold(h)_T^("section") in RR^768 space arrow.r^("PCA, fit on train only") space bold(p)^("section") in RR^64 $
+$ bold(h)_T^("section") in RR^768 space arrow.r^("PCA, fit on train only") space bold(p)^("section") in RR^64 $ <eq-pca>
 
   Separate PCA models are fitted for MD&A and Risk Factors, serialised to
   #code-inline("data/processed/pca_models.pkl") for reproducible
@@ -289,9 +289,9 @@ $ bold(h)_T^("section") in RR^768 space arrow.r^("PCA, fit on train only") space
   to $128$ dimensions while retaining maximum explained variance.
 
 + *Concatenation.* The two 64-dimensional section vectors are concatenated into
-  the final textual embedding:
+  the final textual embedding (@eq-text-concat):
 
-$ bold(h)_T = [bold(p)^"MDA" parallel bold(p)^"RF"] in RR^128 $
+$ bold(h)_T = [bold(p)^"MDA" parallel bold(p)^"RF"] in RR^128 $ <eq-text-concat>
 
 FinBERT's $approx 110$M parameters are *frozen* throughout all downstream
 training to prevent overfitting given the limited M&A sample size; only the
@@ -303,7 +303,7 @@ For the H2 semantic-divergence hypothesis, a pairwise cosine similarity score
 is computed *separately* between the acquirer and target's section embeddings,
 _after_ PCA compression:
 
-$"SemanticDiv"_i = 1 - (p_"acq"^"MDA" dot p_"tgt"^"MDA") / (||p_"acq"^"MDA"|| dot ||p_"tgt"^"MDA"||)$ @salton1983
+$"SemanticDiv"_i = 1 - (p_"acq"^"MDA" dot p_"tgt"^"MDA") / (||p_"acq"^"MDA"|| dot ||p_"tgt"^"MDA"||)$ <eq-semantic-div> @salton1983
 
 This scalar divergence score is used *exclusively* as the independent variable
 in the H2 OLS regression.  It is *not* an input to the fusion model.  The
@@ -382,7 +382,7 @@ using PyTorch Geometric's #code-inline("HeteroData") object
 
 ==== HeteroGraphSAGE Model
 
-A 2-layer *Heterogeneous GraphSAGE* model @hamilton2017 is trained via self-supervised link
+A 2-layer *Heterogeneous GraphSAGE* model #cite(<hamilton2017>, form: "prose") is trained via self-supervised link
 prediction on the supply-chain graph, as implemented in
 #code-inline("scripts/graphs/train_hetero_graph.py"):
 
@@ -487,10 +487,9 @@ Four baselines are trained on Block A features only:
 The primary model is the *late-fusion tri-modal architecture* implemented in
 #code-inline("src/models/fusion.py").  Each active stream passes through its
 own #code-inline("ProjectionHead") (linear + ReLU), and the resulting embeddings
-are concatenated:
+are concatenated (@eq-fusion-concat):
 
-$ bold(z)_i = [bold(h)_F parallel bold(h)_T parallel bold(h)_G] in
-  RR^(d_F' + d_T' + d_G') $
+$ bold(z)_i = [bold(h)_F parallel bold(h)_T parallel bold(h)_G] in RR^(d_F' + d_T' + d_G') $ <eq-fusion-concat>
 
 where $d_F' = 64$, $d_T' = 64$, $d_G' = 32$ by default.  To rigorously
 evaluate both the magnitude of synergy and the practical investment decision,
@@ -685,9 +684,9 @@ evaluates predicted CAR against actual CAR on held-out deals.
 The market model is estimated over the *estimation window* $[-200, -20]$
 trading days (180-day window, minimum 120 valid observations) using OLS
 as implemented in #code-inline("scripts/data/compute_car.py") via
-#code-inline("scipy.stats.linregress"):
+#code-inline("scipy.stats.linregress") as defined in @eq-market-model:
 
-$ R_(i t) = alpha_i + beta_i R_(m t) + epsilon_(i t) $
+$ R_(i t) = alpha_i + beta_i R_(m t) + epsilon_(i t) $ <eq-market-model>
 
 where:
 - $R_(i t) = ln(P_(i t) \/ P_(i,t-1))$ is the acquirer log return on trading day $t$,
@@ -697,9 +696,9 @@ where:
 
 The OLS estimators are:
 
-$ hat(beta)_i = ("Cov"(R_i, R_m)) / ("Var"(R_m)) $
+$ hat(beta)_i = ("Cov"(R_i, R_m)) / ("Var"(R_m)) $ <eq-ols-beta>
 
-$ hat(alpha)_i = overline(R)_i - hat(beta)_i overline(R)_m $
+$ hat(alpha)_i = overline(R)_i - hat(beta)_i overline(R)_m $ <eq-ols-alpha>
 
 A gap window $[-19, -6]$ between estimation and event windows is excluded from
 both calculations, preventing estimation-period price dynamics from contaminating
@@ -738,15 +737,15 @@ the event-window benchmark.
 
 With $hat(alpha)_i$ and $hat(beta)_i$ estimated on the estimation window,
 *abnormal returns* in the event window $cal(T) = {-5, ..., +5}$ are the
-residuals between actual and model-predicted returns:
+residuals between actual and model-predicted returns (@eq-ar):
 
-$ A R_(i t) = R_(i t) - (hat(alpha)_i + hat(beta)_i R_(m t)) $
+$ A R_(i t) = R_(i t) - (hat(alpha)_i + hat(beta)_i R_(m t)) $ <eq-ar>
 
 $A R_(i t)$ represents the return attributable to deal-specific information
 (announcement effect) after stripping out normal market co-movement.
-*CAR is the cumulative sum of these residuals* over the full event window:
+*CAR is the cumulative sum of these residuals* over the full event window (@eq-car-sum):
 
-$ "CAR"_i = sum_(t=-5)^(+5) A R_(i t) $
+$ "CAR"_i = sum_(t=-5)^(+5) A R_(i t) $ <eq-car-sum>
 
 #figure(
   image("../../docs/figures/fig_car_distribution.png", width: 90%),
@@ -771,15 +770,14 @@ the evaluation pipeline:
 For variance analysis, the Regressor Pipeline minimises Mean Squared Error against
 the raw continuous CAR ($y_i = "CAR"_i in RR$):
 
-$ cal(L)_"MSE"(theta) = 1/N sum_(i=1)^N (y_i - hat(y)_i)^2 + lambda ||theta||_2^2 $
+$ cal(L)_"MSE"(theta) = 1/N sum_(i=1)^N (y_i - hat(y)_i)^2 + lambda ||theta||_2^2 $ <eq-mse-loss>
 
 *2. Binary Target (Classification Pipeline --- H1, H2):*
 For directional discrimination, the Classifier Pipeline minimises Binary
 Cross-Entropy against the thresholded label
 $y_{"bin",i} = bb(1)["CAR"_i > 0] in {0, 1}$:
 
-$ cal(L)_"BCE" (theta) = -1/N sum_(i=1)^N [y_{"bin",i} log hat(p)_i +
-  (1 - y_{"bin",i}) log(1 - hat(p)_i)] + lambda ||theta||_2^2 $
+$ cal(L)_"BCE" (theta) = -1/N sum_(i=1)^N [y_{"bin",i} log hat(p)_i + (1 - y_{"bin",i}) log(1 - hat(p)_i)] + lambda ||theta||_2^2 $ <eq-bce-loss>
 
 where $hat(p)_i = sigma(f_theta(bold(z)_i))$ is the sigmoid-activated synergy
 probability.  All evaluation metrics are then computed by comparing predictions
