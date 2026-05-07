@@ -1004,7 +1004,7 @@ imbalance in the CAR-positive vs. CAR-negative split.
 
 == Ethical, Legal, and Social Considerations <sec-ethics>
 
-While all data utilised in this study is sourced from public and institutional APIs (Yahoo Finance, Bloomberg) and contains no personally identifiable human-subject information, the deployment of machine learning in M&A strategy carries substantial socio-economic and ethical implications.
+While all data utilised in this study is sourced from public and institutional APIs (Yahoo Finance, Bloomberg) and contains no personally identifiable human-subject information, the deployment of machine learning in M&A strategy carries substantial socio-economic and ethical implications. The project was conducted under the terms of the ethical approval documentation provided in @appendix-ethics.
 
 From a socio-economic perspective, models that successfully predict and therefore facilitate value-creating M&A transactions can accelerate corporate consolidation. Because the "synergies" realised in post-merger integration are frequently achieved through workforce redundancies and the elimination of overlapping operational departments, hyper-efficient AI-driven M&A targeting inherently risks accelerating job displacement. Furthermore, the concentration of capital enabled by algorithmically precise consolidation raises anti-trust and market-diversity concerns. 
 
@@ -1034,11 +1034,10 @@ Key methodological limitations include:
   within the project's data budget.  Their inclusion, using survivorship-bias-corrected
   datasets, is a natural direction for future work.
 
+== Implementation and Auditability <sec-auditability>
+
+To ensure the reproducibility of the study, the core modelling logic is maintained in a structured repository. Key implementation blocks—including the event-study CAR generation, temporal partitioning with embargo control, and the HeteroGraphSAGE architecture—are reproduced in @appendix-code. These snippets provide a readable and auditable record of the methodological safeguards described throughout this chapter.
+
 == Summary
 
-By standardising three disparate feature blocks within a rigorous dual-pipeline
-evaluation framework, the methodology operationalises the multi-modality
-requirement identified in the literature. The following chapter reports the
-empirical results of this architecture, testing whether the theoretical
-advantages of topological and textual fusion translate into measurable
-predictive alpha.
+By standardising three disparate feature blocks within a rigorous dual-pipeline evaluation framework, the methodology operationalises the multi-modality requirement identified in the literature. The following chapter reports the empirical results of this architecture, testing whether the theoretical advantages of topological and textual fusion translate into measurable predictive alpha.

@@ -177,7 +177,7 @@ This is economically meaningful even if the raw correlation is numerically modes
 
 === SHAP and Economic Credibility
 
-The SHAP analysis addresses a different question from the hypothesis tests. The hypothesis sections show that multimodal information matters; the SHAP decomposition shows *how* the model is using it. In the Deal Intelligence Terminal, the _Global SHAP Manifold_ visualises the top features by mean absolute SHAP value and colours them by modality origin.
+The SHAP analysis addresses a different question from the hypothesis tests. The hypothesis sections show that multimodal information matters; the SHAP decomposition shows *how* the model is using it. In the Deal Intelligence Terminal (see screenshots in @appendix-terminal), the _Global SHAP Manifold_ visualises the top features by mean absolute SHAP value and colours them by modality origin.
 
 As visualised in @fig-shap-summary, the result is economically reassuring. Traditional financial features still dominate the very top of the ranking, which is exactly what the corporate finance literature would predict. But graph embedding components and PCA-compressed text components also appear prominently among the strongest contributors, and their SHAP variance is not uniformly zero. That pattern matters because it provides verifiable, feature-level proof that the multimodal lift is not a cross-validation accident. The ranked feature list confirms the model is extracting real, non-trivial signal from graph and text modalities that linear tabular models would either ignore or fail to combine properly @lundberg2017 @palepu1986.
 

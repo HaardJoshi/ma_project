@@ -19,7 +19,7 @@
   acknowledgments: [
    #set par(justify: true, leading: 0.65em)
 
-    First and foremost, I want to thank my supervisor, Arish Siddiqui. There were several points where I was ready to settle for a "good enough" result or a simpler model, but Arish pushed me to dig deeper into the graph theory and the section-specific NLP that eventually became the core of this project. His honest, no-nonsense feedback kept me on track when the data felt overwhelming.
+    First and foremost, I want to thank my supervisor, Arish Siddiqui. There were several points where I was ready to settle for a "good enough" result or a simpler model, but Mr. Arish pushed me to dig deeper into the graph theory and the section-specific NLP that eventually became the core of this project. His honest, no-nonsense feedback kept me on track when the data felt overwhelming.
     
     I am also grateful to the UEL technical team and the library staff for helping me navigate the institutional data access. A special mention must go to the quiet corners of the library where I spent weeks trying to debug the SPLC node-mapping logic and the bizarre Python 3.12 environment freezes that nearly derailed the final evaluation. 
     
@@ -46,3 +46,11 @@
 #set heading(numbering: none)
 #bibliography("works.bib", style: "harvard-cite-them-right")
 
+// --- APPENDICES (Placeholders to resolve labels) ---
+#show: appendix
+
+= [Appendix A Placeholder] <appendix-aims>
+= [Appendix B Placeholder] <appendix-proposal>
+= [Appendix C Placeholder] <appendix-ethics>
+= [Appendix D Placeholder] <appendix-terminal>
+= [Appendix E Placeholder] <appendix-code>
